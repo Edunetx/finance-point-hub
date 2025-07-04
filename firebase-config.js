@@ -1,10 +1,17 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCCmHX-ofSnqvWVfKf9FAbO6TKQCcHhglY",
-  authDomain: "financepoint-aaua.firebaseapp.com",
-  projectId: "financepoint-aaua",
-  storageBucket: "financepoint-aaua.appspot.com",
-  messagingSenderId: "954231940143",
-  appId: "1:954231940143:web:e1148d1b0b4b8e1fc0cf2b"
+  apiKey: "AIzaSyAIY0amadB54OSoqx-OKmDmB9HYVTnb0Iw",
+  authDomain: "finance-point-5584f.firebaseapp.com",
+  projectId: "finance-point-5584f",
+  storageBucket: "finance-point-5584f.appspot.com",
+  messagingSenderId: "59718046131",
+  appId: "1:59718046131:web:306adcd88a6ce6c447fbc6"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
