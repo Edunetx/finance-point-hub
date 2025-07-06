@@ -16,7 +16,6 @@
   min-height: 100vh;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: #fff;
-  flex-direction: column;
 }
 
 .sidebar {
@@ -61,7 +60,6 @@
   margin-left: 220px;
   flex: 1;
   padding: 20px;
-  position: relative;
 }
 
 .topbar {
@@ -81,159 +79,108 @@
   font-weight: 600;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 12px;
-  backdrop-filter: blur(6px);
+.dashboard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
   margin-bottom: 25px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
 }
 
-.card h2 {
+.dashboard-nav a {
+  background: #1c1c2e;
   color: #ffd700;
-  font-size: 18px;
-  margin-bottom: 10px;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.dashboard-nav a:hover {
+  background: #ffd700;
+  color: #000;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.card h3 {
+  color: #ffd700;
+  margin-bottom: 0.5rem;
 }
 
 .card p {
-  font-size: 15px;
-  color: #eee;
-}
-
-.mobile-nav-bar {
-  display: none;
-  background: #111;
-  padding: 10px 0;
-  border-bottom: 3px solid transparent;
-  position: sticky;
-  top: 0;
-  z-index: 99;
-  overflow-x: auto;
-}
-
-.mobile-nav-bar nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 10px;
-}
-
-.mobile-nav-bar a {
-  color: #ffd700;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  transition: all 0.3s;
-}
-
-.mobile-nav-bar a:hover {
-  background: #ffd700;
-  color: #000;
-}
-
-.diagonal-line {
-  height: 3px;
-  background: linear-gradient(to right, transparent, #ffd700, transparent);
-  transform: skewY(-3deg);
-  margin-bottom: 20px;
-}
-
-.back-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: #ffd700;
-  color: #000;
-  border: none;
-  border-radius: 50%;
-  padding: 12px 16px;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  z-index: 999;
+  color: #ddd;
 }
 
 footer {
-  margin-top: 30px;
-  font-size: 13px;
-  color: #ccc;
+  margin-top: 40px;
   text-align: center;
+  color: #bbb;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
   .sidebar {
     display: none;
   }
+
   .main {
     margin-left: 0;
     padding: 15px;
-  }
-  .mobile-nav-bar {
-    display: block;
   }
 }
 
   </style>
 </head>
 <body>
-  <!-- Mobile Nav -->
-  <div class="mobile-nav-bar">
-    <nav>
-      <a href="downloads.html"><i class="fas fa-file-download"></i></a>
-      <a href="events.html"><i class="fas fa-calendar"></i></a>
-      <a href="news.html"><i class="fas fa-bullhorn"></i></a>
-      <a href="executives.html"><i class="fas fa-users"></i></a>
-      <a href="admin.html"><i class="fas fa-lock"></i></a>
-      <a href="contact.html"><i class="fas fa-phone"></i></a>
-    </nav>
-  </div>
-  <div class="diagonal-line"></div>  <div class="sidebar">
+  <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
     <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
     <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
     <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+    <a href="birthday.html"><i class="fas fa-gift"></i> Birthday Wall</a>
     <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
   </div>  <div class="main">
     <div class="topbar">
-      <h1>Welcome to Finance Point Dashboard</h1>
-    </div><div class="card">
-  <h2><i class="fas fa-bullhorn"></i> Announcement</h2>
-  <p>Test for all 200 level students holds this Friday at LT1 by 10am. Attendance is compulsory.</p>
+      <h1>Welcome to the Dashboard</h1>
+    </div><div class="dashboard-nav">
+  <a href="downloads.html">Downloads</a>
+  <a href="events.html">Events</a>
+  <a href="news.html">News</a>
+  <a href="executives.html">Executives</a>
+  <a href="birthday.html">🎂 Birthday Wall</a>
+  <a href="contact.html">Contact</a>
 </div>
 
 <div class="card">
-  <h2><i class="fas fa-lightbulb"></i> Finance Facts</h2>
-  <p>📊 The Rule of 72 helps estimate how long your money takes to double with interest.</p>
-  <p>💳 Credit cards can charge over 20% APR — understand your rate!</p>
-  <p>💰 Saving ₦100 daily = ₦36,500 yearly. Start small, think big.</p>
+  <h3>💡 Finance Fact</h3>
+  <p>Compound interest is considered the 8th wonder of the world — it allows your money to grow faster over time.</p>
 </div>
 
 <div class="card">
-  <h2><i class="fas fa-graduation-cap"></i> Academic Tips</h2>
-  <p>🎯 Use Pomodoro (25 min study, 5 min rest).</p>
-  <p>🧠 Teach someone else — it boosts your understanding.</p>
-  <p>📘 Practice with past questions frequently.</p>
+  <h3>🎓 Academic Tip</h3>
+  <p>Review your lecture notes within 24 hours to retain up to 80% of what you learned.</p>
 </div>
 
 <div class="card">
-  <h2><i class="fas fa-quote-left"></i> Quote of the Day</h2>
-  <p>"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
+  <h3>📘 Study Hack</h3>
+  <p>Use the Pomodoro Technique: 25 minutes study, 5 minutes break. Increases focus and reduces burnout.</p>
 </div>
 
 <footer>
   &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
 </footer>
-
-<button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" title="Back to top">
-  <i class="fas fa-arrow-up"></i>
-</button>
 
   </div>
 </body>
