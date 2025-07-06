@@ -3,75 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point | Executives</title>
+  <title>Executives | Finance Point</title>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
-      display: flex; min-height: 100vh;
+      display: flex;
+      min-height: 100vh;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
+
     .sidebar {
-      width: 220px; background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px; position: fixed; height: 100vh; overflow-y: auto;
+      width: 220px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 20px 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      z-index: 100;
     }
+
     .sidebar h2 {
-      font-family: 'Merriweather', serif; font-size: 22px;
-      text-align: center; margin-bottom: 30px; color: #ffd700;
+      font-family: 'Merriweather', serif;
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffd700;
     }
+
     .sidebar a {
-      display: flex; align-items: center; gap: 10px;
-      color: #ccc; text-decoration: none; padding: 12px 20px;
-      margin: 8px 0; border-radius: 5px; transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border-radius: 5px;
+      transition: 0.3s;
     }
+
     .sidebar a:hover, .sidebar a.active {
-      background: #ffd700; color: #000; font-weight: bold;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
     }
-    .main { margin-left: 220px; flex: 1; padding: 20px; }
-    .section {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px; border-radius: 12px;
-      backdrop-filter: blur(6px); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 20px;
     }
-    .section h2 {
-      font-size: 20px; margin-bottom: 20px; color: #ffd700;
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+
+    .topbar h1 {
+      font-size: 20px;
+      color: #ffd700;
+      font-weight: 600;
+    }
+
     .exec-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 20px;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px;
+
+    .exec-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
       border-radius: 12px;
       text-align: center;
+      border: 1px solid #ffd70030;
     }
-    .card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-      border: 2px solid #ffd700;
+
+    .exec-card h3 {
+      color: #ffd700;
+      margin-bottom: 8px;
+      font-size: 17px;
     }
-    .card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
-      color: #fff;
-    }
-    .card p {
+
+    .exec-card p {
+      color: #eee;
       font-size: 14px;
-      color: #ccc;
+      margin-bottom: 5px;
     }
+
+    .exec-card .tag {
+      background: #ffd700;
+      color: #000;
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 13px;
+      border-radius: 20px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
     footer {
-      margin-top: 30px; font-size: 13px; color: #ccc; text-align: center;
+      margin-top: 30px;
+      font-size: 13px;
+      color: #ccc;
+      text-align: center;
     }
+
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding: 15px; }
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 15px;
+      }
+
+      .topbar h1 {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -79,37 +146,87 @@
   <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
-    <a href="news.html"><i class="fas fa-newspaper"></i> News</a>
-    <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
-    <a href="executives.html" class="active"><i class="fas fa-users"></i> Meet Executives</a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+    <a href="executives.html" class="active"><i class="fas fa-users"></i> Executives</a>
+    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 
   <div class="main">
-    <div class="section">
-      <h2>Meet Your Executives</h2>
-      <div class="exec-grid">
-        <div class="card">
-          <img src="https://i.pravatar.cc/100?img=10" alt="OBA">
-          <h3>OBA</h3>
-          <p>Public Relations Officer (PRO)</p>
-        </div>
-        <div class="card">
-          <img src="https://i.pravatar.cc/100?img=8" alt="Zainab">
-          <h3>Zainab Yusuf</h3>
-          <p>President</p>
-        </div>
-        <div class="card">
-          <img src="https://i.pravatar.cc/100?img=5" alt="Emma">
-          <h3>Emmanuel Okoye</h3>
-          <p>General Secretary</p>
-        </div>
-        <div class="card">
-          <img src="https://i.pravatar.cc/100?img=4" alt="Titi">
-          <h3>Titilayo Adeyemi</h3>
-          <p>Welfare Director</p>
-        </div>
+    <div class="topbar">
+      <h1>Department Executives</h1>
+    </div>
+
+    <div class="exec-grid">
+      <!-- You (PRO) -->
+      <div class="exec-card">
+        <h3>Boluwatife Oluwapelumi Ayuba</h3>
+        <p>Public Relations Officer (PRO)</p>
+        <span class="tag">004</span>
+      </div>
+
+      <!-- Placeholders for others -->
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>President</p>
+        <span class="tag">001</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Vice President</p>
+        <span class="tag">002</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>General Secretary</p>
+        <span class="tag">003</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Boluwatife Oluwapelumi Ayuba</h3>
+        <p>Public Relations Officer</p>
+        <span class="tag">004</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Assistant Secretary</p>
+        <span class="tag">005</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Financial Secretary</p>
+        <span class="tag">006</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Welfare Director</p>
+        <span class="tag">007</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Sports Director</p>
+        <span class="tag">008</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Social Director</p>
+        <span class="tag">009</span>
+      </div>
+
+      <div class="exec-card">
+        <h3>Coming Soon</h3>
+        <p>Treasurer</p>
+        <span class="tag">010</span>
       </div>
     </div>
 
