@@ -16,27 +16,18 @@
     body {
       min-height: 100vh;
       color: #fff;
-      background: url('https://images.unsplash.com/photo-1565514156637-15ec02d12174?auto=format&fit=crop&w=1400&q=80')
-        no-repeat center/cover fixed;
-      backdrop-filter: blur(4px);
+      background-color: #121212; /* dark background */
       position: relative;
-      transition: background 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     body.light-mode {
       color: #121212;
-      background: #f0f0f0;
-      backdrop-filter: none;
+      background-color: #f0f0f0; /* light background */
     }
 
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 0;
-    }
-    body.light-mode .overlay {
-      background: rgba(255,255,255,0.7);
+      display: none; /* removed overlay since no bg image */
     }
 
     .sidebar {
@@ -45,14 +36,14 @@
       left: 0;
       height: 100vh;
       width: 220px;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.85);
       padding: 20px 10px;
       z-index: 5;
       overflow-y: auto;
       transition: background 0.3s, color 0.3s;
     }
     body.light-mode .sidebar {
-      background: rgba(240, 240, 240, 0.9);
+      background: rgba(240, 240, 240, 0.95);
     }
     .sidebar h2 {
       color: #ffd700;
@@ -201,8 +192,6 @@
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  
   <div class="toggle-mode" id="modeToggle" title="Toggle Light/Dark Mode">
     <i class="fas fa-moon"></i>
   </div>
