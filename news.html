@@ -1,169 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>News | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500&700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
     body {
-      display: flex;
-      min-height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
-
-    .sidebar {
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      top: 0;
-      left: 0;
-      z-index: 100;
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-
-    .sidebar h2 {
+    h1 {
+      text-align: center;
+      color: #ffd700;
       font-family: 'Merriweather', serif;
-      font-size: 22px;
-      text-align: center;
+      font-size: 2.2em;
       margin-bottom: 30px;
-      color: #ffd700;
     }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover, .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .main {
-      margin-left: 220px;
-      flex: 1;
-      padding: 20px;
-    }
-
-    .topbar {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .topbar h1 {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .news-item {
+    .announcement {
       background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid #ffd700;
+      margin-bottom: 25px;
       padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
-
-    .news-item h2 {
-      font-size: 18px;
-      color: #ffd700;
-      margin-bottom: 5px;
+    .announcement h2 {
+      margin-top: 0;
+      color: #fff;
+      font-size: 1.3em;
     }
-
-    .news-item p {
-      font-size: 14px;
-      color: #eee;
-      margin-top: 8px;
-      line-height: 1.6;
+    .announcement p {
+      font-size: 0.95em;
+      color: #ddd;
     }
-
-    .news-item small {
-      font-size: 12px;
+    .date {
+      font-size: 0.85em;
       color: #aaa;
+      margin-top: 10px;
     }
-
     footer {
-      margin-top: 30px;
-      font-size: 13px;
-      color: #ccc;
+      margin-top: 40px;
       text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 15px;
-      }
-
-      .topbar h1 {
-        font-size: 18px;
-      }
+      font-size: 0.9em;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html" class="active"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  <div class="container">
+    <h1><i class="fas fa-bullhorn"></i> Department News & Announcements</h1>
+    <div id="newsList">Loading announcements...</div>
+    <footer>© 2025 Finance Point • AAUA Finance Dept • Created by OBA</footer>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <h1>Latest Financial News</h1>
-    </div>
+  <script>
+    const announcementAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/0fcd9550-b411-47b2-b542-b64911a8bb31";
 
-    <div class="news-item">
-      <h2><i class="fas fa-chart-line"></i> CBN Launches New Digital Finance Scheme</h2>
-      <small>Published: July 5, 2025</small>
-      <p>
-        The Central Bank of Nigeria has introduced a digital finance inclusion program to empower students with financial tools and digital banking access.
-        The goal is to improve savings, online transactions, and entrepreneurship among undergraduates.
-      </p>
-    </div>
+    async function loadAnnouncements() {
+      const container = document.getElementById("newsList");
+      try {
+        const res = await fetch(announcementAPI);
+        const announcements = await res.json();
 
-    <div class="news-item">
-      <h2><i class="fas fa-coins"></i> Cryptocurrency Now Recognized by Nigerian Banks</h2>
-      <small>Published: July 1, 2025</small>
-      <p>
-        In a new development, Nigerian banks are now allowed to provide cryptocurrency custody services.
-        This comes after a policy review by the Securities and Exchange Commission, allowing fintech innovation to thrive while ensuring regulation.
-      </p>
-    </div>
+        if (!announcements.length) {
+          container.innerHTML = "<p>No announcements yet.</p>";
+          return;
+        }
 
-    <footer>
-      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
-    </footer>
-  </div>
+        container.innerHTML = "";
+        announcements.reverse().forEach(item => {
+          const box = document.createElement("div");
+          box.className = "announcement";
+          box.innerHTML = `
+            <h2>${item.title}</h2>
+            <p>${item.message}</p>
+            <div class="date"><i class="fas fa-clock"></i> ${item.date}</div>
+          `;
+          container.appendChild(box);
+        });
+      } catch (err) {
+        container.innerHTML = "<p>❌ Failed to load announcements.</p>";
+        console.error(err);
+      }
+    }
+
+    loadAnnouncements();
+  </script>
 </body>
 </html>
