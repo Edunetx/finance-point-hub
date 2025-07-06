@@ -60,6 +60,7 @@
   margin-left: 220px;
   flex: 1;
   padding: 20px;
+  position: relative;
 }
 
 .topbar {
@@ -77,6 +78,28 @@
   font-size: 20px;
   color: #ffd700;
   font-weight: 600;
+}
+
+.section-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.section-nav a {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.section-nav a:hover {
+  text-decoration: underline;
 }
 
 .card {
@@ -97,6 +120,21 @@
 .card p {
   font-size: 15px;
   color: #eee;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #ffd700;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  padding: 12px 16px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  z-index: 999;
 }
 
 footer {
@@ -137,36 +175,45 @@ footer {
   </div>  <div class="main">
     <div class="topbar">
       <h1>Welcome to Finance Point Dashboard</h1>
-    </div><div class="card">
+    </div><div class="section-nav">
+  <a href="#announcements">📢 Announcements</a>
+  <a href="#executives">👥 Executives</a>
+  <a href="#events">📅 Events</a>
+  <a href="#facts">💡 Finance Facts</a>
+  <a href="#tips">🎓 Academic Tips</a>
+  <a href="#quote">📝 Quote</a>
+</div>
+
+<div class="card" id="announcements">
   <h2><i class="fas fa-bullhorn"></i> Announcement</h2>
   <p>Test for all 200 level students holds this Friday at LT1 by 10am. Attendance is compulsory.</p>
 </div>
 
-<div class="card">
+<div class="card" id="executives">
   <h2><i class="fas fa-users"></i> Executives</h2>
   <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
 </div>
 
-<div class="card">
+<div class="card" id="events">
   <h2><i class="fas fa-calendar"></i> Upcoming Event</h2>
   <p>Finance Summit 2025 - July 15th at the New Auditorium.</p>
 </div>
 
-<div class="card">
+<div class="card" id="facts">
   <h2><i class="fas fa-lightbulb"></i> Finance Facts</h2>
   <p>1️⃣ The Rule of 72: Divide 72 by your interest rate to estimate how long it will take your money to double.</p>
   <p>2️⃣ Credit cards often charge interest rates over 20% — understanding APR can save you money.</p>
   <p>3️⃣ Saving just ₦100 a day adds up to over ₦36,000 a year — small habits matter.</p>
 </div>
 
-<div class="card">
+<div class="card" id="tips">
   <h2><i class="fas fa-graduation-cap"></i> Academic Tips</h2>
   <p>📌 Study in short focused intervals — the Pomodoro technique (25 min study, 5 min break) helps retention.</p>
   <p>📌 Don’t just memorize, try teaching the topic to someone — it boosts understanding.</p>
   <p>📌 Use past questions often — they help reveal patterns and boost confidence before exams.</p>
 </div>
 
-<div class="card">
+<div class="card" id="quote">
   <h2><i class="fas fa-quote-left"></i> Quote of the Day</h2>
   <p>"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
 </div>
@@ -174,6 +221,10 @@ footer {
 <footer>
   &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
 </footer>
+
+<button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" title="Back to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
   </div>
 </body>
