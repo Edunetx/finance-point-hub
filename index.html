@@ -4,43 +4,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Finance Point | AAUA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     * {
-      margin: 0; padding: 0; box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
+
     body {
-      background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
                   url('https://images.unsplash.com/photo-1565379933853-53d2ff3c731b?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
       color: #fff;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 20px;
     }
+
     .container {
       background: rgba(255, 255, 255, 0.05);
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
       max-width: 700px;
+      width: 100%;
     }
+
     h1 {
       font-family: 'Merriweather', serif;
-      font-size: 2.5rem;
+      font-size: 2.3rem;
       margin-bottom: 15px;
       color: #ffd700;
     }
+
     p {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       margin-bottom: 25px;
       line-height: 1.6;
-      color: #ddd;
     }
+
     .btn {
       background: #ffd700;
       color: #000;
@@ -51,25 +58,44 @@
       cursor: pointer;
       transition: 0.3s ease;
       text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
     }
+
     .btn:hover {
       background: #fff;
       color: #000;
     }
+
     footer {
       margin-top: 30px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #ccc;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Finance Point - AAUA</h1>
-    <p>Welcome to the official website for all AAUA Finance students. Stay connected with updates, downloads, and events from your departmental PRO - <strong>OBA</strong>.</p>
+    <p>Welcome to the official portal for all AAUA Finance students. Get quick access to departmental updates, downloads, and events directly from your PRO — <strong>OBA</strong>.</p>
     <a href="dashboard.html" class="btn">Go to Dashboard</a>
     <footer>
-      Created by OBA • Public Relations Officer • Finance Dept.
+      &copy; 2025 Finance Point • Created by OBA • Public Relations Officer
     </footer>
   </div>
 </body>
