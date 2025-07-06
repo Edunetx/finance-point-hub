@@ -1,245 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin – Finance Point</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Tools - Admin Panel</title>
   <style>
     body {
-      background-color: #121212;
-      color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111827;
+      color: white;
       padding: 2rem;
     }
-    .hidden { display: none; }
-    input, textarea, button {
-      padding: 0.5rem;
-      margin-top: 0.5rem;
+    h1 {
+      color: #00B386;
+    }
+    form {
+      background: #1f2937;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      max-width: 600px;
+      margin-top: 1rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    input[type="text"], textarea {
       width: 100%;
-      background: #1e1e1e;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 5px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
     }
     button {
-      background-color: #4caf50;
+      margin-top: 1.5rem;
+      background-color: #00B386;
+      color: white;
       border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
       cursor: pointer;
-      margin-top: 0.5rem;
+      font-weight: bold;
     }
-    .section {
-      margin-bottom: 2.5rem;
-    }
-    .card {
-      background: #1f1f1f;
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,255,0,0.1);
+    .status {
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
+  <h1>📊 Update Dashboard Content</h1>
+  <form id="dashboardForm">
+    <label for="fact">💡 Finance Fact</label>
+    <textarea id="fact" rows="2" required></textarea>
 
-  <!-- LOGIN PANEL -->
-  <div id="login">
-    <h2>Enter Admin Code</h2>
-    <input type="password" id="adminCode" placeholder="e.g. oba004" />
-    <button onclick="verifyCode()">Unlock</button>
-  </div>
+    <label for="news">📰 Campus News</label>
+    <textarea id="news" rows="2" required></textarea>
 
-  <!-- ADMIN TOOLS -->
-  <div id="adminTools" class="hidden">
-    <h2>Admin Tools – Finance Point</h2>
+    <label for="tip">🎓 Academic Tip</label>
+    <textarea id="tip" rows="2" required></textarea>
 
-    <!-- EXECUTIVES SECTION -->
-    <div class="section">
-      <h3>Add Executive</h3>
-      <input type="text" id="code" placeholder="Code (e.g. 004)" />
-      <input type="text" id="name" placeholder="Full Name (e.g. OBA)" />
-      <input type="text" id="position" placeholder="Position (e.g. P.R.O)" />
-      <button onclick="addExecutive()">Add Executive</button>
-    </div>
+    <button type="submit">Save to Dashboard</button>
+    <div class="status" id="status"></div>
+  </form>
 
-    <h3>Current Executives</h3>
-    <div id="executiveList"></div>
-
-    <!-- ANNOUNCEMENTS SECTION -->
-    <div class="section">
-      <h2>Post Announcement</h2>
-      <textarea id="announcementText" placeholder="Type your announcement..." rows="4"></textarea>
-      <button onclick="postAnnouncement()">Post</button>
-    </div>
-
-    <h3>Past Announcements</h3>
-    <ul id="announcementList"></ul>
-
-    <!-- EVENTS SECTION -->
-    <div class="section">
-      <h2>Post Upcoming Event</h2>
-      <input type="text" id="eventTitle" placeholder="Event Title (e.g. Orientation 2025)" />
-      <input type="text" id="eventDate" placeholder="Event Date (e.g. July 15, 2025)" />
-      <textarea id="eventDetails" placeholder="Event Details..." rows="4"></textarea>
-      <button onclick="postEvent()">Post Event</button>
-    </div>
-
-    <h3>Posted Events</h3>
-    <ul id="eventList"></ul>
-  </div>
-
-  <!-- SCRIPT -->
   <script>
-    // 🔐 CONFIG
-    const executiveUrl = "https://api.jsonstorage.net/v1/json/8ac792c2-84c9-4907-b0fc-6f0d74c76c69/0a1bb88b-1039-4b8e-83f5-48e8477c2c3e";
-    const executiveKey = "59c6638e-oba004-secret-admin-key";
+    const form = document.getElementById("dashboardForm");
+    const statusDiv = document.getElementById("status");
+    const storageKey = "90fa2454-0bd6-4a1d-bd2c-37decc2aab4a";
 
-    const announcementsUrl = "https://api.jsonstorage.net/v1/json/4a7c8972-5b4c-4f5d-bc89-93a0fe8f3767/3ed1dbbd-0e32-4965-9e3f-5f00ec91db5d";
-    const announcementsKey = "aba27aee-oba004-announcements-key";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const eventsUrl = "https://api.jsonstorage.net/v1/json/5471c9de-34ae-48a4-99a0-d1a3ab504f33/e8b3f9b1-6fd4-44a5-835e-2cbdc26e5074";
-    const eventsKey = "oba004-events-secret-key";
+      const fact = document.getElementById("fact").value.trim();
+      const news = document.getElementById("news").value.trim();
+      const tip = document.getElementById("tip").value.trim();
 
-    // 🔑 LOGIN
-    function verifyCode() {
-      const code = document.getElementById("adminCode").value;
-      if (code === "oba004") {
-        document.getElementById("login").classList.add("hidden");
-        document.getElementById("adminTools").classList.remove("hidden");
-        loadExecutives();
-        loadAnnouncements();
-        loadEvents();
-      } else {
-        alert("Wrong code");
-      }
-    }
+      const payload = { fact, news, tip };
+      statusDiv.textContent = "Saving...";
 
-    // 👨‍💼 EXECUTIVES
-    async function loadExecutives() {
-      const res = await fetch(executiveUrl);
-      const execs = await res.json();
-      const list = document.getElementById("executiveList");
-      list.innerHTML = "";
-      execs.forEach(exec => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `<strong>${exec.code}</strong> – ${exec.name}<br><em>${exec.position}</em>`;
-        list.appendChild(div);
-      });
-    }
-
-    async function addExecutive() {
-      const code = document.getElementById("code").value;
-      const name = document.getElementById("name").value;
-      const position = document.getElementById("position").value;
-
-      const res = await fetch(executiveUrl);
-      const execs = await res.json();
-      execs.push({ code, name, position });
-
-      await fetch(executiveUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "apiKey": executiveKey
-        },
-        body: JSON.stringify(execs)
-      });
-
-      alert("Executive added!");
-      loadExecutives();
-    }
-
-    // 📣 ANNOUNCEMENTS
-    async function postAnnouncement() {
-      const text = document.getElementById("announcementText").value.trim();
-      if (!text) return alert("Announcement cannot be empty.");
-
-      let old = [];
       try {
-        const res = await fetch(announcementsUrl);
-        old = await res.json();
-      } catch (e) {}
-
-      old.unshift({ text, date: new Date().toLocaleString() });
-
-      await fetch(announcementsUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "apiKey": announcementsKey
-        },
-        body: JSON.stringify(old)
-      });
-
-      alert("Announcement posted!");
-      document.getElementById("announcementText").value = "";
-      loadAnnouncements();
-    }
-
-    async function loadAnnouncements() {
-      try {
-        const res = await fetch(announcementsUrl);
-        const list = await res.json();
-        const container = document.getElementById("announcementList");
-        container.innerHTML = "";
-        list.forEach(item => {
-          const li = document.createElement("li");
-          li.style.marginBottom = "0.5rem";
-          li.textContent = `${item.date} – ${item.text}`;
-          container.appendChild(li);
+        const res = await fetch(`https://api.jsonstorage.net/v1/json/${storageKey}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         });
-      } catch (e) {
-        document.getElementById("announcementList").innerHTML = "<li>Couldn't load announcements.</li>";
+
+        if (res.ok) {
+          statusDiv.textContent = "✅ Dashboard updated successfully!";
+        } else {
+          statusDiv.textContent = "❌ Failed to update dashboard.";
+        }
+      } catch (err) {
+        console.error(err);
+        statusDiv.textContent = "❌ Error occurred while saving.";
       }
-    }
-
-    // 📅 EVENTS
-    async function postEvent() {
-      const title = document.getElementById("eventTitle").value.trim();
-      const date = document.getElementById("eventDate").value.trim();
-      const details = document.getElementById("eventDetails").value.trim();
-      if (!title || !date || !details) return alert("All fields are required.");
-
-      let old = [];
-      try {
-        const res = await fetch(eventsUrl);
-        old = await res.json();
-      } catch (e) {}
-
-      old.unshift({ title, date, details });
-
-      await fetch(eventsUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "apiKey": eventsKey
-        },
-        body: JSON.stringify(old)
-      });
-
-      alert("Event posted!");
-      document.getElementById("eventTitle").value = "";
-      document.getElementById("eventDate").value = "";
-      document.getElementById("eventDetails").value = "";
-      loadEvents();
-    }
-
-    async function loadEvents() {
-      try {
-        const res = await fetch(eventsUrl);
-        const events = await res.json();
-        const container = document.getElementById("eventList");
-        container.innerHTML = "";
-        events.forEach(ev => {
-          const li = document.createElement("li");
-          li.style.marginBottom = "0.5rem";
-          li.innerHTML = `<strong>${ev.title}</strong><br>${ev.date}<br><em>${ev.details}</em>`;
-          container.appendChild(li);
-        });
-      } catch (e) {
-        document.getElementById("eventList").innerHTML = "<li>Error loading events</li>";
-      }
-    }
+    });
   </script>
-
 </body>
 </html>
