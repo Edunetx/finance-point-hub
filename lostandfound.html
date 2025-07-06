@@ -1,163 +1,192 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lost & Found | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    body {
+    :root {
+      --bg-color: #121822;
+      --highlight: #ffd700;
+      --text-light: #eee;
+      --text-muted: #bbb;
+      --card-bg: rgba(255 215 0 / 0.1);
+      --card-bg-hover: rgba(255 215 0 / 0.25);
+    }
+    * {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      padding: 2rem;
-    }h1 {
-  text-align: center;
-  color: #ffd700;
-  margin-bottom: 2rem;
-}
-
-.found-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-bottom: 3rem;
-}
-
-.found-card {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  backdrop-filter: blur(5px);
-}
-
-.found-card h3 {
-  color: #ffd700;
-  margin-bottom: 0.5rem;
-}
-
-.found-card p {
-  color: #ddd;
-  font-size: 14px;
-}
-
-form {
-  max-width: 600px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.05);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-form h2 {
-  color: #ffd700;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-input, textarea, button {
-  display: block;
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.5rem;
-}
-
-input, textarea {
-  background: #fff;
-  color: #000;
-}
-
-button {
-  background-color: #ffd700;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-footer {
-  text-align: center;
-  margin-top: 2rem;
-  color: #bbb;
-  font-size: 14px;
-}
-
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body, html {
+      height: 100%;
+      background-color: var(--bg-color);
+      color: var(--text-light);
+      overflow-x: hidden;
+      position: relative;
+    }
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: #121822;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      width: 230px;
+      background-color: rgba(18, 24, 34, 0.95);
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.7);
+      padding: 25px 15px;
+      z-index: 10;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      color: var(--highlight);
+      font-size: 26px;
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 13px 18px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 16px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .sidebar a.active,
+    .sidebar a:hover {
+      background-color: var(--highlight);
+      color: #121822;
+      font-weight: 700;
+    }
+    .sidebar a i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
+    .main {
+      margin-left: 230px;
+      padding: 2.5rem 3rem;
+      z-index: 5;
+      position: relative;
+      min-height: 100vh;
+    }
+    .main h1 {
+      font-size: 28px;
+      color: var(--highlight);
+      margin-bottom: 2rem;
+    }
+    .content-box {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+        padding: 25px 5px;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .sidebar a {
+        justify-content: center;
+        font-size: 0;
+        padding: 12px 0;
+      }
+      .sidebar a i {
+        font-size: 20px;
+      }
+      .main {
+        margin-left: 60px;
+        padding: 2rem 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>📦 Lost & Found Wall</h1>
-  <div class="found-grid" id="foundItems">
-    <p>Loading items...</p>
-  </div>  <form id="lostForm">
-    <h2>Submit Lost/Found Item</h2>
-    <input type="text" id="name" placeholder="Your Name" required>
-    <input type="text" id="item" placeholder="Item Name (e.g. Blue Calculator)" required>
-    <textarea id="desc" placeholder="Item Description or where it was found/lost" required></textarea>
-    <button type="submit">Submit for Review</button>
-  </form>  <footer>
-    &copy; 2025 Finance Point • Created by OBA
-  </footer>  <script>
-    const APPROVED_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d";
-    const PENDING_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+  <canvas id="particles-canvas"></canvas>  <div class="sidebar">
+    <h2>Finance Point</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i></a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i></a>
+    <a href="events.html"><i class="fas fa-calendar"></i></a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i></a>
+    <a href="executives.html"><i class="fas fa-users"></i></a>
+    <a href="lostandfound.html" class="active"><i class="fas fa-search"></i></a>
+    <a href="birthday.html"><i class="fas fa-birthday-cake"></i></a>
+    <a href="study.html"><i class="fas fa-book"></i></a>
+    <a href="contact.html"><i class="fas fa-phone"></i></a>
+  </div>  <div class="main">
+    <h1>🔍 Lost & Found</h1>
+    <div class="content-box">
+      <p>This is where you'll find or report missing items within the department. If you've lost or found an item, please contact the PRO or submit a request.</p>
+    </div>
+  </div>  <script>
+    // Particles
+    const canvas = document.getElementById("particles-canvas");
+    const ctx = canvas.getContext("2d");
+    let particlesArray = [];
 
-    async function loadApprovedItems() {
-      try {
-        const res = await fetch(APPROVED_API);
-        const items = await res.json();
-        const container = document.getElementById("foundItems");
-        container.innerHTML = "";
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-        if (!items.length) {
-          container.innerHTML = '<p>No items currently posted.</p>';
-          return;
-        }
-
-        items.forEach(entry => {
-          const div = document.createElement("div");
-          div.className = "found-card";
-          div.innerHTML = `
-            <h3>${entry.item}</h3>
-            <p><strong>By:</strong> ${entry.name}</p>
-            <p>${entry.desc}</p>
-          `;
-          container.appendChild(div);
-        });
-      } catch (err) {
-        document.getElementById("foundItems").innerHTML = '<p>Error loading items.</p>';
-        console.error(err);
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+        if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    document.getElementById("lostForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const item = document.getElementById("item").value;
-      const desc = document.getElementById("desc").value;
-
-      const newEntry = { name, item, desc };
-
-      try {
-        const res = await fetch(PENDING_API);
-        const data = await res.json();
-        data.push(newEntry);
-
-        await fetch(PENDING_API, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-
-        alert("Submitted successfully. Awaiting approval.");
-        document.getElementById("lostForm").reset();
-      } catch (err) {
-        alert("Failed to submit.");
-        console.error(err);
+    function initParticles(num) {
+      particlesArray = [];
+      for (let i = 0; i < num; i++) {
+        particlesArray.push(new Particle());
       }
-    });
+    }
 
-    loadApprovedItems();
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particlesArray.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles(80);
+    animateParticles();
   </script></body>
 </html>
