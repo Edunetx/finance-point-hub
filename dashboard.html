@@ -1,154 +1,183 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Finance Point</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-overlay: rgba(0,0,0,0.6);
+      --text-color: #fff;
+      --highlight: #ffd700;
+      --card-bg: rgba(255,255,255,0.1);
+    }
+    body.light-mode {
+      --bg-overlay: rgba(255,255,255,0.8);
+      --text-color: #121212;
+      --highlight: #e0a600;
+      --card-bg: rgba(0,0,0,0.05);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }body {
-  min-height: 100vh;
-  color: #fff;
-  background: url('https://images.unsplash.com/photo-1565514156637-15ec02d12174?auto=format&fit=crop&w=1400&q=80')
-    no-repeat center/cover fixed;
-  backdrop-filter: blur(4px);
-  position: relative;
-}
+      font-family: 'Inter', sans-serif;
+    }
 
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 0;
-}
+    body {
+      min-height: 100vh;
+      color: var(--text-color);
+      display: flex;
+      background: url('https://images.dreamstime.com/b/abstract-blurred-background-modern-bank-interior-356507232.jpg')
+                  no-repeat center/cover fixed;
+      backdrop-filter: blur(3px);
+      transition: background 0.3s, color 0.3s;
+    }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 220px;
-  background: rgba(0, 0, 0, 0.75);
-  padding: 20px 10px;
-  z-index: 5;
-  overflow-y: auto;
-}
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-overlay);
+      z-index: 0;
+    }
 
-.sidebar h2 {
-  color: #ffd700;
-  font-size: 22px;
-  text-align: center;
-  margin-bottom: 30px;
-}
+    .toggle-mode {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      background: var(--highlight);
+      color: #000;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ccc;
-  text-decoration: none;
-  padding: 12px 20px;
-  margin: 8px 0;
-  border-radius: 5px;
-  transition: 0.3s;
-}
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 220px;
+      background: var(--bg-overlay);
+      padding: 20px 10px;
+      z-index: 5;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      color: var(--highlight);
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background: var(--highlight);
+      color: #000;
+      font-weight: bold;
+    }
 
-.sidebar a:hover, .sidebar a.active {
-  background: #ffd700;
-  color: #000;
-  font-weight: bold;
-}
+    .main {
+      margin-left: 220px;
+      padding: 2rem;
+      flex: 1;
+      z-index: 5;
+    }
+    .header {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      color: var(--highlight);
+    }
 
-.main {
-  margin-left: 220px;
-  padding: 2rem;
-  z-index: 5;
-}
+    .quick-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 30px;
+    }
+    .quick-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      color: var(--text-color);
+      font-weight: 600;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .quick-nav a:hover {
+      background: var(--highlight);
+      color: #000;
+    }
 
-.header {
-  background: rgba(255,255,255,0.08);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
+    .facts, .notifications {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .facts h2, .notifications h2 {
+      color: var(--highlight);
+      margin-bottom: 10px;
+    }
 
-.header h1 {
-  font-size: 24px;
-  color: #ffd700;
-}
+    .notification-popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--highlight);
+      color: #000;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      animation: slideIn 1s ease-out;
+      z-index: 10;
+    }
 
-.quick-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1rem;
-  margin: 20px 0;
-}
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.quick-nav a {
-  background: rgba(255,255,255,0.08);
-  padding: 1.2rem;
-  border-radius: 12px;
-  text-align: center;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.quick-nav a:hover {
-  background: #ffd700;
-  color: #000;
-}
-
-.facts, .notifications {
-  background: rgba(255,255,255,0.08);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-}
-
-.facts h2, .notifications h2 {
-  color: #ffd700;
-  margin-bottom: 10px;
-}
-
-.facts ul, .notifications ul {
-  list-style: disc;
-  padding-left: 20px;
-}
-
-.notification-popup {
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  background: #ffd700;
-  color: #000;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-weight: bold;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  z-index: 20;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-  .main {
-    margin-left: 0;
-    padding: 1rem;
-  }
-}
-
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>  <div class="sidebar">
+  <div class="overlay"></div>
+  <div class="toggle-mode" onclick="toggleMode()">Toggle Mode</div>
+
+  <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
@@ -159,41 +188,50 @@
     <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
     <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>  <div class="main">
+  </div>
+
+  <div class="main">
     <div class="header">
       <h1>👋 Welcome to the Finance Point Dashboard</h1>
-    </div><div class="quick-nav">
-  <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
-  <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
-  <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
-  <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
-  <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
-  <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
-  <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
-</div>
+    </div>
 
-<div class="facts">
-  <h2>💡 Finance Facts</h2>
-  <ul>
-    <li>CBN regulates Nigeria’s monetary policy using tools like MPR, CRR, and liquidity ratio.</li>
-    <li>First Bank Nigeria was established in 1894 as the Bank of British West Africa.</li>
-    <li>Capital budgeting helps determine the viability of long-term financial investments.</li>
-  </ul>
-</div>
+    <div class="quick-nav">
+      <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
+      <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
+      <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
+      <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
+      <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
+      <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
+      <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
+    </div>
 
-<div class="notifications">
-  <h2>📚 Academic Tips</h2>
-  <ul>
-    <li>Always revise your lecture notes within 24 hours to improve retention.</li>
-    <li>Use color-coded flashcards for definitions and concepts.</li>
-    <li>Join a study group to discuss and simplify tough topics like finance law.</li>
-  </ul>
-</div>
+    <div class="facts">
+      <h2>💡 Finance Facts</h2>
+      <ul>
+        <li>CBN regulates Nigeria's monetary policy using tools like MPR and CRR.</li>
+        <li>Corporate finance involves capital budgeting, financing, and dividends.</li>
+        <li>Banking in Nigeria began formally with the creation of First Bank in 1894.</li>
+      </ul>
+    </div>
 
-  </div>  <div class="notification-popup" id="notify">✅ You are viewing the latest updates!</div>  <script>
-    setTimeout(() => {
-      const popup = document.getElementById('notify');
-      if (popup) popup.style.display = 'none';
-    }, 3000);
-  </script></body>
+    <div class="notifications">
+      <h2>📚 Academic Tips</h2>
+      <ul>
+        <li>Revise notes weekly to boost long-term memory.</li>
+        <li>Use mnemonic devices to remember key financial terms.</li>
+        <li>Practice diagrams like balance sheets and income statements by hand.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="notification-popup">
+    ✅ You are viewing the latest student updates.
+  </div>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle('light-mode');
+    }
+  </script>
+</body>
 </html>
