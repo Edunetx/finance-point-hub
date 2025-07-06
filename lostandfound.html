@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #2c3e50, #4ca1af);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .item {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .item h3 {
+      color: #ffd700;
+      margin: 0 0 5px;
+    }
+    .item small {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Lost & Found</h1>
+    <form onsubmit="submitLostItem(event)">
+      <label for="itemName">Item Name</label>
+      <input type="text" id="itemName" placeholder="e.g., Black Wallet" required>
+
+      <label for="itemDesc">Description</label>
+      <textarea id="itemDesc" rows="3" placeholder="e.g., Found near LT2 with some cards inside" required></textarea>
+
+      <label for="itemLocation">Found At</label>
+      <input type="text" id="itemLocation" placeholder="e.g., Lecture Theatre 2" required>
+
+      <button type="submit">Post Item</button>
+    </form>
+
+    <div id="lostList"></div>
+  </div>
+
+  <script>
+    const lostList = document.getElementById("lostList");
+
+    function submitLostItem(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("itemName").value.trim();
+      const desc = document.getElementById("itemDesc").value.trim();
+      const location = document.getElementById("itemLocation").value.trim();
+
+      const item = document.createElement("div");
+      item.className = "item";
+      item.innerHTML = `
+        <h3>${name}</h3>
+        <p>${desc}</p>
+        <small>📍 ${location}</small>
+      `;
+
+      lostList.prepend(item);
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
