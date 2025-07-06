@@ -73,7 +73,7 @@ header p {
   <script>
     async function loadDashboard() {
       try {
-        const res = await fetch("https://api.jsonstorage.net/v1/json/YOUR_DASHBOARD_STORAGE_ID");
+        const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
         const data = await res.json();
         document.getElementById("fact").textContent = data.fact;
         document.getElementById("news").textContent = data.news;
