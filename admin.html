@@ -4,11 +4,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel | Finance Point</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
       background-color: #121212;
       color: white;
       padding: 2rem;
@@ -64,6 +64,8 @@
     <input type="text" id="execName">
     <label>Role:</label>
     <input type="text" id="execRole">
+    <label>Image URL (optional):</label>
+    <input type="text" id="execImage">
     <button onclick="addExecutive()">Add Executive</button>
   </div>  <div class="section">
     <h2>📅 Add Event</h2>
@@ -73,55 +75,128 @@
     <input type="text" id="eventDate">
     <label>Location:</label>
     <input type="text" id="eventLocation">
+    <label>Image URL (optional):</label>
+    <input type="text" id="eventImage">
     <button onclick="addEvent()">Add Event</button>
   </div>  <div class="section">
-    <h2>🎂 Add Birthday Wish</h2>
-    <label>Student Name:</label>
+    <h2>🎂 Post Birthday Wish</h2>
+    <label>Name:</label>
     <input type="text" id="bdayName">
-    <label>Birthday Message:</label>
+    <label>Message:</label>
     <textarea id="bdayMessage"></textarea>
-    <button onclick="addBirthday()">Post Birthday Wish</button>
+    <label>Image URL (optional):</label>
+    <input type="text" id="bdayImage">
+    <button onclick="postBirthdayWish()">Post Birthday Wish</button>
   </div>  <script>
+    const announcementAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/0fcd9550-b411-47b2-b542-b64911a8bb31";
+    const executiveAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/exec-storage-id";
+    const eventsAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/events-storage-id";
     const birthdayAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
 
-    function postAnnouncement() {
-      alert("📢 Announcement Posted (simulation)");
+    async function postAnnouncement() {
+      const title = document.getElementById("announcementTitle").value;
+      const message = document.getElementById("announcementBody").value;
+
+      try {
+        const res = await fetch(announcementAPI);
+        const announcements = await res.json();
+        const updated = Array.isArray(announcements) ? announcements : [];
+        updated.push({ title, message });
+
+        await fetch(announcementAPI, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updated)
+        });
+
+        alert("📢 Announcement posted!");
+      } catch (e) {
+        alert("❌ Failed to post announcement.");
+      }
     }
 
-    function addExecutive() {
-      alert("👤 Executive Added (simulation)");
+    async function addExecutive() {
+      const name = document.getElementById("execName").value;
+      const role = document.getElementById("execRole").value;
+      const image = document.getElementById("execImage").value;
+
+      try {
+        const res = await fetch(executiveAPI);
+        const executives = await res.json();
+        const updated = Array.isArray(executives) ? executives : [];
+        updated.push({ name, role, image });
+
+        await fetch(executiveAPI, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updated)
+        });
+
+        alert("👤 Executive added!");
+      } catch (e) {
+        alert("❌ Failed to add executive.");
+      }
     }
 
-    function addEvent() {
-      alert("📅 Event Added (simulation)");
+    async function addEvent() {
+      const title = document.getElementById("eventTitle").value;
+      const date = document.getElementById("eventDate").value;
+      const location = document.getElementById("eventLocation").value;
+      const image = document.getElementById("eventImage").value;
+
+      try {
+        const res = await fetch(eventsAPI);
+        const events = await res.json();
+        const updated = Array.isArray(events) ? events : [];
+        updated.push({ title, date, location, image });
+
+        await fetch(eventsAPI, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updated)
+        });
+
+        alert("📅 Event added!");
+      } catch (e) {
+        alert("❌ Failed to add event.");
+      }
     }
 
-    async function addBirthday() {
+    async function postBirthdayWish() {
       const name = document.getElementById("bdayName").value.trim();
       const message = document.getElementById("bdayMessage").value.trim();
+      const image = document.getElementById("bdayImage").value.trim();
 
       if (!name || !message) {
-        alert("Please fill out both name and message.");
+        alert("Please fill in both fields.");
         return;
       }
 
       try {
         const res = await fetch(birthdayAPI);
-        const current = await res.json();
-        current.unshift({ name, message });
+        const oldData = await res.json();
+        const wishes = Array.isArray(oldData) ? oldData : [];
+        const timestamp = new Date().toISOString();
+        wishes.push({ name, message, image, timestamp });
 
-        await fetch(birthdayAPI, {
+        const updateRes = await fetch(birthdayAPI, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(current)
+          body: JSON.stringify(wishes)
         });
 
-        alert("🎉 Birthday Wish Posted!");
-        document.getElementById("bdayName").value = "";
-        document.getElementById("bdayMessage").value = "";
-      } catch (err) {
-        alert("❌ Failed to post birthday wish.");
-        console.error(err);
+        if (updateRes.ok) {
+          alert("🎉 Birthday wish posted! It will disappear after 24 hours.");
+          document.getElementById("bdayName").value = "";
+          document.getElementById("bdayMessage").value = "";
+          document.getElementById("bdayImage").value = "";
+        } else {
+          throw new Error("Failed to update birthday wishes.");
+        }
+
+      } catch (error) {
+        console.error(error);
+        alert("❌ Error posting birthday wish.");
       }
     }
   </script></body>
