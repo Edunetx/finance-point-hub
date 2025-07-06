@@ -3,102 +3,180 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Finance Point</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #121212;
-      color: white;
-      display: flex;
-    }
-    .sidebar {
-      width: 240px;
-      background-color: #1f1f2e;
-      height: 100vh;
-      padding: 2rem 1rem;
-      position: fixed;
-      top: 0;
-      left: 0;
-      overflow-y: auto;
-    }
-    .sidebar h2 {
-      color: #00B386;
-      margin-bottom: 2rem;
-    }
-    .sidebar a {
-      display: block;
-      margin: 1rem 0;
-      color: white;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      color: #00B386;
-    }
-    .main {
-      margin-left: 240px;
-      padding: 2rem;
-      flex: 1;
-    }
-    .card {
-      background: #1e1e2f;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    .card h3 {
-      color: #00B386;
-      margin-top: 0;
-    }
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }body {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #fff;
+}
+
+.sidebar {
+  width: 220px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 20px 10px;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.sidebar h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ffd700;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  text-decoration: none;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background: #ffd700;
+  color: #000;
+  font-weight: bold;
+}
+
+.main {
+  margin-left: 220px;
+  flex: 1;
+  padding: 20px;
+}
+
+.topbar {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h1 {
+  font-size: 20px;
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  margin-bottom: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  color: #ffd700;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 15px;
+  color: #eee;
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #ccc;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .topbar h1 {
+    font-size: 18px;
+  }
+}
+
   </style>
 </head>
 <body>
   <div class="sidebar">
     <h2>Finance Point</h2>
-    <a href="dashboard.html">🏠 Dashboard</a>
-    <a href="executives.html">👥 Executives</a>
-    <a href="announcements.html">📢 Announcements</a>
-    <a href="events.html">📅 Events</a>
-    <a href="downloads.html">📥 Downloads</a>
-    <a href="contact.html">📞 Contact</a>
+    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>  <div class="main">
-    <div class="card">
-      <h3>📢 Announcements</h3>
-      <p>All 200 level students are reminded of the upcoming test on Friday.<br>📍 Venue: LT1 <br>⏰ Time: 10am</p>
-    </div>
-    <div class="card">
-      <h3>👨‍💼 Executives</h3>
-      <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
-    </div>
-    <div class="card">
-      <h3>📆 Events</h3>
-      <p>📌 Finance Summit 2025<br>📅 July 15th, 2025<br>🏛️ New Auditorium</p>
-    </div>
-    <div class="card">
-      <h3>💡 Finance Fact</h3>
-      <p id="fact">Loading...</p>
-    </div>
-    <div class="card">
-      <h3>📰 Campus News</h3>
-      <p id="news">Loading...</p>
-    </div>
-    <div class="card">
-      <h3>🎓 Academic Tip</h3>
-      <p id="tip">Loading...</p>
-    </div>
-    <div class="card">
-      <h3>🌟 Quote of the Day</h3>
-      <p id="quote">"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
-    </div>
+    <div class="topbar">
+      <h1>Welcome to Finance Point Dashboard</h1>
+    </div><div class="card">
+  <h2><i class="fas fa-bullhorn"></i> Announcement</h2>
+  <p>Test for all 200 level students holds this Friday at LT1 by 10am. Attendance is compulsory.</p>
+</div>
+
+<div class="card">
+  <h2><i class="fas fa-users"></i> Executives</h2>
+  <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
+</div>
+
+<div class="card">
+  <h2><i class="fas fa-calendar"></i> Upcoming Event</h2>
+  <p>Finance Summit 2025 - July 15th at the New Auditorium.</p>
+</div>
+
+<div class="card">
+  <h2><i class="fas fa-lightbulb"></i> Finance Fact</h2>
+  <p id="fact">Loading...</p>
+</div>
+
+<div class="card">
+  <h2><i class="fas fa-graduation-cap"></i> Academic Tip</h2>
+  <p id="tip">Loading...</p>
+</div>
+
+<div class="card">
+  <h2><i class="fas fa-quote-left"></i> Quote of the Day</h2>
+  <p>"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
+</div>
+
+<footer>
+  &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
+</footer>
+
   </div>  <script>
     async function loadDashboard() {
       try {
         const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
         const data = await res.json();
         document.getElementById("fact").textContent = data.fact;
-        document.getElementById("news").textContent = data.news;
         document.getElementById("tip").textContent = data.tip;
       } catch (e) {
         console.error("Error loading dashboard info:", e);
