@@ -1,1 +1,91 @@
-<!DOCTYPE html><html><head><title>News</title></head><body><h1>News - Coming Soon</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finance Point | News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      display: flex; min-height: 100vh;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+    .sidebar {
+      width: 220px; background: rgba(0, 0, 0, 0.85);
+      padding: 20px 10px; position: fixed; height: 100vh; overflow-y: auto;
+    }
+    .sidebar h2 {
+      font-family: 'Merriweather', serif; font-size: 22px;
+      text-align: center; margin-bottom: 30px; color: #ffd700;
+    }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      color: #ccc; text-decoration: none; padding: 12px 20px;
+      margin: 8px 0; border-radius: 5px; transition: 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background: #ffd700; color: #000; font-weight: bold;
+    }
+    .main { margin-left: 220px; flex: 1; padding: 20px; }
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px; border-radius: 12px;
+      backdrop-filter: blur(6px); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    .section h2 {
+      font-size: 20px; margin-bottom: 15px; color: #ffd700;
+    }
+    .news-item {
+      margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .news-item h3 { font-size: 16px; margin-bottom: 5px; color: #fff; }
+    .news-item p { font-size: 14px; color: #ccc; }
+    footer {
+      margin-top: 30px; font-size: 13px; color: #ccc; text-align: center;
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Finance Point</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
+    <a href="news.html" class="active"><i class="fas fa-newspaper"></i> News</a>
+    <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+    <a href="executives.html"><i class="fas fa-users"></i> Meet Executives</a>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <div class="main">
+    <div class="section">
+      <h2>Latest News</h2>
+
+      <div class="news-item">
+        <h3>📰 Finance Department Wins Quiz Competition</h3>
+        <p>Our students emerged champions in the inter-departmental finance quiz. Kudos to the team!</p>
+      </div>
+
+      <div class="news-item">
+        <h3>📰 New Course Materials Uploaded</h3>
+        <p>All 200-level handouts are now available for download on the portal. Visit the Downloads section.</p>
+      </div>
+
+      <div class="news-item">
+        <h3>📰 Election Results Announced</h3>
+        <p>OBA was elected as the new PRO. Congratulations to all newly elected executives!</p>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
+    </footer>
+  </div>
+</body>
+</html>
