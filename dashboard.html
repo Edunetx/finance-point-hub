@@ -2,321 +2,200 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Finance Point</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Reset and basics */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      min-height: 100vh;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
-      color: #fff;
-      padding-top: 60px; /* space for horizontal nav */
-      overflow-x: hidden;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 215, 0, 0.15); /* gold transparent overlay */
-      pointer-events: none;
-      z-index: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* Sidebar */
+    body {
+      background: url('https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(4px);
+      color: white;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+    }
+
     .sidebar {
+      width: 220px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
       position: fixed;
       top: 0;
       left: 0;
-      height: 100vh;
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
       padding: 20px 10px;
       overflow-y: auto;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
+
     .sidebar h2 {
-      font-family: 'Merriweather', serif;
-      font-size: 22px;
       color: #ffd700;
+      font-size: 22px;
+      text-align: center;
       margin-bottom: 30px;
-      user-select: none;
     }
+
     .sidebar a {
-      width: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       color: #ccc;
       text-decoration: none;
       padding: 12px 20px;
       margin: 8px 0;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 5px;
+      transition: 0.3s;
     }
+
     .sidebar a:hover,
     .sidebar a.active {
       background: #ffd700;
       color: #000;
-      font-weight: 700;
+      font-weight: bold;
     }
 
-    /* Main content */
     .main {
       margin-left: 220px;
-      padding: 25px 30px;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    .header {
       background: rgba(0, 0, 0, 0.6);
-      min-height: calc(100vh - 60px);
-      border-radius: 15px;
-      position: relative;
-      z-index: 5;
-      user-select: none;
-    }
-
-    .welcome-msg {
-      font-size: 28px;
-      font-weight: 700;
-      color: #ffd700;
-      margin-bottom: 10px;
-      user-select: text;
-    }
-    .finance-facts,
-    .academic-tips {
-      margin-top: 25px;
-      background: rgba(255, 255, 255, 0.08);
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-      user-select: text;
-    }
-    .finance-facts h2,
-    .academic-tips h2 {
-      color: #ffd700;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-    .finance-facts ul,
-    .academic-tips ul {
-      list-style: inside disc;
-      line-height: 1.6;
-      color: #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
     }
 
-    /* Horizontal navigation bar (mobile and desktop) */
-    .topnav {
-      position: fixed;
-      top: 0;
-      left: 220px;
-      right: 0;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.85);
+    .header h1 {
+      color: #ffd700;
+      font-size: 26px;
+    }
+
+    .quick-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 30px;
+    }
+
+    .quick-nav a {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 30px;
-      z-index: 20;
-      border-bottom: 3px solid transparent;
-      user-select: none;
-    }
-    .topnav::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 220px;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(45deg, transparent 0%, #ffd700 50%, transparent 100%);
-      pointer-events: none;
-      z-index: 30;
-    }
-    .topnav a {
-      color: #ccc;
       text-decoration: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      color: white;
       font-weight: 600;
-      font-size: 15px;
-      padding: 8px 14px;
-      border-radius: 6px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      transition: 0.3s;
     }
-    .topnav a:hover,
-    .topnav a.active {
+
+    .quick-nav a:hover {
       background: #ffd700;
       color: #000;
     }
 
-    /* Responsive */
+    .facts, .notifications {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .facts h2, .notifications h2 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .notification-popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffd700;
+      color: #000;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 768px) {
       .sidebar {
         display: none;
       }
+
       .main {
         margin-left: 0;
-        padding: 15px 20px;
-        min-height: calc(100vh - 60px);
+        padding: 1rem;
       }
-      .topnav {
-        left: 0;
-        border-radius: 0;
-      }
-      .topnav::after {
-        left: 0;
-      }
-    }
-
-    /* Notification popup */
-    #notification {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: rgba(255, 215, 0, 0.95);
-      color: #000;
-      padding: 18px 24px;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 50;
-    }
-    #notification.show {
-      opacity: 1;
-      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <nav class="sidebar" aria-label="Primary Sidebar">
+  <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
     <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
     <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
     <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="lostandfound.html"><i class="fas fa-search"></i> Lost & Found</a>
+    <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
+    <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </nav>
-
-  <nav class="topnav" aria-label="Secondary navigation">
-    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </nav>
-
-  <main class="main" tabindex="0">
-    <div class="welcome-msg" id="welcomeUser">Hello, Finance Student 👋</div>
-
-    <section class="finance-facts" aria-labelledby="factsHeading">
-      <h2 id="factsHeading">💡 Finance Facts</h2>
-      <ul id="factList">
-        <li>Did you know? The first stock exchange was established in Amsterdam in 1602.</li>
-        <li>Compound interest can dramatically increase your savings over time.</li>
-        <li>Cryptocurrency transactions use blockchain to secure digital assets.</li>
-      </ul>
-    </section>
-
-    <section class="academic-tips" aria-labelledby="tipsHeading">
-      <h2 id="tipsHeading">🎓 Academic Tips</h2>
-      <ul id="tipsList">
-        <li>Set aside regular study times and stick to them consistently.</li>
-        <li>Practice past exam questions to familiarize yourself with the format.</li>
-        <li>Join study groups to gain new perspectives and insights.</li>
-      </ul>
-    </section>
-  </main>
-
-  <div id="notification" role="alert" aria-live="assertive" tabindex="0" aria-atomic="true">
-    Welcome to Finance Point! Stay focused and keep learning 📈
   </div>
 
-  <script>
-    // Greet user with prompt and store name locally
-    const welcomeUser = document.getElementById('welcomeUser');
-    let userName = localStorage.getItem('userName');
+  <div class="main">
+    <div class="header">
+      <h1>Welcome to the Finance Point Dashboard</h1>
+    </div>
 
-    function askName() {
-      if (!userName) {
-        userName = prompt('What is your name?')?.trim();
-        if (userName) {
-          localStorage.setItem('userName', userName);
-        } else {
-          userName = 'Finance Student';
-        }
-      }
-      welcomeUser.textContent = `Hello, ${userName} 👋`;
-    }
+    <div class="quick-nav">
+      <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
+      <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
+      <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
+      <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
+      <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
+      <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
+      <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
+    </div>
 
-    askName();
+    <div class="facts">
+      <h2>💡 Finance Facts</h2>
+      <ul>
+        <li>The first paper money was created in China 1,400 years ago.</li>
+        <li>Credit cards were introduced in 1950 by Diners Club.</li>
+        <li>Compound interest can double your investment faster than simple interest.</li>
+      </ul>
+    </div>
 
-    // Sync active nav links between sidebar and topnav
-    function syncActiveLinks() {
-      const sidebarLinks = document.querySelectorAll('.sidebar a');
-      const topnavLinks = document.querySelectorAll('.topnav a');
-      const currentURL = window.location.pathname.split('/').pop();
+    <div class="notifications">
+      <h2>📣 Academic Tips</h2>
+      <ul>
+        <li>Review lecture notes the same day to retain more.</li>
+        <li>Practice past questions to improve exam confidence.</li>
+        <li>Study in short bursts with breaks — it works better!</li>
+      </ul>
+    </div>
+  </div>
 
-      sidebarLinks.forEach(link => {
-        if (link.getAttribute('href') === currentURL || (currentURL === '' && link.getAttribute('href') === 'dashboard.html')) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-
-      topnavLinks.forEach(link => {
-        if (link.getAttribute('href') === currentURL || (currentURL === '' && link.getAttribute('href') === 'dashboard.html')) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    }
-
-    syncActiveLinks();
-
-    // Notification popup logic
-    const notification = document.getElementById('notification');
-    function showNotification() {
-      notification.classList.add('show');
-      notification.focus();
-      setTimeout(() => {
-        notification.classList.remove('show');
-      }, 7000);
-    }
-    window.addEventListener('load', () => {
-      setTimeout(showNotification, 1500);
-    });
-
-    // Back to top button (optional enhancement)
-    // You can add it if you want later
-
-  </script>
+  <div class="notification-popup">
+    ✅ You're viewing the latest student updates.
+  </div>
 </body>
 </html>
