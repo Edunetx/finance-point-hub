@@ -52,6 +52,16 @@
       color: #00B386;
       margin-top: 0;
     }
+    .poll-buttons button {
+      margin-right: 1rem;
+      background-color: #00B386;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -88,6 +98,19 @@
       <h3>🎓 Academic Tip</h3>
       <p id="tip">Loading...</p>
     </div>
+    <div class="card">
+      <h3>🌟 Quote of the Day</h3>
+      <p id="quote">"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
+    </div>
+    <div class="card">
+      <h3>🗳️ Weekly Poll</h3>
+      <p>Would you attend a Finance Night event this semester?</p>
+      <div class="poll-buttons">
+        <button onclick="voteYes()">👍 Yes</button>
+        <button onclick="voteNo()">👎 No</button>
+      </div>
+      <p id="poll-status" style="margin-top: 0.75rem; color: #ccc;"></p>
+    </div>
   </div>  <script>
     async function loadDashboard() {
       try {
@@ -100,6 +123,15 @@
         console.error("Error loading dashboard info:", e);
       }
     }
+
+    function voteYes() {
+      document.getElementById("poll-status").textContent = "✅ Thanks for voting Yes!";
+    }
+
+    function voteNo() {
+      document.getElementById("poll-status").textContent = "👍 Your response has been recorded.";
+    }
+
     window.onload = loadDashboard;
   </script></body>
 </html>
