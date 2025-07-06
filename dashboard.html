@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Dashboard | Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -17,12 +17,23 @@
     }
     .container {
       text-align: center;
+      background-color: #ffffff20;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px #00000040;
+      width: 90%;
+      max-width: 400px;
     }
     h2 {
-      font-size: 2rem;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    #userEmail {
+      font-weight: 600;
+      color: #fffd9b;
     }
     button {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       padding: 10px 20px;
       font-size: 1rem;
       background-color: #ff5e62;
@@ -34,24 +45,34 @@
   </style>
   <script type="module">
     import { supabase } from './supabase.js';
-    document.addEventListener("DOMContentLoaded", async () => {
-      const {{ data: {{ user }} }} = await supabase.auth.getUser();
-      if (!user) {{
+
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        // Not logged in, redirect to login
         window.location.href = "login.html";
-      }} else {{
+      } else {
         document.getElementById("userEmail").textContent = user.email;
-      }}
-    });
-    async function logout() {{
+      }
+    }
+
+    async function logout() {
       await supabase.auth.signOut();
       window.location.href = "login.html";
-    }}
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuth();
+      document.getElementById("logoutBtn").addEventListener("click", logout);
+    });
   </script>
 </head>
 <body>
   <div class="container">
-    <h2>Welcome, <span id="userEmail">Loading...</span></h2>
-    <button onclick="logout()">Logout</button>
+    <h2>Welcome, <span id="userEmail">loading...</span> 👋</h2>
+    <p>You are now logged into Finance Point.</p>
+    <button id="logoutBtn">Logout</button>
   </div>
 </body>
 </html>
