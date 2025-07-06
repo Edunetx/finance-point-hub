@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,168 +11,144 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
-    }
+    }body {
+  min-height: 100vh;
+  color: #fff;
+  background: url('https://images.unsplash.com/photo-1565514156637-15ec02d12174?auto=format&fit=crop&w=1400&q=80')
+    no-repeat center/cover fixed;
+  backdrop-filter: blur(4px);
+  position: relative;
+}
 
-    body {
-      min-height: 100vh;
-      color: #fff;
-      background: url('https://images.unsplash.com/photo-1565514156637-15ec02d12174?auto=format&fit=crop&w=1400&q=80')
-        no-repeat center/cover fixed;
-      backdrop-filter: blur(4px);
-      position: relative;
-    }
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 0;
+}
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 0;
-    }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 20px 10px;
+  z-index: 5;
+  overflow-y: auto;
+}
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 220px;
-      background: rgba(0, 0, 0, 0.75);
-      padding: 20px 10px;
-      z-index: 5;
-      overflow-y: auto;
-    }
+.sidebar h2 {
+  color: #ffd700;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    .sidebar h2 {
-      color: #ffd700;
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  text-decoration: none;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
 
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
+.sidebar a:hover, .sidebar a.active {
+  background: #ffd700;
+  color: #000;
+  font-weight: bold;
+}
 
-    .sidebar a:hover, .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-    }
+.main {
+  margin-left: 220px;
+  padding: 2rem;
+  z-index: 5;
+}
 
-    .main {
-      margin-left: 220px;
-      padding: 2rem;
-      z-index: 5;
-    }
+.header {
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
 
-    .header {
-      background: rgba(255,255,255,0.08);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
+.header h1 {
+  font-size: 24px;
+  color: #ffd700;
+}
 
-    .header h1 {
-      font-size: 24px;
-      color: #ffd700;
-    }
+.quick-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 20px 0;
+}
 
-    .search-bar {
-      margin-top: 10px;
-    }
+.quick-nav a {
+  background: rgba(255,255,255,0.08);
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
 
-    .search-bar input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-    }
+.quick-nav a:hover {
+  background: #ffd700;
+  color: #000;
+}
 
-    .quick-nav {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin: 20px 0;
-    }
+.facts, .notifications {
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
 
-    .quick-nav a {
-      background: rgba(255,255,255,0.08);
-      padding: 1.2rem;
-      border-radius: 12px;
-      text-align: center;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      transition: 0.3s;
-    }
+.facts h2, .notifications h2 {
+  color: #ffd700;
+  margin-bottom: 10px;
+}
 
-    .quick-nav a:hover {
-      background: #ffd700;
-      color: #000;
-    }
+.facts ul, .notifications ul {
+  list-style: disc;
+  padding-left: 20px;
+}
 
-    .facts, .notifications {
-      background: rgba(255,255,255,0.08);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-    }
+.notification-popup {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background: #ffd700;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 20;
+}
 
-    .facts h2, .notifications h2 {
-      color: #ffd700;
-      margin-bottom: 10px;
-    }
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
 
-    .facts ul, .notifications ul {
-      list-style: disc;
-      padding-left: 20px;
-    }
-
-    .notification-popup {
-      position: fixed;
-      top: 15px;
-      right: 20px;
-      background: #ffd700;
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 20;
-      animation: slideIn 0.6s ease forwards;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-      .main {
-        margin-left: 0;
-        padding: 1rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-
-  <div class="sidebar">
+  <div class="overlay"></div>  <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
@@ -184,52 +159,41 @@
     <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
     <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>
-
-  <div class="main">
+  </div>  <div class="main">
     <div class="header">
       <h1>👋 Welcome to the Finance Point Dashboard</h1>
-      <div class="search-bar">
-        <input type="text" placeholder="Search dashboard features...">
-      </div>
-    </div>
+    </div><div class="quick-nav">
+  <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
+  <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
+  <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
+  <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
+  <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
+  <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
+  <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
+</div>
 
-    <div class="quick-nav">
-      <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
-      <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
-      <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
-      <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
-      <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
-      <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
-      <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
-    </div>
+<div class="facts">
+  <h2>💡 Finance Facts</h2>
+  <ul>
+    <li>CBN regulates Nigeria’s monetary policy using tools like MPR, CRR, and liquidity ratio.</li>
+    <li>First Bank Nigeria was established in 1894 as the Bank of British West Africa.</li>
+    <li>Capital budgeting helps determine the viability of long-term financial investments.</li>
+  </ul>
+</div>
 
-    <div class="facts">
-      <h2>💡 Finance Facts</h2>
-      <ul>
-        <li>CBN regulates Nigeria’s monetary policy using tools like MPR, CRR, and liquidity ratio.</li>
-        <li>First Bank Nigeria was established in 1894 as the Bank of British West Africa.</li>
-        <li>Capital budgeting helps determine the viability of long-term financial investments.</li>
-      </ul>
-    </div>
+<div class="notifications">
+  <h2>📚 Academic Tips</h2>
+  <ul>
+    <li>Always revise your lecture notes within 24 hours to improve retention.</li>
+    <li>Use color-coded flashcards for definitions and concepts.</li>
+    <li>Join a study group to discuss and simplify tough topics like finance law.</li>
+  </ul>
+</div>
 
-    <div class="notifications">
-      <h2>📚 Academic Tips</h2>
-      <ul>
-        <li>Always revise your lecture notes within 24 hours to improve retention.</li>
-        <li>Use color-coded flashcards for definitions and concepts.</li>
-        <li>Join a study group to discuss and simplify tough topics like finance law.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="notification-popup" id="notify">✅ You are viewing the latest updates!</div>
-
-  <script>
+  </div>  <div class="notification-popup" id="notify">✅ You are viewing the latest updates!</div>  <script>
     setTimeout(() => {
       const popup = document.getElementById('notify');
       if (popup) popup.style.display = 'none';
     }, 3000);
-  </script>
-</body>
+  </script></body>
 </html>
