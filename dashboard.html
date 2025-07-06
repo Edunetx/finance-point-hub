@@ -2,75 +2,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <title>Dashboard | Finance Point</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: #121212;
-      color: #ffffff;
-    }header {
-  background-color: #1f1f2e;
-  text-align: center;
-  padding: 2rem 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-
-header h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  margin: 0 0 0.5rem;
-  color: #FFD700;
-}
-
-header p {
-  font-size: 1rem;
-  color: #ccc;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-.card {
-  background-color: #1e1e2f;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h2 {
-  font-family: 'Poppins', sans-serif;
-  margin-top: 0;
-  color: #00B386;
-}
-
-.card p {
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  .container {
-    padding: 1rem;
-  }
-}
-
+      color: white;
+      display: flex;
+    }
+    .sidebar {
+      width: 240px;
+      background-color: #1f1f2e;
+      height: 100vh;
+      padding: 2rem 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      color: #00B386;
+      margin-bottom: 2rem;
+    }
+    .sidebar a {
+      display: block;
+      margin: 1rem 0;
+      color: white;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      color: #00B386;
+    }
+    .main {
+      margin-left: 240px;
+      padding: 2rem;
+      flex: 1;
+    }
+    .card {
+      background: #1e1e2f;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .card h3 {
+      color: #00B386;
+      margin-top: 0;
+    }
   </style>
-  <script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Finance Point</h2>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="executives.html">👥 Executives</a>
+    <a href="announcements.html">📢 Announcements</a>
+    <a href="events.html">📅 Events</a>
+    <a href="downloads.html">📥 Downloads</a>
+    <a href="contact.html">📞 Contact</a>
+  </div>  <div class="main">
+    <div class="card">
+      <h3>📢 Announcements</h3>
+      <p>All 200 level students are reminded of the upcoming test on Friday.<br>📍 Venue: LT1 <br>⏰ Time: 10am</p>
+    </div>
+    <div class="card">
+      <h3>👨‍💼 Executives</h3>
+      <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
+    </div>
+    <div class="card">
+      <h3>📆 Events</h3>
+      <p>📌 Finance Summit 2025<br>📅 July 15th, 2025<br>🏛️ New Auditorium</p>
+    </div>
+    <div class="card">
+      <h3>💡 Finance Fact</h3>
+      <p id="fact">Loading...</p>
+    </div>
+    <div class="card">
+      <h3>📰 Campus News</h3>
+      <p id="news">Loading...</p>
+    </div>
+    <div class="card">
+      <h3>🎓 Academic Tip</h3>
+      <p id="tip">Loading...</p>
+    </div>
+  </div>  <script>
     async function loadDashboard() {
       try {
         const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
@@ -83,39 +101,5 @@ header p {
       }
     }
     window.onload = loadDashboard;
-  </script>
-</head>
-<body>  <header>
-    <h1>Hello there! 👋</h1>
-    <p>Welcome to Finance Point — Stay updated, stay inspired!</p>
-  </header>  <main class="container">
-    <div class="card">
-      <h2>📢 Announcements</h2>
-      <p>All 200 level students are reminded of the upcoming test on Friday.<br>📍 Venue: LT1 <br>⏰ Time: 10am</p>
-    </div><div class="card">
-  <h2>👨‍💼 Executives</h2>
-  <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
-</div>
-
-<div class="card">
-  <h2>📆 Events</h2>
-  <p>📌 Finance Summit 2025<br>📅 July 15th, 2025<br>🏛️ New Auditorium</p>
-</div>
-
-<div class="card">
-  <h2>💡 Finance Fact</h2>
-  <p id="fact">Loading...</p>
-</div>
-
-<div class="card">
-  <h2>📰 Campus News</h2>
-  <p id="news">Loading...</p>
-</div>
-
-<div class="card">
-  <h2>🎓 Academic Tip</h2>
-  <p id="tip">Loading...</p>
-</div>
-
-  </main></body>
+  </script></body>
 </html>
