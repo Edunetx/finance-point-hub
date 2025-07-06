@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -52,27 +51,21 @@
   </style>
 </head>
 <body>
-  <h1>🛠️ Admin Panel - Finance Point</h1>
-
-  <div class="section">
+  <h1>🛠️ Admin Panel - Finance Point</h1>  <div class="section">
     <h2>📢 Post Announcement</h2>
     <label>Title:</label>
     <input type="text" id="announcementTitle">
     <label>Message:</label>
     <textarea id="announcementBody"></textarea>
     <button onclick="postAnnouncement()">Post Announcement</button>
-  </div>
-
-  <div class="section">
+  </div>  <div class="section">
     <h2>👥 Add Executive</h2>
     <label>Name:</label>
     <input type="text" id="execName">
     <label>Role:</label>
     <input type="text" id="execRole">
     <button onclick="addExecutive()">Add Executive</button>
-  </div>
-
-  <div class="section">
+  </div>  <div class="section">
     <h2>📅 Add Event</h2>
     <label>Event Title:</label>
     <input type="text" id="eventTitle">
@@ -81,9 +74,7 @@
     <label>Location:</label>
     <input type="text" id="eventLocation">
     <button onclick="addEvent()">Add Event</button>
-  </div>
-
-  <div class="section">
+  </div>  <div class="section">
     <h2>🗓️ Update Timetable</h2>
     <label>Day:</label>
     <select id="timetableDay">
@@ -102,9 +93,7 @@
     <label>Lecturer:</label>
     <input type="text" id="timetableLecturer">
     <button onclick="updateTimetable()">Add to Timetable</button>
-  </div>
-
-  <div class="section">
+  </div>  <div class="section">
     <h2>🔍 Lost & Found</h2>
     <label>Item Name:</label>
     <input type="text" id="lostItem">
@@ -113,40 +102,38 @@
     <label>Location Found:</label>
     <input type="text" id="lostLocation">
     <button onclick="addLostItem()">Post Lost Item</button>
-  </div>
-
-  <script>
+  </div>  <div class="section">
+    <h2>🎂 Add Birthday</h2>
+    <label>Student Name:</label>
+    <input type="text" id="birthdayName">
+    <label>Date of Birth:</label>
+    <input type="date" id="birthdayDate">
+    <label>Birthday Message (optional):</label>
+    <textarea id="birthdayMessage"></textarea>
+    <button onclick="addBirthday()">Post Birthday</button>
+  </div>  <script>
     const adminPassword = "OBA IS THE KING";
 
-    // ✅ Your working JSONStorage endpoint:
     const announcementAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/0fcd9550-b411-47b2-b542-b64911a8bb31";
+    const birthdayAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
 
     async function postAnnouncement() {
       const title = document.getElementById("announcementTitle").value.trim();
       const message = document.getElementById("announcementBody").value.trim();
-
       if (!title || !message) {
         alert("❗ Please fill in all fields.");
         return;
       }
-
-      const newData = {
-        title,
-        message,
-        date: new Date().toLocaleString()
-      };
-
+      const newData = { title, message, date: new Date().toLocaleString() };
       try {
         let existing = await fetch(announcementAPI);
         let data = await existing.json();
         data.push(newData);
-
         await fetch(announcementAPI, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-
         alert("✅ Announcement posted successfully!");
         document.getElementById("announcementTitle").value = "";
         document.getElementById("announcementBody").value = "";
@@ -171,6 +158,38 @@
     function addLostItem() {
       alert("🔍 Lost item posted (simulation)");
     }
-  </script>
-</body>
+
+    async function addBirthday() {
+      const name = document.getElementById("birthdayName").value.trim();
+      const date = document.getElementById("birthdayDate").value;
+      const message = document.getElementById("birthdayMessage").value.trim();
+      if (!name || !date) {
+        alert("❗ Name and Date are required.");
+        return;
+      }
+      const newEntry = {
+        name,
+        date,
+        message,
+        addedOn: new Date().toLocaleString()
+      };
+      try {
+        let res = await fetch(birthdayAPI);
+        let data = await res.json();
+        data.push(newEntry);
+        await fetch(birthdayAPI, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        alert("🎉 Birthday added successfully!");
+        document.getElementById("birthdayName").value = "";
+        document.getElementById("birthdayDate").value = "";
+        document.getElementById("birthdayMessage").value = "";
+      } catch (err) {
+        alert("❌ Failed to save birthday.");
+        console.error(err);
+      }
+    }
+  </script></body>
 </html>
