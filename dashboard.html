@@ -80,26 +80,36 @@
   font-weight: 600;
 }
 
-.section-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.section-nav, .mobile-nav {
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  padding: 15px;
   margin-bottom: 25px;
-  padding: 10px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
 }
 
-.section-nav a {
+.section-nav h3, .mobile-nav h3 {
   color: #ffd700;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.section-nav a, .mobile-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
   text-decoration: none;
-  font-weight: 500;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
   transition: 0.3s;
 }
 
-.section-nav a:hover {
-  text-decoration: underline;
+.section-nav a:hover, .mobile-nav a:hover {
+  background: #ffd700;
+  color: #000;
+  font-weight: bold;
 }
 
 .card {
@@ -175,13 +185,32 @@ footer {
   </div>  <div class="main">
     <div class="topbar">
       <h1>Welcome to Finance Point Dashboard</h1>
-    </div><div class="section-nav">
-  <a href="#announcements">📢 Announcements</a>
-  <a href="#executives">👥 Executives</a>
-  <a href="#events">📅 Events</a>
-  <a href="#facts">💡 Finance Facts</a>
-  <a href="#tips">🎓 Academic Tips</a>
-  <a href="#quote">📝 Quote</a>
+    </div><div class="mobile-nav" style="display: none;" id="mobileNav">
+  <h3><i class="fas fa-bars"></i> Navigation</h3>
+  <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+  <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+  <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+  <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+  <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+  <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+  <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+  <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<script>
+  if (window.innerWidth < 768) {
+    document.getElementById('mobileNav').style.display = 'block';
+  }
+</script>
+
+<div class="section-nav">
+  <h3><i class="fas fa-bars"></i> Quick Dashboard Menu</h3>
+  <a href="#announcements"><i class="fas fa-bullhorn"></i> Announcements</a>
+  <a href="#executives"><i class="fas fa-users"></i> Executives</a>
+  <a href="#events"><i class="fas fa-calendar"></i> Events</a>
+  <a href="#facts"><i class="fas fa-lightbulb"></i> Finance Facts</a>
+  <a href="#tips"><i class="fas fa-graduation-cap"></i> Academic Tips</a>
+  <a href="#quote"><i class="fas fa-quote-left"></i> Quote</a>
 </div>
 
 <div class="card" id="announcements">
