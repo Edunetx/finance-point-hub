@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up | Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #2b5876, #4e4376);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #ffffff20;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px #00000040;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    input {
+      background: #ffffffcc;
+      color: #000;
+    }
+    button {
+      background: #00c9a7;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const supabase = createClient(
+      "https://edunetx.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbGFmbWFycnl0aXhqZ2Vma2hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3NzM3OTksImV4cCI6MjA2NzM0OTc5OX0.baDfihnD_fstSU7MkdAIiVSQKmTbrX3HvSuRKZs5bIA"
+    );
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("signupForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const { error } = await supabase.auth.signUp({
+          email,
+          password
+        });
+
+        if (error) {
+          alert(error.message);
+        } else {
+          alert("✅ Sign-up successful! Please check your email to confirm.");
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+</body>
+</html>
