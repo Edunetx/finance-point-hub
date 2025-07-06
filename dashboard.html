@@ -13,6 +13,7 @@
       padding: 0;
       font-family: 'Poppins', sans-serif;
     }
+
     body {
       display: flex;
       min-height: 100vh;
@@ -27,6 +28,9 @@
       position: fixed;
       height: 100vh;
       overflow-y: auto;
+      top: 0;
+      left: 0;
+      z-index: 100;
     }
 
     .sidebar h2 {
@@ -46,14 +50,10 @@
       padding: 12px 20px;
       margin: 8px 0;
       border-radius: 5px;
-      transition: background 0.3s, color 0.3s;
+      transition: 0.3s;
     }
 
-    .sidebar a:hover {
-      background: #ffd700;
-      color: #000;
-    }
-
+    .sidebar a:hover,
     .sidebar a.active {
       background: #ffd700;
       color: #000;
@@ -85,20 +85,20 @@
 
     .section {
       background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
+      padding: 25px;
       border-radius: 12px;
       backdrop-filter: blur(6px);
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
 
     .section h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #ffd700;
     }
 
     .section p {
-      font-size: 14px;
+      font-size: 15px;
       color: #eee;
       line-height: 1.6;
     }
@@ -114,11 +114,17 @@
       .sidebar {
         display: none;
       }
+
       .main {
         margin-left: 0;
         padding: 15px;
       }
+
       .topbar h1 {
+        font-size: 18px;
+      }
+
+      .section h2 {
         font-size: 18px;
       }
     }
@@ -128,10 +134,12 @@
   <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
-    <a href="news.html"><i class="fas fa-newspaper"></i> News</a>
-    <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Meet Executives</a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 
@@ -142,7 +150,10 @@
 
     <div class="section">
       <h2>Dashboard Overview</h2>
-      <p>This is your official departmental dashboard for AAUA Finance students. Use the sidebar to navigate through the site and manage information. More updates coming soon to keep you connected and informed.</p>
+      <p>
+        This is the central hub for all AAUA Finance students. Here, you'll find quick links to important updates,
+        events, downloads, and department news. Stay connected and informed with all the latest activities directly from your department.
+      </p>
     </div>
 
     <footer>
