@@ -11,7 +11,7 @@
       padding: 2rem;
     }
     .hidden { display: none; }
-    input, button {
+    input, textarea, button {
       padding: 0.5rem;
       margin-top: 0.5rem;
       width: 100%;
@@ -20,8 +20,15 @@
       border: 1px solid #444;
       border-radius: 5px;
     }
-    button { background-color: #4caf50; border: none; cursor: pointer; }
-    .section { margin-bottom: 2rem; }
+    button {
+      background-color: #4caf50;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
     .card {
       background: #1f1f1f;
       margin-top: 0.5rem;
@@ -33,41 +40,65 @@
 </head>
 <body>
 
+  <!-- LOGIN PANEL -->
   <div id="login">
     <h2>Enter Admin Code</h2>
     <input type="password" id="adminCode" placeholder="e.g. oba004" />
     <button onclick="verifyCode()">Unlock</button>
   </div>
 
+  <!-- ADMIN TOOLS -->
   <div id="adminTools" class="hidden">
-    <h2>Admin Tools – Executives</h2>
+    <h2>Admin Tools – Finance Point</h2>
+
+    <!-- EXECUTIVES SECTION -->
     <div class="section">
+      <h3>Add Executive</h3>
       <input type="text" id="code" placeholder="Code (e.g. 004)" />
       <input type="text" id="name" placeholder="Full Name (e.g. OBA)" />
       <input type="text" id="position" placeholder="Position (e.g. P.R.O)" />
       <button onclick="addExecutive()">Add Executive</button>
     </div>
-    <h3>Current Executives:</h3>
+
+    <h3>Current Executives</h3>
     <div id="executiveList"></div>
+
+    <!-- ANNOUNCEMENTS SECTION -->
+    <div class="section">
+      <h2>Post Announcement</h2>
+      <textarea id="announcementText" placeholder="Type your announcement..." rows="4"></textarea>
+      <button onclick="postAnnouncement()">Post</button>
+    </div>
+
+    <h3>Past Announcements</h3>
+    <ul id="announcementList"></ul>
   </div>
 
+  <!-- SCRIPT -->
   <script>
-    const apiUrl = "https://api.jsonstorage.net/v1/json/8ac792c2-84c9-4907-b0fc-6f0d74c76c69/0a1bb88b-1039-4b8e-83f5-48e8477c2c3e";
-    const updateKey = "59c6638e-oba004-secret-admin-key";
+    // 🔐 CONFIG
+    const executiveUrl = "https://api.jsonstorage.net/v1/json/8ac792c2-84c9-4907-b0fc-6f0d74c76c69/0a1bb88b-1039-4b8e-83f5-48e8477c2c3e";
+    const executiveKey = "59c6638e-oba004-secret-admin-key";
 
+    const announcementsUrl = "https://api.jsonstorage.net/v1/json/4a7c8972-5b4c-4f5d-bc89-93a0fe8f3767/3ed1dbbd-0e32-4965-9e3f-5f00ec91db5d";
+    const announcementsKey = "aba27aee-oba004-announcements-key";
+
+    // 🔑 LOGIN
     function verifyCode() {
       const code = document.getElementById("adminCode").value;
       if (code === "oba004") {
         document.getElementById("login").classList.add("hidden");
         document.getElementById("adminTools").classList.remove("hidden");
         loadExecutives();
+        loadAnnouncements();
       } else {
         alert("Wrong code");
       }
     }
 
+    // 👨‍💼 EXECUTIVES
     async function loadExecutives() {
-      const res = await fetch(apiUrl);
+      const res = await fetch(executiveUrl);
       const execs = await res.json();
       const list = document.getElementById("executiveList");
       list.innerHTML = "";
@@ -84,21 +115,65 @@
       const name = document.getElementById("name").value;
       const position = document.getElementById("position").value;
 
-      const res = await fetch(apiUrl);
+      const res = await fetch(executiveUrl);
       const execs = await res.json();
       execs.push({ code, name, position });
 
-      await fetch(apiUrl, {
+      await fetch(executiveUrl, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "apiKey": updateKey
+          "apiKey": executiveKey
         },
         body: JSON.stringify(execs)
       });
 
       alert("Executive added!");
       loadExecutives();
+    }
+
+    // 📣 ANNOUNCEMENTS
+    async function postAnnouncement() {
+      const text = document.getElementById("announcementText").value.trim();
+      if (!text) return alert("Announcement cannot be empty.");
+
+      let old = [];
+      try {
+        const res = await fetch(announcementsUrl);
+        old = await res.json();
+      } catch (e) {}
+
+      old.unshift({ text, date: new Date().toLocaleString() });
+
+      await fetch(announcementsUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "apiKey": announcementsKey
+        },
+        body: JSON.stringify(old)
+      });
+
+      alert("Announcement posted!");
+      document.getElementById("announcementText").value = "";
+      loadAnnouncements();
+    }
+
+    async function loadAnnouncements() {
+      try {
+        const res = await fetch(announcementsUrl);
+        const list = await res.json();
+        const container = document.getElementById("announcementList");
+        container.innerHTML = "";
+        list.forEach(item => {
+          const li = document.createElement("li");
+          li.style.marginBottom = "0.5rem";
+          li.textContent = `${item.date} – ${item.text}`;
+          container.appendChild(li);
+        });
+      } catch (e) {
+        document.getElementById("announcementList").innerHTML = "<li>Couldn't load announcements.</li>";
+      }
     }
   </script>
 
