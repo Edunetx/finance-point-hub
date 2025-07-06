@@ -1,228 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: #fff;
-      padding: 2rem;
-    }
-
-    h1 {
-      color: #ffd700;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .section {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-    }
-
-    .section h2 {
-      color: #ffd700;
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: 600;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: 6px;
-    }
-
-    button {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      color: #888;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CBT Admin | Finance Point</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+<style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  body {
+    background: #0e0e0e url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  h1 {
+    color: #ffd700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  #questions {
+    max-width: 900px;
+    margin: auto;
+  }
+  .question-item {
+    background: rgba(255,255,255,0.08);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: relative;
+  }
+  .question-item textarea,
+  .question-item input[type="text"],
+  .question-item select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: none;
+    margin: 5px 0 12px;
+    font-size: 14px;
+  }
+  .question-item label {
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+  }
+  .remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: #ff4c4c;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+  #addBtn, #saveBtn {
+    background: #ffd700;
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px 5px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: block;
+    width: 200px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #addBtn:hover, #saveBtn:hover {
+    background: #e0a600;
+  }
+  .status {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #ffd700;
+  }
+</style>
 </head>
 <body>
-  <div id="login">
-    <h1>🔐 Admin Login</h1>
-    <input type="password" id="adminPass" placeholder="Enter Admin Password" />
-    <button onclick="checkPassword()">Enter Panel</button>
-    <p id="wrongPass" style="color: red; display: none;">Wrong password. Try again.</p>
+  <h1>CBT Questions Admin Panel</h1>
+
+  <div id="questions">
+    <!-- Question items will be dynamically added here -->
   </div>
 
-  <div id="adminPanel" class="hidden">
-    <h1>⚙️ Finance Point Admin Tools</h1>
-
-    <div class="section">
-      <h2>📢 Post Announcement</h2>
-      <label>Title</label>
-      <input id="annTitle" />
-      <label>Message</label>
-      <textarea id="annMsg"></textarea>
-      <button onclick="submitTo('announcement')">Submit</button>
-    </div>
-
-    <div class="section">
-      <h2>🎓 Add Executive</h2>
-      <label>Name</label>
-      <input id="execName" />
-      <label>Position</label>
-      <input id="execPos" />
-      <button onclick="submitTo('executive')">Submit</button>
-    </div>
-
-    <div class="section">
-      <h2>📅 Post Event</h2>
-      <label>Event Title</label>
-      <input id="eventTitle" />
-      <label>Description</label>
-      <textarea id="eventDesc"></textarea>
-      <button onclick="submitTo('event')">Submit</button>
-    </div>
-
-    <div class="section">
-      <h2>📚 Add Study Resource</h2>
-      <label>Material Title</label>
-      <input id="studyTitle" />
-      <label>Description</label>
-      <textarea id="studyDesc"></textarea>
-      <label>Link</label>
-      <input id="studyLink" />
-      <button onclick="submitTo('study')">Submit</button>
-    </div>
-
-    <div class="section">
-      <h2>🎉 Post Birthday Wish</h2>
-      <label>Name</label>
-      <input id="wishName" />
-      <label>Message</label>
-      <textarea id="wishMsg"></textarea>
-      <label>Photo URL (optional)</label>
-      <input id="wishPhoto" />
-      <button onclick="submitTo('birthday')">Submit</button>
-    </div>
-
-    <div class="section">
-      <h2>🔎 Approve Lost & Found</h2>
-      <label>Item Name</label>
-      <input id="foundName" />
-      <label>Details</label>
-      <textarea id="foundDetail"></textarea>
-      <label>Contact</label>
-      <input id="foundContact" />
-      <button onclick="submitTo('lostfound')">Approve & Post</button>
-    </div>
-  </div>
-
-  <footer>&copy; 2025 Finance Point • Created by OBA</footer>
+  <button id="addBtn">+ Add New Question</button>
+  <button id="saveBtn">Save All Questions</button>
+  <div class="status" id="status"></div>
 
   <script>
-    const pass = "OBA IS THE KING";
+    const STORAGE_URL = "https://api.jsonstorage.net/v1/json";
+    const STORAGE_ID_KEY = "finance_cbt_json_id";
 
-    function checkPassword() {
-      const input = document.getElementById("adminPass").value;
-      if (input.trim() === pass) {
-        document.getElementById("login").classList.add("hidden");
-        document.getElementById("adminPanel").classList.remove("hidden");
+    let jsonStorageId = localStorage.getItem(STORAGE_ID_KEY) || "";
+
+    const questionsContainer = document.getElementById('questions');
+    const addBtn = document.getElementById('addBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const statusDiv = document.getElementById('status');
+
+    // Sample questions to create initially
+    const sampleQuestions = [
+      {
+        question: "What is the main function of the Central Bank of Nigeria?",
+        options: {
+          A: "Control inflation",
+          B: "Regulate banks",
+          C: "Print currency",
+          D: "Collect taxes"
+        },
+        correctAnswer: "B"
+      },
+      {
+        question: "Which of these is an example of a financial asset?",
+        options: {
+          A: "Building",
+          B: "Cash",
+          C: "Machine",
+          D: "Vehicle"
+        },
+        correctAnswer: "B"
+      },
+      {
+        question: "What does 'liquidity' refer to in finance?",
+        options: {
+          A: "Profitability of a company",
+          B: "Ease of converting assets to cash",
+          C: "Company's debt level",
+          D: "Investment risk"
+        },
+        correctAnswer: "B"
+      }
+    ];
+
+    async function init() {
+      if (!jsonStorageId) {
+        statusDiv.textContent = "Creating storage document with sample questions...";
+        try {
+          const created = await createStorage(sampleQuestions);
+          jsonStorageId = created.id;
+          localStorage.setItem(STORAGE_ID_KEY, jsonStorageId);
+          statusDiv.textContent = "Storage created! Loaded sample questions.";
+          renderQuestions(sampleQuestions);
+        } catch (err) {
+          statusDiv.textContent = "Failed to create storage: " + err.message;
+        }
       } else {
-        document.getElementById("wrongPass").style.display = "block";
+        statusDiv.textContent = "Loading questions...";
+        try {
+          const questions = await loadQuestions();
+          renderQuestions(questions);
+          statusDiv.textContent = "Questions loaded.";
+        } catch (err) {
+          statusDiv.textContent = "Failed to load questions: " + err.message;
+        }
       }
     }
 
-    function submitTo(type) {
-      let data = {};
-      const urls = {
-        announcement: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
-        executive: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
-        event: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
-        study: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a",
-        birthday: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554",
-        lostfound: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d"
+    async function createStorage(initialData) {
+      const response = await fetch(STORAGE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(initialData)
+      });
+      if (!response.ok) throw new Error("Failed to create JSON storage");
+      return await response.json();
+    }
+
+    async function loadQuestions() {
+      if (!jsonStorageId) throw new Error("No storage ID found.");
+      const response = await fetch(`${STORAGE_URL}/${jsonStorageId}`);
+      if (!response.ok) throw new Error("Failed to fetch questions");
+      return await response.json();
+    }
+
+    async function saveQuestions(data) {
+      if (!jsonStorageId) throw new Error("No storage ID found.");
+      const response = await fetch(`${STORAGE_URL}/${jsonStorageId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error("Failed to save questions");
+      return await response.json();
+    }
+
+    function renderQuestions(questions) {
+      questionsContainer.innerHTML = '';
+      questions.forEach((q, idx) => {
+        questionsContainer.appendChild(createQuestionElement(q, idx));
+      });
+    }
+
+    function createQuestionElement(question = null, index) {
+      const div = document.createElement('div');
+      div.className = "question-item";
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = "remove-btn";
+      removeBtn.textContent = "×";
+      removeBtn.onclick = () => {
+        div.remove();
       };
+      div.appendChild(removeBtn);
 
-      switch (type) {
-        case 'announcement':
-          data = {
-            title: document.getElementById("annTitle").value,
-            message: document.getElementById("annMsg").value
-          };
-          break;
-        case 'executive':
-          data = {
-            name: document.getElementById("execName").value,
-            position: document.getElementById("execPos").value
-          };
-          break;
-        case 'event':
-          data = {
-            title: document.getElementById("eventTitle").value,
-            description: document.getElementById("eventDesc").value
-          };
-          break;
-        case 'study':
-          data = {
-            title: document.getElementById("studyTitle").value,
-            description: document.getElementById("studyDesc").value,
-            link: document.getElementById("studyLink").value
-          };
-          break;
-        case 'birthday':
-          data = {
-            name: document.getElementById("wishName").value,
-            message: document.getElementById("wishMsg").value,
-            photo: document.getElementById("wishPhoto").value
-          };
-          break;
-        case 'lostfound':
-          data = {
-            item: document.getElementById("foundName").value,
-            detail: document.getElementById("foundDetail").value,
-            contact: document.getElementById("foundContact").value
-          };
-          break;
-      }
+      const qLabel = document.createElement('label');
+      qLabel.textContent = `Question #${index + 1}`;
+      div.appendChild(qLabel);
 
-      fetch(urls[type])
-        .then(res => res.json())
-        .then(existing => {
-          const updated = Array.isArray(existing) ? [...existing, data] : [data];
-          return fetch(urls[type], {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updated)
-          });
-        })
-        .then(() => alert("✅ Submitted successfully!"))
-        .catch(err => {
-          console.error(err);
-          alert("❌ Error submitting data.");
-        });
+      const qTextarea = document.createElement('textarea');
+      qTextarea.rows = 3;
+      qTextarea.placeholder = "Enter the question here...";
+      qTextarea.value = question ? question.question : "";
+      div.appendChild(qTextarea);
+
+      ['A','B','C','D'].forEach(option => {
+        const optLabel = document.createElement('label');
+        optLabel.textContent = `Option ${option}:`;
+        div.appendChild(optLabel);
+
+        const optInput = document.createElement('input');
+        optInput.type = "text";
+        optInput.placeholder = `Enter option ${option}`;
+        optInput.value = question && question.options ? question.options[option] || "" : "";
+        optInput.dataset.opt = option;
+        div.appendChild(optInput);
+      });
+
+      const correctLabel = document.createElement('label');
+      correctLabel.textContent = "Correct Answer:";
+      div.appendChild(correctLabel);
+
+      const select = document.createElement('select');
+      ['A','B','C','D'].forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.textContent = option;
+        select.appendChild(opt);
+      });
+      select.value = question ? question.correctAnswer : 'A';
+      div.appendChild(select);
+
+      return div;
     }
+
+    function collectQuestions() {
+      const allQuestions = [];
+      const items = document.querySelectorAll('.question-item');
+      items.forEach(div => {
+        const questionText = div.querySelector('textarea').value.trim();
+        const options = {};
+        div.querySelectorAll('input[type=text]').forEach(input => {
+          options[input.dataset.opt] = input.value.trim();
+        });
+        const correctAnswer = div.querySelector('select').value;
+        if(questionText && Object.values(options).every(opt => opt !== "")) {
+          allQuestions.push({ question: questionText, options, correctAnswer });
+        }
+      });
+      return allQuestions;
+    }
+
+    addBtn.onclick = () => {
+      const currentCount = document.querySelectorAll('.question-item').length;
+      questionsContainer.appendChild(createQuestionElement(null, currentCount));
+    };
+
+    saveBtn.onclick = async () => {
+      statusDiv.textContent = "Saving questions...";
+      const data = collectQuestions();
+      if(data.length === 0) {
+        statusDiv.textContent = "Add at least one complete question before saving.";
+        return;
+      }
+      try {
+        await saveQuestions(data);
+        statusDiv.textContent = "Questions saved successfully!";
+      } catch (e) {
+        statusDiv.textContent = "Failed to save questions: " + e.message;
+      }
+    };
+
+    init();
   </script>
 </body>
 </html>
