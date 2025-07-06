@@ -106,8 +106,8 @@
       <h3>🗳️ Weekly Poll</h3>
       <p>Would you attend a Finance Night event this semester?</p>
       <div class="poll-buttons">
-        <button onclick="voteYes()">👍 Yes</button>
-        <button onclick="voteNo()">👎 No</button>
+        <button onclick="castVote('yes')">👍 Yes</button>
+        <button onclick="castVote('no')">👎 No</button>
       </div>
       <p id="poll-status" style="margin-top: 0.75rem; color: #ccc;"></p>
     </div>
@@ -124,12 +124,29 @@
       }
     }
 
-    function voteYes() {
-      document.getElementById("poll-status").textContent = "✅ Thanks for voting Yes!";
-    }
+    const pollUrl = "https://api.jsonstorage.net/v1/json/14e57e31-b1fd-4a8f-bcc9-760bd9789c83";
 
-    function voteNo() {
-      document.getElementById("poll-status").textContent = "👍 Your response has been recorded.";
+    async function castVote(option) {
+      try {
+        const res = await fetch(pollUrl);
+        const data = await res.json();
+        data[option]++;
+
+        const update = await fetch(pollUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (update.ok) {
+          document.getElementById("poll-status").textContent = `✅ Votes — Yes: ${data.yes}, No: ${data.no}`;
+        } else {
+          document.getElementById("poll-status").textContent = "❌ Failed to record vote.";
+        }
+      } catch (err) {
+        console.error("Vote error:", err);
+        document.getElementById("poll-status").textContent = "❌ Error submitting vote.";
+      }
     }
 
     window.onload = loadDashboard;
