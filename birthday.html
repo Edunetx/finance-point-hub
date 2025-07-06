@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Birthday Wall | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: white;
+      color: #fff;
       padding: 2rem;
     }
 
@@ -20,40 +21,34 @@
       margin-bottom: 2rem;
     }
 
-    .birthday-list {
-      display: flex;
-      flex-wrap: wrap;
+    .wish-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
-      justify-content: center;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.05);
+    .wish-card {
+      background: rgba(255, 255, 255, 0.08);
       padding: 1.5rem;
       border-radius: 1rem;
-      width: 280px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(5px);
     }
 
-    .card h2 {
+    .wish-card h3 {
       color: #ffd700;
       margin-bottom: 0.5rem;
     }
 
-    .card p {
+    .wish-card p {
       color: #ddd;
-      margin: 0.25rem 0;
-    }
-
-    .card small {
-      color: #aaa;
-      font-size: 12px;
     }
 
     footer {
-      margin-top: 40px;
       text-align: center;
+      margin-top: 3rem;
       color: #bbb;
       font-size: 14px;
     }
@@ -61,45 +56,47 @@
 </head>
 <body>
   <h1>🎉 Birthday Wall</h1>
-  <div class="birthday-list" id="birthdayList">
-    <!-- Birthday cards will appear here -->
+  <div class="wish-container" id="wishList">
+    <p>Loading wishes...</p>
   </div>
 
-  <footer>&copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA</footer>
+  <footer>
+    &copy; 2025 Finance Point • Created by OBA
+  </footer>
 
   <script>
-    const birthdayAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
+    const API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
 
-    async function loadBirthdays() {
+    async function loadWishes() {
       try {
-        const res = await fetch(birthdayAPI);
-        const data = await res.json();
-        const list = document.getElementById("birthdayList");
-        list.innerHTML = "";
+        const res = await fetch(API);
+        const wishes = await res.json();
 
-        if (data.length === 0) {
-          list.innerHTML = "<p>No birthdays added yet 🎂</p>";
+        const list = document.getElementById('wishList');
+        list.innerHTML = '';
+
+        if (wishes.length === 0) {
+          list.innerHTML = '<p>No birthday wishes yet.</p>';
           return;
         }
 
-        data.reverse().forEach(b => {
-          const card = document.createElement("div");
-          card.className = "card";
+        wishes.forEach(wish => {
+          const card = document.createElement('div');
+          card.className = 'wish-card';
           card.innerHTML = `
-            <h2>${b.name}</h2>
-            <p><strong>DOB:</strong> ${b.date}</p>
-            ${b.message ? `<p><em>“${b.message}”</em></p>` : ""}
-            <small>Added: ${b.addedOn}</small>
+            <h3>${wish.name}</h3>
+            <p>${wish.message}</p>
           `;
           list.appendChild(card);
         });
-      } catch (err) {
-        console.error("Failed to load birthdays", err);
-        document.getElementById("birthdayList").innerHTML = "<p>Error loading data 😔</p>";
+
+      } catch (error) {
+        document.getElementById('wishList').innerHTML = '<p>Failed to load wishes.</p>';
+        console.error(error);
       }
     }
 
-    loadBirthdays();
+    loadWishes();
   </script>
 </body>
 </html>
