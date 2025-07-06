@@ -1,1 +1,205 @@
-<!DOCTYPE html><html><head><title>Admin</title></head><body><h2>Admin Panel</h2></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      display: flex; min-height: 100vh;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 20px 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar h2 {
+      font-family: 'Merriweather', serif;
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffd700;
+    }
+
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      color: #ccc; text-decoration: none;
+      padding: 12px 20px; margin: 8px 0;
+      border-radius: 5px; transition: 0.3s;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background: #ffd700; color: #000; font-weight: bold;
+    }
+
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      color: #ffd700;
+      font-weight: 600;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #ffd700;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #ffd700;
+    }
+
+    .tool {
+      margin-bottom: 18px;
+    }
+
+    .tool h3 {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .tool p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    #admin-content {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 15px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> User Dashboard</a>
+    <a href="admin.html" class="active"><i class="fas fa-tools"></i> Admin Tools</a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i> Manage Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar-check"></i> Post Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> Post News</a>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <div class="main" id="admin-content">
+    <div class="topbar">
+      <h1>Admin Dashboard – OBA (PRO)</h1>
+      <i class="fas fa-bars hamburger" onclick="toggleSidebar()"></i>
+    </div>
+
+    <div class="section">
+      <h2>Administrative Tools</h2>
+
+      <div class="tool">
+        <h3>👤 Manage Users</h3>
+        <p>View registered users, approve access, or revoke roles. Useful for controlling who posts comments or downloads files.</p>
+      </div>
+
+      <div class="tool">
+        <h3>📢 Post News or Alerts</h3>
+        <p>Create and share official updates that appear on the News section of the site. Include titles, messages, and tags.</p>
+      </div>
+
+      <div class="tool">
+        <h3>📁 Upload Downloads</h3>
+        <p>Upload and organize PDF handouts, past questions, or forms for the student portal. Ensure accurate labels.</p>
+      </div>
+
+      <div class="tool">
+        <h3>📅 Schedule Events</h3>
+        <p>Publish upcoming finance events like debates, orientations, or general meetings to appear under Events.</p>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 Finance Point • Admin Panel • Created by OBA
+    </footer>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    // Admin access prompt
+    const pass = prompt("Enter Admin Passcode:");
+    const adminPassword = "OBAOFAAUA";
+
+    if (pass === adminPassword) {
+      document.getElementById("admin-content").style.display = "block";
+    } else {
+      alert("Access Denied. You are not an admin.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
