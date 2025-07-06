@@ -1,121 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Downloads | Finance Point</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
-      padding: 2rem;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
-    }
+      padding: 2rem;
+    }h1 {
+  text-align: center;
+  color: #ffd700;
+  margin-bottom: 2rem;
+}
 
-    h1 {
-      text-align: center;
-      color: #ffd700;
-      margin-bottom: 1.5rem;
-    }
+.downloads-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
 
-    .download-container {
-      max-width: 900px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
+.download-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  backdrop-filter: blur(5px);
+  text-align: center;
+}
 
-    .download-card {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      backdrop-filter: blur(6px);
-    }
+.download-card h3 {
+  color: #ffd700;
+  margin-bottom: 0.5rem;
+}
 
-    .download-card h3 {
-      color: #ffd700;
-      font-size: 18px;
-      margin-bottom: 0.5rem;
-    }
+.download-card a {
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #ffd700;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
 
-    .download-card p {
-      color: #ccc;
-      font-size: 14px;
-      margin-bottom: 1rem;
-    }
+.download-card a:hover {
+  background: #ffd700;
+  color: #000;
+}
 
-    .download-card a {
-      display: inline-block;
-      text-decoration: none;
-      background: #ffd700;
-      color: #000;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: 0.3s;
-    }
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  color: #bbb;
+  font-size: 14px;
+}
 
-    .download-card a:hover {
-      background: #fff;
-      color: #000;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 14px;
-      color: #aaa;
-    }
   </style>
 </head>
 <body>
-  <h1>📚 Study Downloads</h1>
-  <div class="download-container" id="downloads">
-    <p>Loading materials...</p>
-  </div>
-
-  <footer>
+  <h1>📥 Finance Downloads</h1>
+  <div class="downloads-container">
+    <div class="download-card">
+      <h3>Introduction to Financial Accounting</h3>
+      <a href="/mnt/data/finance_materials/introduction_to_financial_accounting.txt" download>Download</a>
+    </div>
+    <div class="download-card">
+      <h3>Principles of Corporate Finance</h3>
+      <a href="/mnt/data/finance_materials/principles_of_corporate_finance.txt" download>Download</a>
+    </div>
+    <div class="download-card">
+      <h3>Central Bank and Monetary Policy</h3>
+      <a href="/mnt/data/finance_materials/central_bank_and_monetary_policy_in_nigeria.txt" download>Download</a>
+    </div>
+    <div class="download-card">
+      <h3>Personal Finance for Students</h3>
+      <a href="/mnt/data/finance_materials/personal_finance_for_students.txt" download>Download</a>
+    </div>
+  </div>  <footer>
     &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
   </footer>
-
-  <script>
-    const API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a";
-
-    async function loadDownloads() {
-      try {
-        const res = await fetch(API);
-        const items = await res.json();
-
-        const container = document.getElementById('downloads');
-        container.innerHTML = '';
-
-        if (!items || items.length === 0) {
-          container.innerHTML = '<p>No materials available at the moment.</p>';
-          return;
-        }
-
-        items.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'download-card';
-          card.innerHTML = `
-            <h3>${item.title || 'Untitled Material'}</h3>
-            <p>${item.description || 'No description provided.'}</p>
-            <a href="${item.link}" target="_blank">Download</a>
-          `;
-          container.appendChild(card);
-        });
-      } catch (err) {
-        document.getElementById('downloads').innerHTML = '<p>Failed to load materials.</p>';
-        console.error(err);
-      }
-    }
-
-    loadDownloads();
-  </script>
 </body>
 </html>
