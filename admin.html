@@ -1,102 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Tools - Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finance Point Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #111827;
-      color: white;
-      padding: 2rem;
-    }
-    h1 {
-      color: #00B386;
-    }
-    form {
-      background: #1f2937;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      max-width: 600px;
-      margin-top: 1rem;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-    }
-    input[type="text"], textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      border-radius: 0.5rem;
-      border: none;
-      font-size: 1rem;
-    }
-    button {
-      margin-top: 1.5rem;
-      background-color: #00B386;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .status {
-      margin-top: 1rem;
-    }
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }header {
+  background-color: #1f1f2e;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+  color: #FFD700;
+}
+
+header p {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.card {
+  background-color: #1e1e2f;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  font-family: 'Poppins', sans-serif;
+  margin-top: 0;
+  color: #00B386;
+}
+
+.card p {
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+footer {
+  background-color: #1f1f2e;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #333;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.footer-nav a {
+  color: #00B386;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+}
+
   </style>
-</head>
-<body>
-  <h1>📊 Update Dashboard Content</h1>
-  <form id="dashboardForm">
-    <label for="fact">💡 Finance Fact</label>
-    <textarea id="fact" rows="2" required></textarea>
-
-    <label for="news">📰 Campus News</label>
-    <textarea id="news" rows="2" required></textarea>
-
-    <label for="tip">🎓 Academic Tip</label>
-    <textarea id="tip" rows="2" required></textarea>
-
-    <button type="submit">Save to Dashboard</button>
-    <div class="status" id="status"></div>
-  </form>
-
   <script>
-    const form = document.getElementById("dashboardForm");
-    const statusDiv = document.getElementById("status");
-    const storageKey = "90fa2454-0bd6-4a1d-bd2c-37decc2aab4a";
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const fact = document.getElementById("fact").value.trim();
-      const news = document.getElementById("news").value.trim();
-      const tip = document.getElementById("tip").value.trim();
-
-      const payload = { fact, news, tip };
-      statusDiv.textContent = "Saving...";
-
+    async function loadDashboard() {
       try {
-        const res = await fetch(`https://api.jsonstorage.net/v1/json/${storageKey}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (res.ok) {
-          statusDiv.textContent = "✅ Dashboard updated successfully!";
-        } else {
-          statusDiv.textContent = "❌ Failed to update dashboard.";
-        }
-      } catch (err) {
-        console.error(err);
-        statusDiv.textContent = "❌ Error occurred while saving.";
+        const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
+        const data = await res.json();
+        document.getElementById("fact").textContent = data.fact;
+        document.getElementById("news").textContent = data.news;
+        document.getElementById("tip").textContent = data.tip;
+      } catch (e) {
+        console.error("Error loading dashboard info:", e);
       }
-    });
+    }
+    window.onload = loadDashboard;
   </script>
-</body>
+</head>
+<body>  <header>
+    <h1>Hello there! 👋</h1>
+    <p>Welcome to Finance Point — Stay updated, stay inspired!</p>
+  </header>  <main class="container">
+    <div class="card">
+      <h2>📢 Announcements</h2>
+      <p>All 200 level students are reminded of the upcoming test on Friday.<br>📍 Venue: LT1 <br>⏰ Time: 10am</p>
+    </div><div class="card">
+  <h2>👨‍💼 Executives</h2>
+  <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
+</div>
+
+<div class="card">
+  <h2>📆 Events</h2>
+  <p>📌 Finance Summit 2025<br>📅 July 15th, 2025<br>🏛️ New Auditorium</p>
+</div>
+
+<div class="card">
+  <h2>💡 Finance Fact</h2>
+  <p id="fact">Loading...</p>
+</div>
+
+<div class="card">
+  <h2>📰 Campus News</h2>
+  <p id="news">Loading...</p>
+</div>
+
+<div class="card">
+  <h2>🎓 Academic Tip</h2>
+  <p id="tip">Loading...</p>
+</div>
+
+  </main>  <footer>
+    <strong>Quick Navigation</strong>
+    <div class="footer-nav">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="executives.html">👥 Executives</a>
+      <a href="announcements.html">📢 Announcements</a>
+      <a href="events.html">📅 Events</a>
+      <a href="downloads.html">📥 Downloads</a>
+      <a href="contact.html">📞 Contact</a>
+    </div>
+    <p style="margin-top:1rem; color: #888">© 2025 Finance Point. Created by OBA</p>
+  </footer></body>
 </html>
