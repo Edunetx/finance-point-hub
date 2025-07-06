@@ -1,130 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point – Executives</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Executives – Finance Point</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
       background-color: #121212;
-      color: #fff;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
     }
-    header {
-      background-color: #1f1f1f;
-      padding: 1rem 2rem;
+    h2 {
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
       color: #4caf50;
+      margin-bottom: 2rem;
     }
     .executives-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem;
-      padding: 2rem;
     }
-    .executive-card {
-      background-color: #1e1e1e;
-      border-radius: 12px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-      transition: transform 0.3s ease;
-    }
-    .executive-card:hover {
-      transform: scale(1.05);
-    }
-    .executive-card img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid #4caf50;
-      margin-bottom: 0.8rem;
-    }
-    .executive-card h3 {
-      margin: 0;
-      font-size: 1rem;
-      color: #fff;
-    }
-    footer {
+    .card {
       background-color: #1f1f1f;
-      text-align: center;
       padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,0,0.1);
+      text-align: center;
+    }
+    .card strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+    .card em {
       color: #aaa;
-      font-size: 0.9rem;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Finance Point Executives</h1>
-</header>
+  <h2>Current Executives</h2>
+  <div class="executives-container" id="executives"></div>
 
-<section class="executives-container">
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="001">
-    <h3>001 – President</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="002">
-    <h3>002 – Vice President</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="003">
-    <h3>003 – General Secretary</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/oba.jpg" alt="004">
-    <h3>004 – OBA (P.R.O)</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="005">
-    <h3>005 – Financial Secretary</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="006">
-    <h3>006 – Treasurer</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="007">
-    <h3>007 – Welfare Director</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="008">
-    <h3>008 – Social Director</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="009">
-    <h3>009 – Sport Director</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="010">
-    <h3>010 – Assistant Gen. Secretary</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="011">
-    <h3>011 – Librarian</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="012">
-    <h3>012 – SUG SRC</h3>
-  </div>
-  <div class="executive-card">
-    <img src="images/placeholder.jpg" alt="013">
-    <h3>013 – Famassa SRC</h3>
-  </div>
-</section>
+  <script>
+    const apiUrl = "https://api.jsonstorage.net/v1/json/8ac792c2-84c9-4907-b0fc-6f0d74c76c69/0a1bb88b-1039-4b8e-83f5-48e8477c2c3e";
 
-<footer>
-  &copy; 2025 Finance Point. All rights reserved.
-</footer>
+    async function loadExecutives() {
+      try {
+        const res = await fetch(apiUrl);
+        const execs = await res.json();
+        const container = document.getElementById("executives");
+        container.innerHTML = "";
+
+        execs.forEach(exec => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <strong>${exec.code} – ${exec.name}</strong>
+            <em>${exec.position}</em>
+          `;
+          container.appendChild(card);
+        });
+      } catch (e) {
+        document.getElementById("executives").innerHTML = "<p>Error loading executives. Please try again later.</p>";
+      }
+    }
+
+    loadExecutives();
+  </script>
 
 </body>
 </html>
