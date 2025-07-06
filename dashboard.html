@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #2b5876, #4e4376);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff5e62;
+      border: none;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+  </style>
+  <script type="module">
+    import { supabase } from './supabase.js';
+    document.addEventListener("DOMContentLoaded", async () => {
+      const {{ data: {{ user }} }} = await supabase.auth.getUser();
+      if (!user) {{
+        window.location.href = "login.html";
+      }} else {{
+        document.getElementById("userEmail").textContent = user.email;
+      }}
+    });
+    async function logout() {{
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    }}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, <span id="userEmail">Loading...</span></h2>
+    <button onclick="logout()">Logout</button>
+  </div>
+</body>
+</html>
