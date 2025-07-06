@@ -4,235 +4,225 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #121212;
-      color: white;
+      font-family: 'Poppins', sans-serif;
+      background: #111;
+      color: #fff;
       padding: 2rem;
     }
+
     h1 {
-      color: #00B386;
-    }
-    .section {
-      background-color: #1f1f2e;
-      padding: 1.5rem;
-      border-radius: 1rem;
+      color: #ffd700;
+      text-align: center;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
+
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
     .section h2 {
-      color: #00B386;
-      margin-top: 0;
-    }
-    label, input, textarea, button {
-      display: block;
-      width: 100%;
+      color: #ffd700;
       margin-bottom: 1rem;
     }
-    input, textarea {
-      padding: 0.75rem;
-      background: #121212;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 0.5rem;
-    }
-    button {
-      background-color: #00B386;
-      border: none;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      color: white;
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
       font-weight: 600;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
-    .pending-item {
-      background: #222;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid #00B386;
-      border-radius: 8px;
+
+    .hidden {
+      display: none;
     }
-    .pending-item h4 {
-      margin: 0 0 0.5rem;
-      color: #ffd700;
-    }
-    .pending-item button {
-      margin-right: 1rem;
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>🛠️ Admin Panel - Finance Point</h1>
-
-  <div class="section">
-    <h2>📢 Post Announcement</h2>
-    <label>Title:</label>
-    <input type="text" id="announcementTitle">
-    <label>Message:</label>
-    <textarea id="announcementBody"></textarea>
-    <button onclick="postAnnouncement()">Post Announcement</button>
+  <div id="login">
+    <h1>🔐 Admin Login</h1>
+    <input type="password" id="adminPass" placeholder="Enter Admin Password" />
+    <button onclick="checkPassword()">Enter Panel</button>
+    <p id="wrongPass" style="color: red; display: none;">Wrong password. Try again.</p>
   </div>
 
-  <div class="section">
-    <h2>👥 Add Executive</h2>
-    <label>Name:</label>
-    <input type="text" id="execName">
-    <label>Role:</label>
-    <input type="text" id="execRole">
-    <button onclick="addExecutive()">Add Executive</button>
+  <div id="adminPanel" class="hidden">
+    <h1>⚙️ Finance Point Admin Tools</h1>
+
+    <div class="section">
+      <h2>📢 Post Announcement</h2>
+      <label>Title</label>
+      <input id="annTitle" />
+      <label>Message</label>
+      <textarea id="annMsg"></textarea>
+      <button onclick="submitTo('announcement')">Submit</button>
+    </div>
+
+    <div class="section">
+      <h2>🎓 Add Executive</h2>
+      <label>Name</label>
+      <input id="execName" />
+      <label>Position</label>
+      <input id="execPos" />
+      <button onclick="submitTo('executive')">Submit</button>
+    </div>
+
+    <div class="section">
+      <h2>📅 Post Event</h2>
+      <label>Event Title</label>
+      <input id="eventTitle" />
+      <label>Description</label>
+      <textarea id="eventDesc"></textarea>
+      <button onclick="submitTo('event')">Submit</button>
+    </div>
+
+    <div class="section">
+      <h2>📚 Add Study Resource</h2>
+      <label>Material Title</label>
+      <input id="studyTitle" />
+      <label>Description</label>
+      <textarea id="studyDesc"></textarea>
+      <label>Link</label>
+      <input id="studyLink" />
+      <button onclick="submitTo('study')">Submit</button>
+    </div>
+
+    <div class="section">
+      <h2>🎉 Post Birthday Wish</h2>
+      <label>Name</label>
+      <input id="wishName" />
+      <label>Message</label>
+      <textarea id="wishMsg"></textarea>
+      <label>Photo URL (optional)</label>
+      <input id="wishPhoto" />
+      <button onclick="submitTo('birthday')">Submit</button>
+    </div>
+
+    <div class="section">
+      <h2>🔎 Approve Lost & Found</h2>
+      <label>Item Name</label>
+      <input id="foundName" />
+      <label>Details</label>
+      <textarea id="foundDetail"></textarea>
+      <label>Contact</label>
+      <input id="foundContact" />
+      <button onclick="submitTo('lostfound')">Approve & Post</button>
+    </div>
   </div>
 
-  <div class="section">
-    <h2>📅 Add Event</h2>
-    <label>Event Title:</label>
-    <input type="text" id="eventTitle">
-    <label>Date:</label>
-    <input type="text" id="eventDate">
-    <label>Location:</label>
-    <input type="text" id="eventLocation">
-    <button onclick="addEvent()">Add Event</button>
-  </div>
-
-  <div class="section">
-    <h2>🎂 Add Birthday Wish</h2>
-    <label>Name:</label>
-    <input type="text" id="bdayName">
-    <label>Message:</label>
-    <textarea id="bdayMsg"></textarea>
-    <label>Image URL (optional):</label>
-    <input type="text" id="bdayImage">
-    <button onclick="addBirthday()">Add Birthday</button>
-  </div>
-
-  <div class="section">
-    <h2>📘 Upload Finance Material</h2>
-    <label>Material Title:</label>
-    <input type="text" id="materialTitle">
-    <label>Download Link:</label>
-    <input type="text" id="materialLink">
-    <button onclick="addMaterial()">Add Material</button>
-  </div>
-
-  <div class="section">
-    <h2>🧾 Pending Lost & Found Submissions</h2>
-    <div id="pendingContainer"><p>Loading...</p></div>
-  </div>
+  <footer>&copy; 2025 Finance Point • Created by OBA</footer>
 
   <script>
-    const ANNOUNCE_API = "https://api.jsonstorage.net/v1/json/..."; // Replace if ready
-    const EXEC_API = "https://api.jsonstorage.net/v1/json/...";     // Replace if ready
-    const EVENT_API = "https://api.jsonstorage.net/v1/json/...";    // Replace if ready
-    const BDAY_API = "https://api.jsonstorage.net/v1/json/...";     // Replace if ready
-    const MATERIAL_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a";
-    const LOSTFOUND_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d";
-    const LOSTFOUND_PENDING_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+    const pass = "OBA IS THE KING";
 
-    async function fetchPending() {
-      const container = document.getElementById("pendingContainer");
-      try {
-        const res = await fetch(LOSTFOUND_PENDING_API);
-        let pending = await res.json();
-        if (!pending.length) {
-          container.innerHTML = '<p>No pending items.</p>';
-          return;
-        }
-        container.innerHTML = "";
-        pending.forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "pending-item";
-          div.innerHTML = `
-            <h4>${item.item}</h4>
-            <p><strong>By:</strong> ${item.name}</p>
-            <p>${item.desc}</p>
-            <button onclick="approveItem(${index})">Approve</button>
-            <button onclick="rejectItem(${index})">Reject</button>
-          `;
-          container.appendChild(div);
+    function checkPassword() {
+      const input = document.getElementById("adminPass").value;
+      if (input.trim() === pass) {
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("adminPanel").classList.remove("hidden");
+      } else {
+        document.getElementById("wrongPass").style.display = "block";
+      }
+    }
+
+    function submitTo(type) {
+      let data = {};
+      const urls = {
+        announcement: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
+        executive: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
+        event: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/...",
+        study: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a",
+        birthday: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554",
+        lostfound: "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d"
+      };
+
+      switch (type) {
+        case 'announcement':
+          data = {
+            title: document.getElementById("annTitle").value,
+            message: document.getElementById("annMsg").value
+          };
+          break;
+        case 'executive':
+          data = {
+            name: document.getElementById("execName").value,
+            position: document.getElementById("execPos").value
+          };
+          break;
+        case 'event':
+          data = {
+            title: document.getElementById("eventTitle").value,
+            description: document.getElementById("eventDesc").value
+          };
+          break;
+        case 'study':
+          data = {
+            title: document.getElementById("studyTitle").value,
+            description: document.getElementById("studyDesc").value,
+            link: document.getElementById("studyLink").value
+          };
+          break;
+        case 'birthday':
+          data = {
+            name: document.getElementById("wishName").value,
+            message: document.getElementById("wishMsg").value,
+            photo: document.getElementById("wishPhoto").value
+          };
+          break;
+        case 'lostfound':
+          data = {
+            item: document.getElementById("foundName").value,
+            detail: document.getElementById("foundDetail").value,
+            contact: document.getElementById("foundContact").value
+          };
+          break;
+      }
+
+      fetch(urls[type])
+        .then(res => res.json())
+        .then(existing => {
+          const updated = Array.isArray(existing) ? [...existing, data] : [data];
+          return fetch(urls[type], {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updated)
+          });
+        })
+        .then(() => alert("✅ Submitted successfully!"))
+        .catch(err => {
+          console.error(err);
+          alert("❌ Error submitting data.");
         });
-      } catch (e) {
-        container.innerHTML = '<p>Error loading pending items.</p>';
-      }
     }
-
-    async function approveItem(index) {
-      const pending = await (await fetch(LOSTFOUND_PENDING_API)).json();
-      const approved = await (await fetch(LOSTFOUND_API)).json();
-      approved.push(pending[index]);
-      pending.splice(index, 1);
-      await fetch(LOSTFOUND_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(approved)
-      });
-      await fetch(LOSTFOUND_PENDING_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pending)
-      });
-      fetchPending();
-    }
-
-    async function rejectItem(index) {
-      const pending = await (await fetch(LOSTFOUND_PENDING_API)).json();
-      pending.splice(index, 1);
-      await fetch(LOSTFOUND_PENDING_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pending)
-      });
-      fetchPending();
-    }
-
-    async function addMaterial() {
-      const title = document.getElementById('materialTitle').value.trim();
-      const link = document.getElementById('materialLink').value.trim();
-
-      if (!title || !link) {
-        alert("Please enter both title and download link.");
-        return;
-      }
-
-      try {
-        const res = await fetch(MATERIAL_API);
-        const materials = await res.json();
-
-        materials.push({ name: title, url: link });
-
-        await fetch(MATERIAL_API, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(materials)
-        });
-
-        alert("✅ Material added successfully!");
-        document.getElementById('materialTitle').value = "";
-        document.getElementById('materialLink').value = "";
-      } catch (err) {
-        alert("❌ Failed to add material.");
-        console.error(err);
-      }
-    }
-
-    function postAnnouncement() {
-      alert("📢 Announcement Posted (simulation)");
-    }
-
-    function addExecutive() {
-      alert("👤 Executive Added (simulation)");
-    }
-
-    function addEvent() {
-      alert("📅 Event Added (simulation)");
-    }
-
-    function addBirthday() {
-      alert("🎂 Birthday Added (simulation)");
-    }
-
-    fetchPending();
   </script>
 </body>
 </html>
