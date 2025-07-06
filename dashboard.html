@@ -153,13 +153,17 @@ footer {
 </div>
 
 <div class="card">
-  <h2><i class="fas fa-lightbulb"></i> Finance Fact</h2>
-  <p id="fact">Loading...</p>
+  <h2><i class="fas fa-lightbulb"></i> Finance Facts</h2>
+  <p>1️⃣ The Rule of 72: Divide 72 by your interest rate to estimate how long it will take your money to double.</p>
+  <p>2️⃣ Credit cards often charge interest rates over 20% — understanding APR can save you money.</p>
+  <p>3️⃣ Saving just ₦100 a day adds up to over ₦36,000 a year — small habits matter.</p>
 </div>
 
 <div class="card">
-  <h2><i class="fas fa-graduation-cap"></i> Academic Tip</h2>
-  <p id="tip">Loading...</p>
+  <h2><i class="fas fa-graduation-cap"></i> Academic Tips</h2>
+  <p>📌 Study in short focused intervals — the Pomodoro technique (25 min study, 5 min break) helps retention.</p>
+  <p>📌 Don’t just memorize, try teaching the topic to someone — it boosts understanding.</p>
+  <p>📌 Use past questions often — they help reveal patterns and boost confidence before exams.</p>
 </div>
 
 <div class="card">
@@ -171,17 +175,6 @@ footer {
   &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
 </footer>
 
-  </div>  <script>
-    async function loadDashboard() {
-      try {
-        const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
-        const data = await res.json();
-        document.getElementById("fact").textContent = data.fact;
-        document.getElementById("tip").textContent = data.tip;
-      } catch (e) {
-        console.error("Error loading dashboard info:", e);
-      }
-    }
-    window.onload = loadDashboard;
-  </script></body>
+  </div>
+</body>
 </html>
