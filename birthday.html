@@ -35,6 +35,16 @@
       border-radius: 1rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       backdrop-filter: blur(5px);
+      text-align: center;
+    }
+
+    .wish-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 2px solid #ffd700;
     }
 
     .wish-card h3 {
@@ -70,20 +80,40 @@
     async function loadWishes() {
       try {
         const res = await fetch(API);
-        const wishes = await res.json();
+        const data = await res.json();
+        const now = new Date();
+        const validWishes = [];
+
+        const filtered = data.filter(wish => {
+          const postedAt = new Date(wish.timestamp);
+          const timePassed = (now - postedAt) / (1000 * 60 * 60); // hours
+          if (timePassed < 24) {
+            validWishes.push(wish);
+            return true;
+          }
+          return false;
+        });
+
+        // Update backend to remove expired wishes
+        await fetch(API, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(validWishes)
+        });
 
         const list = document.getElementById('wishList');
         list.innerHTML = '';
 
-        if (wishes.length === 0) {
+        if (filtered.length === 0) {
           list.innerHTML = '<p>No birthday wishes yet.</p>';
           return;
         }
 
-        wishes.forEach(wish => {
+        filtered.forEach(wish => {
           const card = document.createElement('div');
           card.className = 'wish-card';
           card.innerHTML = `
+            ${wish.image ? `<img src="${wish.image}" alt="${wish.name}">` : ''}
             <h3>${wish.name}</h3>
             <p>${wish.message}</p>
           `;
