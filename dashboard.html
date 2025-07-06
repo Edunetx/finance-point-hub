@@ -1,127 +1,176 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard | Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap"
+    rel="stylesheet"
+  />
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
-    }body {
-  min-height: 100vh;
-  background: #0e0e0e url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif') no-repeat center center fixed;
-  background-size: cover;
-  color: #fff;
-  display: flex;
-}
+    }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px 10px;
-  z-index: 10;
-}
+    body {
+      min-height: 100vh;
+      background: #0e0e0e
+        url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif')
+        no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      overflow-x: hidden;
+    }
 
-.sidebar h2 {
-  color: #ffd700;
-  text-align: center;
-  font-size: 22px;
-  margin-bottom: 30px;
-}
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 10px;
+      z-index: 10;
+      overflow-y: auto;
+    }
 
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ccc;
-  text-decoration: none;
-  padding: 12px 20px;
-  margin: 8px 0;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
+    .sidebar h2 {
+      color: #ffd700;
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
 
-.sidebar a:hover, .sidebar a.active {
-  background: #ffd700;
-  color: #000;
-  font-weight: bold;
-}
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border-radius: 5px;
+      transition: background 0.3s;
+      font-weight: 500;
+    }
 
-.main {
-  margin-left: 220px;
-  padding: 2rem;
-  flex: 1;
-}
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: #ffd700;
+      color: #000;
+      font-weight: 700;
+    }
 
-.main h1 {
-  color: #ffd700;
-  font-size: 28px;
-  margin-bottom: 1.5rem;
-}
+    .main {
+      margin-left: 220px;
+      padding: 2rem;
+      flex: 1;
+      overflow-y: auto;
+    }
 
-.search-bar {
-  margin-bottom: 20px;
-}
+    .header {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
 
-.search-bar input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-}
+    .header h1 {
+      font-size: 24px;
+      color: #ffd700;
+      font-weight: 600;
+    }
 
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
+    .quick-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 20px 0;
+    }
 
-.feature {
-  background: rgba(255,255,255,0.08);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  transition: 0.3s;
-}
+    .quick-nav a {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.2rem;
+      border-radius: 12px;
+      text-align: center;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
-.feature:hover {
-  background: #ffd700;
-  color: #000;
-}
+    .quick-nav a:hover {
+      background: #ffd700;
+      color: #000;
+    }
 
-.feature a {
-  color: inherit;
-  text-decoration: none;
-  font-weight: 600;
-}
+    .quick-nav a i {
+      font-size: 2rem;
+    }
 
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-  .main {
-    margin-left: 0;
-    padding: 1rem;
-  }
-}
+    .facts,
+    .notifications {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
 
+    .facts h2,
+    .notifications h2 {
+      color: #ffd700;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .facts ul,
+    .notifications ul {
+      list-style: disc;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      .quick-nav {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+      .quick-nav a i {
+        font-size: 1.6rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="sidebar">
     <h2>Finance Point</h2>
-    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="dashboard.html" class="active"
+      ><i class="fas fa-home"></i> Dashboard</a
+    >
+    <a href="downloads.html"
+      ><i class="fas fa-file-download"></i> Downloads</a
+    >
     <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
     <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
     <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
@@ -129,29 +178,61 @@
     <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
     <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>  <div class="main">
-    <h1>👋 Welcome to the Finance Point Dashboard</h1>
-    <div class="search-bar">
-      <input type="text" placeholder="Search features..." oninput="searchFeatures(this.value)" />
-    </div><div class="features" id="featureList">
-  <div class="feature"><a href="downloads.html">📥 Downloads</a></div>
-  <div class="feature"><a href="events.html">📅 Events</a></div>
-  <div class="feature"><a href="news.html">📢 News</a></div>
-  <div class="feature"><a href="executives.html">👥 Executives</a></div>
-  <div class="feature"><a href="lostandfound.html">🔍 Lost & Found</a></div>
-  <div class="feature"><a href="birthday.html">🎉 Birthday Wall</a></div>
-  <div class="feature"><a href="study.html">📚 Study Resources</a></div>
-  <div class="feature"><a href="contact.html">📞 Contact</a></div>
-</div>
+  </div>
 
-  </div>  <script>
-    function searchFeatures(keyword) {
-      keyword = keyword.toLowerCase();
-      const items = document.querySelectorAll('.feature');
-      items.forEach(item => {
-        const text = item.innerText.toLowerCase();
-        item.style.display = text.includes(keyword) ? 'block' : 'none';
-      });
-    }
-  </script></body>
+  <div class="main">
+    <div class="header">
+      <h1>👋 Welcome to the Finance Point Dashboard</h1>
+    </div>
+
+    <div class="quick-nav">
+      <a href="downloads.html">
+        <i class="fas fa-file-download"></i>
+        Downloads
+      </a>
+      <a href="events.html">
+        <i class="fas fa-calendar"></i>
+        Events
+      </a>
+      <a href="news.html">
+        <i class="fas fa-bullhorn"></i>
+        News
+      </a>
+      <a href="executives.html">
+        <i class="fas fa-users"></i>
+        Executives
+      </a>
+      <a href="lostandfound.html">
+        <i class="fas fa-search"></i>
+        Lost & Found
+      </a>
+      <a href="birthday.html">
+        <i class="fas fa-birthday-cake"></i>
+        Birthday Wall
+      </a>
+      <a href="study.html">
+        <i class="fas fa-book"></i>
+        Study Resources
+      </a>
+    </div>
+
+    <div class="facts">
+      <h2>💡 Finance Facts</h2>
+      <ul>
+        <li>CBN regulates Nigeria’s monetary policy using tools like MPR, CRR, and liquidity ratio.</li>
+        <li>First Bank Nigeria was established in 1894 as the Bank of British West Africa.</li>
+        <li>Capital budgeting helps determine the viability of long-term financial investments.</li>
+      </ul>
+    </div>
+
+    <div class="notifications">
+      <h2>📚 Academic Tips</h2>
+      <ul>
+        <li>Always revise your lecture notes within 24 hours to improve retention.</li>
+        <li>Use color-coded flashcards for definitions and concepts.</li>
+        <li>Join a study group to discuss and simplify tough topics like finance law.</li>
+      </ul>
+    </div>
+  </div>
+</body>
 </html>
