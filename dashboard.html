@@ -1,82 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard | Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finance Point Dashboard</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #2b5876, #4e4376);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
-    .container {
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 20px 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-family: 'Merriweather', serif;
+      font-size: 22px;
       text-align: center;
-      background-color: #ffffff20;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 10px #00000040;
-      width: 90%;
-      max-width: 400px;
+      margin-bottom: 30px;
+      color: #ffd700;
     }
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+      transition: 0.3s;
     }
-    #userEmail {
+
+    .sidebar a:hover {
+      background: #ffd700;
+      color: #000;
+    }
+
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 20px;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      color: #ffd700;
       font-weight: 600;
-      color: #fffd9b;
     }
-    button {
-      margin-top: 1.5rem;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #ff5e62;
-      border: none;
-      color: white;
-      border-radius: 0.5rem;
-      cursor: pointer;
+
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
-  </style>
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const supabase = createClient(
-      "https://edunetx.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbGFmbWFycnl0aXhqZ2Vma2hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3NzM3OTksImV4cCI6MjA2NzM0OTc5OX0.baDfihnD_fstSU7MkdAIiVSQKmTbrX3HvSuRKZs5bIA"
-    );
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
 
-    async function checkAuth() {
-      const { data: { user } } = await supabase.auth.getUser();
+    .section p {
+      font-size: 14px;
+      color: #eee;
+      line-height: 1.6;
+    }
 
-      if (!user) {
-        window.location.href = "login.html";
-      } else {
-        document.getElementById("userEmail").textContent = user.email;
+    footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 15px;
+      }
+
+      .topbar h1 {
+        font-size: 18px;
       }
     }
-
-    async function logout() {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      checkAuth();
-      document.getElementById("logoutBtn").addEventListener("click", logout);
-    });
-  </script>
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Welcome, <span id="userEmail">loading...</span> 👋</h2>
-    <p>You are now logged into Finance Point.</p>
-    <button id="logoutBtn">Logout</button>
+  <div class="sidebar">
+    <h2>Finance Point</h2>
+    <a href="#"><i class="fas fa-calendar-alt"></i> Events</a>
+    <a href="#"><i class="fas fa-newspaper"></i> News</a>
+    <a href="#"><i class="fas fa-download"></i> Downloads</a>
+    <a href="#"><i class="fas fa-users"></i> Meet Executives</a>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Welcome, OBA (PRO)</h1>
+    </div>
+
+    <div class="section">
+      <h2>Dashboard Overview</h2>
+      <p>This is your official departmental dashboard for AAUA Finance students. Use the sidebar to navigate through the site and manage information. More updates coming soon to keep you connected and informed.</p>
+    </div>
+
+    <footer>
+      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
+    </footer>
   </div>
 </body>
 </html>
