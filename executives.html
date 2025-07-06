@@ -3,236 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Executives | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Finance Point – Executives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
-      display: flex;
-      min-height: 100vh;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
       color: #fff;
     }
-
-    .sidebar {
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
-
-    .sidebar h2 {
-      font-family: 'Merriweather', serif;
-      font-size: 22px;
+    header {
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
       text-align: center;
-      margin-bottom: 30px;
-      color: #ffd700;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
     }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #4caf50;
     }
-
-    .sidebar a:hover, .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .main {
-      margin-left: 220px;
-      flex: 1;
-      padding: 20px;
-    }
-
-    .topbar {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .topbar h1 {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .exec-grid {
+    .executives-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+      gap: 1.5rem;
+      padding: 2rem;
     }
-
-    .exec-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
+    .executive-card {
+      background-color: #1e1e1e;
       border-radius: 12px;
+      padding: 1rem;
       text-align: center;
-      border: 1px solid #ffd70030;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+      transition: transform 0.3s ease;
     }
-
-    .exec-card h3 {
-      color: #ffd700;
-      margin-bottom: 8px;
-      font-size: 17px;
+    .executive-card:hover {
+      transform: scale(1.05);
     }
-
-    .exec-card p {
-      color: #eee;
-      font-size: 14px;
-      margin-bottom: 5px;
+    .executive-card img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #4caf50;
+      margin-bottom: 0.8rem;
     }
-
-    .exec-card .tag {
-      background: #ffd700;
-      color: #000;
-      display: inline-block;
-      padding: 4px 10px;
-      font-size: 13px;
-      border-radius: 20px;
-      margin-top: 8px;
-      font-weight: 600;
+    .executive-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
     }
-
     footer {
-      margin-top: 30px;
-      font-size: 13px;
-      color: #ccc;
+      background-color: #1f1f1f;
       text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 15px;
-      }
-
-      .topbar h1 {
-        font-size: 18px;
-      }
+      padding: 1rem;
+      color: #aaa;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html" class="active"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+<header>
+  <h1>Finance Point Executives</h1>
+</header>
+
+<section class="executives-container">
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="001">
+    <h3>001 – President</h3>
   </div>
-
-  <div class="main">
-    <div class="topbar">
-      <h1>Department Executives</h1>
-    </div>
-
-    <div class="exec-grid">
-      <!-- You (PRO) -->
-      <div class="exec-card">
-        <h3>Boluwatife Oluwapelumi Ayuba</h3>
-        <p>Public Relations Officer (PRO)</p>
-        <span class="tag">004</span>
-      </div>
-
-      <!-- Placeholders for others -->
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>President</p>
-        <span class="tag">001</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Vice President</p>
-        <span class="tag">002</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>General Secretary</p>
-        <span class="tag">003</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Boluwatife Oluwapelumi Ayuba</h3>
-        <p>Public Relations Officer</p>
-        <span class="tag">004</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Assistant Secretary</p>
-        <span class="tag">005</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Financial Secretary</p>
-        <span class="tag">006</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Welfare Director</p>
-        <span class="tag">007</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Sports Director</p>
-        <span class="tag">008</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Social Director</p>
-        <span class="tag">009</span>
-      </div>
-
-      <div class="exec-card">
-        <h3>Coming Soon</h3>
-        <p>Treasurer</p>
-        <span class="tag">010</span>
-      </div>
-    </div>
-
-    <footer>
-      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
-    </footer>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="002">
+    <h3>002 – Vice President</h3>
   </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="003">
+    <h3>003 – General Secretary</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/oba.jpg" alt="004">
+    <h3>004 – OBA (P.R.O)</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="005">
+    <h3>005 – Financial Secretary</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="006">
+    <h3>006 – Treasurer</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="007">
+    <h3>007 – Welfare Director</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="008">
+    <h3>008 – Social Director</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="009">
+    <h3>009 – Sport Director</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="010">
+    <h3>010 – Assistant Gen. Secretary</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="011">
+    <h3>011 – Librarian</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="012">
+    <h3>012 – SUG SRC</h3>
+  </div>
+  <div class="executive-card">
+    <img src="images/placeholder.jpg" alt="013">
+    <h3>013 – Famassa SRC</h3>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Finance Point. All rights reserved.
+</footer>
+
 </body>
 </html>
