@@ -1,218 +1,121 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Downloads | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #121212;
-      color: white;
       padding: 2rem;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
     }
+
     h1 {
-      color: #00B386;
-    }
-    .section {
-      background-color: #1f1f2e;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    .section h2 {
-      color: #00B386;
-      margin-top: 0;
-    }
-    label, input, textarea, button {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    input, textarea {
-      padding: 0.75rem;
-      background: #121212;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 0.5rem;
-    }
-    button {
-      background-color: #00B386;
-      border: none;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .pending-item {
-      background: #222;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid #00B386;
-      border-radius: 8px;
-    }
-    .pending-item h4 {
-      margin: 0 0 0.5rem;
+      text-align: center;
       color: #ffd700;
+      margin-bottom: 1.5rem;
     }
-    .pending-item button {
-      margin-right: 1rem;
+
+    .download-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .download-card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      backdrop-filter: blur(6px);
+    }
+
+    .download-card h3 {
+      color: #ffd700;
+      font-size: 18px;
+      margin-bottom: 0.5rem;
+    }
+
+    .download-card p {
+      color: #ccc;
+      font-size: 14px;
+      margin-bottom: 1rem;
+    }
+
+    .download-card a {
+      display: inline-block;
+      text-decoration: none;
+      background: #ffd700;
+      color: #000;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .download-card a:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 14px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <h1>🛠️ Admin Panel - Finance Point</h1>  <div class="section">
-    <h2>📢 Post Announcement</h2>
-    <label>Title:</label>
-    <input type="text" id="announcementTitle">
-    <label>Message:</label>
-    <textarea id="announcementBody"></textarea>
-    <button onclick="postAnnouncement()">Post Announcement</button>
-  </div>  <div class="section">
-    <h2>👥 Add Executive</h2>
-    <label>Name:</label>
-    <input type="text" id="execName">
-    <label>Role:</label>
-    <input type="text" id="execRole">
-    <button onclick="addExecutive()">Add Executive</button>
-  </div>  <div class="section">
-    <h2>📅 Add Event</h2>
-    <label>Event Title:</label>
-    <input type="text" id="eventTitle">
-    <label>Date:</label>
-    <input type="text" id="eventDate">
-    <label>Location:</label>
-    <input type="text" id="eventLocation">
-    <button onclick="addEvent()">Add Event</button>
-  </div>  <div class="section">
-    <h2>🎂 Add Birthday Wish</h2>
-    <label>Name:</label>
-    <input type="text" id="bdayName">
-    <label>Message:</label>
-    <textarea id="bdayMsg"></textarea>
-    <label>Image URL (optional):</label>
-    <input type="text" id="bdayImage">
-    <button onclick="addBirthday()">Add Birthday</button>
-  </div>  <div class="section">
-    <h2>📘 Upload Finance Material</h2>
-    <label>Material Title:</label>
-    <input type="text" id="materialTitle">
-    <label>Download Link:</label>
-    <input type="text" id="materialLink">
-    <button onclick="addMaterial()">Add Material</button>
-  </div>  <div class="section">
-    <h2>🧾 Pending Lost & Found Submissions</h2>
-    <div id="pendingContainer"><p>Loading...</p></div>
-  </div>  <script>
-    const MATERIAL_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a";
-    const LOSTFOUND_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d";
-    const LOSTFOUND_PENDING_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+  <h1>📚 Study Downloads</h1>
+  <div class="download-container" id="downloads">
+    <p>Loading materials...</p>
+  </div>
 
-    async function fetchPending() {
-      const container = document.getElementById("pendingContainer");
+  <footer>
+    &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
+  </footer>
+
+  <script>
+    const API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a";
+
+    async function loadDownloads() {
       try {
-        const res = await fetch(LOSTFOUND_PENDING_API);
-        let pending = await res.json();
-        if (!pending.length) {
-          container.innerHTML = '<p>No pending items.</p>';
+        const res = await fetch(API);
+        const items = await res.json();
+
+        const container = document.getElementById('downloads');
+        container.innerHTML = '';
+
+        if (!items || items.length === 0) {
+          container.innerHTML = '<p>No materials available at the moment.</p>';
           return;
         }
-        container.innerHTML = "";
-        pending.forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "pending-item";
-          div.innerHTML = `
-            <h4>${item.item}</h4>
-            <p><strong>By:</strong> ${item.name}</p>
-            <p>${item.desc}</p>
-            <button onclick="approveItem(${index})">Approve</button>
-            <button onclick="rejectItem(${index})">Reject</button>
+
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'download-card';
+          card.innerHTML = `
+            <h3>${item.title || 'Untitled Material'}</h3>
+            <p>${item.description || 'No description provided.'}</p>
+            <a href="${item.link}" target="_blank">Download</a>
           `;
-          container.appendChild(div);
+          container.appendChild(card);
         });
-      } catch (e) {
-        container.innerHTML = '<p>Error loading pending items.</p>';
-      }
-    }
-
-    async function approveItem(index) {
-      const pending = await (await fetch(LOSTFOUND_PENDING_API)).json();
-      const approved = await (await fetch(LOSTFOUND_API)).json();
-      approved.push(pending[index]);
-      pending.splice(index, 1);
-      await fetch(LOSTFOUND_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(approved)
-      });
-      await fetch(LOSTFOUND_PENDING_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pending)
-      });
-      fetchPending();
-    }
-
-    async function rejectItem(index) {
-      const pending = await (await fetch(LOSTFOUND_PENDING_API)).json();
-      pending.splice(index, 1);
-      await fetch(LOSTFOUND_PENDING_API, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pending)
-      });
-      fetchPending();
-    }
-
-    async function addMaterial() {
-      const title = document.getElementById('materialTitle').value.trim();
-      const link = document.getElementById('materialLink').value.trim();
-
-      if (!title || !link) {
-        alert("Please enter both title and download link.");
-        return;
-      }
-
-      try {
-        const res = await fetch(MATERIAL_API);
-        const materials = await res.json();
-
-        materials.push({ name: title, url: link });
-
-        await fetch(MATERIAL_API, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(materials)
-        });
-
-        alert("✅ Material added successfully!");
-        document.getElementById('materialTitle').value = "";
-        document.getElementById('materialLink').value = "";
       } catch (err) {
-        alert("❌ Failed to add material.");
+        document.getElementById('downloads').innerHTML = '<p>Failed to load materials.</p>';
         console.error(err);
       }
     }
 
-    function postAnnouncement() {
-      alert("📢 Announcement Posted (simulation)");
-    }
-
-    function addExecutive() {
-      alert("👤 Executive Added (simulation)");
-    }
-
-    function addEvent() {
-      alert("📅 Event Added (simulation)");
-    }
-
-    function addBirthday() {
-      alert("🎂 Birthday Added (simulation)");
-    }
-
-    fetchPending();
-  </script></body>
+    loadDownloads();
+  </script>
+</body>
 </html>
