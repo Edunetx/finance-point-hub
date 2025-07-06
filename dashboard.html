@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard | Finance Point</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -12,138 +11,149 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Inter', sans-serif;
-    }
+    }body {
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1e3c72);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+}
 
-    body {
-      background: url('https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: blur(4px);
-      color: white;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-    }
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    .sidebar {
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding: 20px 10px;
-      overflow-y: auto;
-    }
+.sidebar {
+  width: 220px;
+  background: rgba(0, 0, 0, 0.85);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 10px;
+  overflow-y: auto;
+}
 
-    .sidebar h2 {
-      color: #ffd700;
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
+.sidebar h2 {
+  color: #ffd700;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  text-decoration: none;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
 
-    .sidebar a:hover,
-    .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-    }
+.sidebar a i {
+  font-size: 1.2rem;
+}
 
-    .main {
-      margin-left: 220px;
-      padding: 2rem;
-      flex: 1;
-    }
+.sidebar a:hover, .sidebar a.active {
+  background: #ffd700;
+  color: #000;
+  font-weight: bold;
+}
 
-    .header {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
+.main {
+  margin-left: 220px;
+  padding: 2rem;
+  flex: 1;
+}
 
-    .header h1 {
-      color: #ffd700;
-      font-size: 26px;
-    }
+.header {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
 
-    .quick-nav {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 30px;
-    }
+.header h1 {
+  color: #ffd700;
+  font-size: 26px;
+}
 
-    .quick-nav a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      background: rgba(255,255,255,0.1);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      color: white;
-      font-weight: 600;
-      transition: 0.3s;
-    }
+.quick-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 30px;
+}
 
-    .quick-nav a:hover {
-      background: #ffd700;
-      color: #000;
-    }
+.quick-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: rgba(255,255,255,0.1);
+  border-radius: 1rem;
+  padding: 1.2rem;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
 
-    .facts, .notifications {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-    }
+.quick-nav a i {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
 
-    .facts h2, .notifications h2 {
-      color: #ffd700;
-      margin-bottom: 10px;
-    }
+.quick-nav a:hover {
+  background: #ffd700;
+  color: #000;
+}
 
-    .notification-popup {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #ffd700;
-      color: #000;
-      padding: 1rem 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      animation: slideIn 1s ease-out;
-    }
+.facts, .notifications {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.facts h2, .notifications h2 {
+  color: #ffd700;
+  margin-bottom: 10px;
+}
 
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
+.notification-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffd700;
+  color: #000;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  animation: slideIn 1s ease-out;
+}
 
-      .main {
-        margin-left: 0;
-        padding: 1rem;
-      }
-    }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -158,43 +168,38 @@
     <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
     <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>
-
-  <div class="main">
+  </div>  <div class="main">
     <div class="header">
       <h1>Welcome to the Finance Point Dashboard</h1>
-    </div>
+    </div><div class="quick-nav">
+  <a href="downloads.html"><i class="fas fa-file-download"></i>Downloads</a>
+  <a href="events.html"><i class="fas fa-calendar"></i>Events</a>
+  <a href="news.html"><i class="fas fa-bullhorn"></i>News</a>
+  <a href="executives.html"><i class="fas fa-users"></i>Executives</a>
+  <a href="lostandfound.html"><i class="fas fa-search"></i>Lost & Found</a>
+  <a href="birthday.html"><i class="fas fa-birthday-cake"></i>Birthday Wall</a>
+  <a href="study.html"><i class="fas fa-book"></i>Study Resources</a>
+</div>
 
-    <div class="quick-nav">
-      <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
-      <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
-      <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
-      <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
-      <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
-      <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
-      <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
-    </div>
+<div class="facts">
+  <h2>💡 Finance Facts</h2>
+  <ul>
+    <li>The first paper money was created in China 1,400 years ago.</li>
+    <li>Credit cards were introduced in 1950 by Diners Club.</li>
+    <li>Compound interest can double your investment faster than simple interest.</li>
+  </ul>
+</div>
 
-    <div class="facts">
-      <h2>💡 Finance Facts</h2>
-      <ul>
-        <li>The first paper money was created in China 1,400 years ago.</li>
-        <li>Credit cards were introduced in 1950 by Diners Club.</li>
-        <li>Compound interest can double your investment faster than simple interest.</li>
-      </ul>
-    </div>
+<div class="notifications">
+  <h2>📣 Academic Tips</h2>
+  <ul>
+    <li>Review lecture notes the same day to retain more.</li>
+    <li>Practice past questions to improve exam confidence.</li>
+    <li>Study in short bursts with breaks — it works better!</li>
+  </ul>
+</div>
 
-    <div class="notifications">
-      <h2>📣 Academic Tips</h2>
-      <ul>
-        <li>Review lecture notes the same day to retain more.</li>
-        <li>Practice past questions to improve exam confidence.</li>
-        <li>Study in short bursts with breaks — it works better!</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="notification-popup">
+  </div>  <div class="notification-popup">
     ✅ You're viewing the latest student updates.
   </div>
 </body>
