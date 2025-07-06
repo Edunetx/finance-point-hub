@@ -19,15 +19,16 @@
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
+
     .sidebar {
       width: 220px;
       background: rgba(0, 0, 0, 0.85);
-      color: #fff;
       padding: 20px 10px;
       position: fixed;
       height: 100vh;
       overflow-y: auto;
     }
+
     .sidebar h2 {
       font-family: 'Merriweather', serif;
       font-size: 22px;
@@ -35,24 +36,36 @@
       margin-bottom: 30px;
       color: #ffd700;
     }
+
     .sidebar a {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       color: #ccc;
       text-decoration: none;
       padding: 12px 20px;
-      margin: 10px 0;
+      margin: 8px 0;
       border-radius: 5px;
-      transition: 0.3s;
+      transition: background 0.3s, color 0.3s;
     }
+
     .sidebar a:hover {
       background: #ffd700;
       color: #000;
     }
+
+    .sidebar a.active {
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+    }
+
     .main {
       margin-left: 220px;
       flex: 1;
       padding: 20px;
     }
+
     .topbar {
       background: rgba(255, 255, 255, 0.08);
       padding: 15px 20px;
@@ -63,11 +76,13 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .topbar h1 {
       font-size: 20px;
       color: #ffd700;
       font-weight: 600;
     }
+
     .section {
       background: rgba(255, 255, 255, 0.05);
       padding: 20px;
@@ -75,22 +90,26 @@
       backdrop-filter: blur(6px);
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
+
     .section h2 {
       font-size: 18px;
       margin-bottom: 10px;
       font-weight: 600;
     }
+
     .section p {
       font-size: 14px;
       color: #eee;
       line-height: 1.6;
     }
+
     footer {
       margin-top: 30px;
       font-size: 13px;
       color: #ccc;
       text-align: center;
     }
+
     @media (max-width: 768px) {
       .sidebar {
         display: none;
@@ -108,7 +127,7 @@
 <body>
   <div class="sidebar">
     <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
     <a href="news.html"><i class="fas fa-newspaper"></i> News</a>
     <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
