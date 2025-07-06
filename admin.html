@@ -1,20 +1,22 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin Panel | Finance Point</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #121212;
       color: white;
       padding: 2rem;
     }
     h1 {
       color: #00B386;
+      margin-bottom: 1rem;
     }
     .section {
       background-color: #1f1f2e;
@@ -26,13 +28,15 @@
     .section h2 {
       color: #00B386;
       margin-top: 0;
+      margin-bottom: 1rem;
     }
-    label, input, textarea, button {
+    label, input, textarea, button, select {
       display: block;
       width: 100%;
       margin-bottom: 1rem;
+      font-family: 'Inter', sans-serif;
     }
-    input, textarea {
+    input, textarea, select {
       padding: 0.75rem;
       background: #121212;
       color: white;
@@ -47,157 +51,298 @@
       color: white;
       font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #009e6a;
+    }
+    .pending-list {
+      max-height: 250px;
+      overflow-y: auto;
+      background: #222232;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .pending-item {
+      background: #333344;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+    }
+    .pending-item p {
+      margin: 0.2rem 0;
+    }
+    .flex-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .flex-grow {
+      flex-grow: 1;
     }
   </style>
 </head>
 <body>
-  <h1>🛠️ Admin Panel - Finance Point</h1>  <div class="section">
+  <h1>🛠️ Admin Panel - Finance Point</h1>
+
+  <!-- Announcements -->
+  <div class="section">
     <h2>📢 Post Announcement</h2>
-    <label>Title:</label>
-    <input type="text" id="announcementTitle">
-    <label>Message:</label>
-    <textarea id="announcementBody"></textarea>
+    <label for="announcementTitle">Title:</label>
+    <input type="text" id="announcementTitle" />
+    <label for="announcementBody">Message:</label>
+    <textarea id="announcementBody" rows="4"></textarea>
     <button onclick="postAnnouncement()">Post Announcement</button>
-  </div>  <div class="section">
+  </div>
+
+  <!-- Executives -->
+  <div class="section">
     <h2>👥 Add Executive</h2>
-    <label>Name:</label>
-    <input type="text" id="execName">
-    <label>Role:</label>
-    <input type="text" id="execRole">
-    <label>Image URL (optional):</label>
-    <input type="text" id="execImage">
+    <label for="execName">Name:</label>
+    <input type="text" id="execName" />
+    <label for="execRole">Role:</label>
+    <input type="text" id="execRole" />
+    <label for="execImage">Image URL (optional):</label>
+    <input type="text" id="execImage" placeholder="https://example.com/photo.jpg" />
     <button onclick="addExecutive()">Add Executive</button>
-  </div>  <div class="section">
+  </div>
+
+  <!-- Events -->
+  <div class="section">
     <h2>📅 Add Event</h2>
-    <label>Event Title:</label>
-    <input type="text" id="eventTitle">
-    <label>Date:</label>
-    <input type="text" id="eventDate">
-    <label>Location:</label>
-    <input type="text" id="eventLocation">
-    <label>Image URL (optional):</label>
-    <input type="text" id="eventImage">
+    <label for="eventTitle">Event Title:</label>
+    <input type="text" id="eventTitle" />
+    <label for="eventDate">Date:</label>
+    <input type="date" id="eventDate" />
+    <label for="eventLocation">Location:</label>
+    <input type="text" id="eventLocation" />
     <button onclick="addEvent()">Add Event</button>
-  </div>  <div class="section">
-    <h2>🎂 Post Birthday Wish</h2>
-    <label>Name:</label>
-    <input type="text" id="bdayName">
-    <label>Message:</label>
-    <textarea id="bdayMessage"></textarea>
-    <label>Image URL (optional):</label>
-    <input type="text" id="bdayImage">
-    <button onclick="postBirthdayWish()">Post Birthday Wish</button>
-  </div>  <script>
-    const announcementAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/0fcd9550-b411-47b2-b542-b64911a8bb31";
-    const executiveAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/exec-storage-id";
-    const eventsAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/events-storage-id";
-    const birthdayAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
+  </div>
 
+  <!-- Lost & Found Pending -->
+  <div class="section">
+    <h2>📦 Lost & Found - Pending Submissions</h2>
+    <div id="pendingLostFound" class="pending-list">Loading pending items...</div>
+  </div>
+
+  <!-- Birthday Wishes -->
+  <div class="section">
+    <h2>🎉 Birthday Wishes</h2>
+    <label for="birthdayName">Name:</label>
+    <input type="text" id="birthdayName" />
+    <label for="birthdayMessage">Message:</label>
+    <textarea id="birthdayMessage" rows="3"></textarea>
+    <label for="birthdayImage">Image URL (optional):</label>
+    <input type="text" id="birthdayImage" placeholder="https://example.com/photo.jpg" />
+    <button onclick="addBirthday()">Add Birthday Wish</button>
+  </div>
+
+  <!-- News -->
+  <div class="section">
+    <h2>📰 Post News</h2>
+    <label for="newsTitle">Title:</label>
+    <input type="text" id="newsTitle" />
+    <label for="newsBody">Content:</label>
+    <textarea id="newsBody" rows="4"></textarea>
+    <button onclick="postNews()">Post News</button>
+  </div>
+
+  <!-- Password Change -->
+  <div class="section">
+    <h2>🔒 Change Admin Password</h2>
+    <label for="adminPassword">New Password:</label>
+    <input type="password" id="adminPassword" placeholder="Enter new password" />
+    <button onclick="changePassword()">Change Password</button>
+  </div>
+
+  <script>
+    // --- URLs for JSONStorage ---
+    const ANNOUNCEMENTS_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/YOUR_ANNOUNCEMENTS_ID";
+    const EXECUTIVES_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/YOUR_EXECUTIVES_ID";
+    const EVENTS_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/YOUR_EVENTS_ID";
+    const LOSTFOUND_APPROVED_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/a0a80090-14fe-4a0f-a6e2-7ab3e97bd42d";
+    const LOSTFOUND_PENDING_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+    const BIRTHDAY_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
+    const NEWS_API = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/YOUR_NEWS_ID";
+
+    // --- Replace the YOUR_*_ID with your actual JSONStorage IDs ---
+
+    // Helper function to fetch JSON from URL
+    async function fetchJSON(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch');
+      return await response.json();
+    }
+
+    // Helper function to update JSON at URL
+    async function updateJSON(url, data) {
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('Failed to update');
+      return await res.json();
+    }
+
+    // Post Announcement
     async function postAnnouncement() {
-      const title = document.getElementById("announcementTitle").value;
-      const message = document.getElementById("announcementBody").value;
-
       try {
-        const res = await fetch(announcementAPI);
-        const announcements = await res.json();
-        const updated = Array.isArray(announcements) ? announcements : [];
-        updated.push({ title, message });
+        const title = document.getElementById('announcementTitle').value.trim();
+        const body = document.getElementById('announcementBody').value.trim();
+        if (!title || !body) return alert('Please enter title and message.');
 
-        await fetch(announcementAPI, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updated)
-        });
+        let announcements = await fetchJSON(ANNOUNCEMENTS_API);
+        announcements.push({title, body, date: new Date().toISOString()});
+        await updateJSON(ANNOUNCEMENTS_API, announcements);
 
-        alert("📢 Announcement posted!");
-      } catch (e) {
-        alert("❌ Failed to post announcement.");
+        alert('Announcement posted!');
+        document.getElementById('announcementTitle').value = '';
+        document.getElementById('announcementBody').value = '';
+      } catch(e) {
+        alert('Failed to post announcement.');
+        console.error(e);
       }
     }
 
+    // Add Executive
     async function addExecutive() {
-      const name = document.getElementById("execName").value;
-      const role = document.getElementById("execRole").value;
-      const image = document.getElementById("execImage").value;
-
       try {
-        const res = await fetch(executiveAPI);
-        const executives = await res.json();
-        const updated = Array.isArray(executives) ? executives : [];
-        updated.push({ name, role, image });
+        const name = document.getElementById('execName').value.trim();
+        const role = document.getElementById('execRole').value.trim();
+        const image = document.getElementById('execImage').value.trim();
+        if (!name || !role) return alert('Please enter name and role.');
 
-        await fetch(executiveAPI, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updated)
-        });
+        let execs = await fetchJSON(EXECUTIVES_API);
+        execs.push({name, role, image});
+        await updateJSON(EXECUTIVES_API, execs);
 
-        alert("👤 Executive added!");
-      } catch (e) {
-        alert("❌ Failed to add executive.");
+        alert('Executive added!');
+        document.getElementById('execName').value = '';
+        document.getElementById('execRole').value = '';
+        document.getElementById('execImage').value = '';
+      } catch(e) {
+        alert('Failed to add executive.');
+        console.error(e);
       }
     }
 
+    // Add Event
     async function addEvent() {
-      const title = document.getElementById("eventTitle").value;
-      const date = document.getElementById("eventDate").value;
-      const location = document.getElementById("eventLocation").value;
-      const image = document.getElementById("eventImage").value;
-
       try {
-        const res = await fetch(eventsAPI);
-        const events = await res.json();
-        const updated = Array.isArray(events) ? events : [];
-        updated.push({ title, date, location, image });
+        const title = document.getElementById('eventTitle').value.trim();
+        const date = document.getElementById('eventDate').value;
+        const location = document.getElementById('eventLocation').value.trim();
+        if (!title || !date || !location) return alert('Please fill all event fields.');
 
-        await fetch(eventsAPI, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updated)
-        });
+        let events = await fetchJSON(EVENTS_API);
+        events.push({title, date, location});
+        await updateJSON(EVENTS_API, events);
 
-        alert("📅 Event added!");
-      } catch (e) {
-        alert("❌ Failed to add event.");
+        alert('Event added!');
+        document.getElementById('eventTitle').value = '';
+        document.getElementById('eventDate').value = '';
+        document.getElementById('eventLocation').value = '';
+      } catch(e) {
+        alert('Failed to add event.');
+        console.error(e);
       }
     }
 
-    async function postBirthdayWish() {
-      const name = document.getElementById("bdayName").value.trim();
-      const message = document.getElementById("bdayMessage").value.trim();
-      const image = document.getElementById("bdayImage").value.trim();
-
-      if (!name || !message) {
-        alert("Please fill in both fields.");
-        return;
-      }
-
+    // Load Lost & Found Pending
+    async function loadPendingLostFound() {
       try {
-        const res = await fetch(birthdayAPI);
-        const oldData = await res.json();
-        const wishes = Array.isArray(oldData) ? oldData : [];
-        const timestamp = new Date().toISOString();
-        wishes.push({ name, message, image, timestamp });
+        const pendingList = document.getElementById('pendingLostFound');
+        pendingList.innerHTML = 'Loading pending items...';
 
-        const updateRes = await fetch(birthdayAPI, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(wishes)
-        });
-
-        if (updateRes.ok) {
-          alert("🎉 Birthday wish posted! It will disappear after 24 hours.");
-          document.getElementById("bdayName").value = "";
-          document.getElementById("bdayMessage").value = "";
-          document.getElementById("bdayImage").value = "";
-        } else {
-          throw new Error("Failed to update birthday wishes.");
+        const pending = await fetchJSON(LOSTFOUND_PENDING_API);
+        if (pending.length === 0) {
+          pendingList.innerHTML = '<p>No pending lost & found submissions.</p>';
+          return;
         }
 
-      } catch (error) {
-        console.error(error);
-        alert("❌ Error posting birthday wish.");
+        pendingList.innerHTML = '';
+        pending.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'pending-item';
+          div.innerHTML = `
+            <p><strong>Item:</strong> ${item.item}</p>
+            <p><strong>By:</strong> ${item.name}</p>
+            <p>${item.desc}</p>
+            <div class="flex-row">
+              <button onclick="approveLostFound(${index})">Approve</button>
+              <button onclick="rejectLostFound(${index})" style="background:#b83232;">Reject</button>
+            </div>
+          `;
+          pendingList.appendChild(div);
+        });
+      } catch (e) {
+        document.getElementById('pendingLostFound').innerHTML = '<p>Error loading pending items.</p>';
+        console.error(e);
       }
     }
-  </script></body>
-</html>
+
+    // Approve Lost & Found Submission
+    async function approveLostFound(index) {
+      try {
+        let pending = await fetchJSON(LOSTFOUND_PENDING_API);
+        let approved = await fetchJSON(LOSTFOUND_APPROVED_API);
+
+        const item = pending.splice(index, 1)[0];
+        approved.push(item);
+
+        await updateJSON(LOSTFOUND_APPROVED_API, approved);
+        await updateJSON(LOSTFOUND_PENDING_API, pending);
+
+        alert('Item approved and published.');
+        loadPendingLostFound();
+      } catch (e) {
+        alert('Failed to approve item.');
+        console.error(e);
+      }
+    }
+
+    // Reject Lost & Found Submission
+    async function rejectLostFound(index) {
+      try {
+        let pending = await fetchJSON(LOSTFOUND_PENDING_API);
+        pending.splice(index, 1);
+        await updateJSON(LOSTFOUND_PENDING_API, pending);
+        alert('Item rejected.');
+        loadPendingLostFound();
+      } catch (e) {
+        alert('Failed to reject item.');
+        console.error(e);
+      }
+    }
+
+    // Add Birthday Wish
+    async function addBirthday() {
+      try {
+        const name = document.getElementById('birthdayName').value.trim();
+        const message = document.getElementById('birthdayMessage').value.trim();
+        const image = document.getElementById('birthdayImage').value.trim();
+
+        if (!name || !message) return alert('Please enter name and message.');
+
+        let wishes = await fetchJSON(BIRTHDAY_API);
+        wishes.push({name, message, image, date: new Date().toISOString()});
+        await updateJSON(BIRTHDAY_API, wishes);
+
+        alert('Birthday wish added!');
+        document.getElementById('birthdayName').value = '';
+        document.getElementById('birthdayMessage').value = '';
+        document.getElementById('birthdayImage').value = '';
+      } catch (e) {
+        alert('Failed to add birthday wish.');
+        console.error(e);
+      }
+    }
+
+    // Post News
+    async function postNews() {
+      try {
+        const title = document.getElementById('newsTitle').value.trim();
+        const body = document.getElementById('newsBody').value.trim();
+        if (!
