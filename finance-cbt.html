@@ -3,73 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Finance CBT Exam | Finance Point</title>
+  <title>Finance CBT | Finance Point</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
     body {
-      margin: 0; min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
       background: #0e0e0e url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
+      padding: 2rem;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1rem;
+      justify-content: flex-start;
     }
     h1 {
       color: #ffd700;
       margin-bottom: 1rem;
       text-align: center;
     }
-
-    .cbt-container {
-      background: rgba(0,0,0,0.75);
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 800px;
+    .quiz-container {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 700px;
       width: 100%;
-      box-shadow: 0 0 20px #ffd700aa;
+      box-sizing: border-box;
     }
-
-    #timer {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #ffd700;
-      margin-bottom: 1rem;
-      text-align: center;
-      user-select: none;
-    }
-
     .question-number {
       font-weight: 600;
-      margin-bottom: 1rem;
-      color: #e0a600;
+      margin-bottom: 10px;
     }
-
     .question-text {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
     }
-
     .options {
       list-style: none;
       padding: 0;
-      margin-bottom: 1.5rem;
+      margin-bottom: 20px;
     }
     .options li {
       background: rgba(255,255,255,0.1);
-      margin-bottom: 0.8rem;
-      padding: 12px 20px;
+      padding: 10px;
+      margin-bottom: 10px;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
-      user-select: none;
     }
     .options li:hover {
       background: #ffd700;
@@ -78,111 +59,10 @@
     .options li.selected {
       background: #ffd700;
       color: #000;
-      font-weight: 700;
+      font-weight: bold;
     }
-
-    .navigation {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    button {
+    .btn {
       background: #ffd700;
-      border: none;
       color: #000;
-      font-weight: 700;
-      padding: 10px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s;
-      user-select: none;
-    }
-    button:disabled {
-      background: #bfa700;
-      cursor: not-allowed;
-    }
-    button:hover:not(:disabled) {
-      background: #e0a600;
-    }
-
-    #result {
-      text-align: center;
-      margin-top: 2rem;
-      color: #ffd700;
-    }
-    #score {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    /* Responsive */
-    @media(max-width: 500px) {
-      .cbt-container {
-        padding: 1rem;
-      }
-      .options li {
-        font-size: 0.9rem;
-        padding: 10px 14px;
-      }
-      button {
-        padding: 8px 14px;
-        font-size: 0.9rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <h1>Finance CBT Exam - 45 Minutes</h1>
-  <div class="cbt-container">
-    <div id="timer">Time Left: 45:00</div>
-    <div class="question-number"></div>
-    <div class="question-text"></div>
-    <ul class="options"></ul>
-    <div class="navigation">
-      <button id="prevBtn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
-      <button id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
-      <button id="submitBtn" style="display:none;">Submit</button>
-    </div>
-    <div id="result" style="display:none;">
-      <div id="score"></div>
-      <button id="restartBtn">Restart Exam</button>
-    </div>
-  </div>
-
-  <script>
-    const questions = [
-      {q: "What does CBN stand for?", options: ["Central Bank of Nigeria", "Commercial Bank of Nigeria", "Corporate Bank of Nigeria", "Credit Bank of Nigeria"], answer: 0},
-      {q: "Which financial statement shows a company's financial position at a specific point in time?", options: ["Income Statement", "Balance Sheet", "Cash Flow Statement", "Statement of Retained Earnings"], answer: 1},
-      {q: "What is the primary objective of financial management?", options: ["Maximize profit", "Minimize costs", "Maximize shareholder wealth", "Ensure liquidity"], answer: 2},
-      {q: "Which of the following is NOT a type of financial market?", options: ["Money Market", "Capital Market", "Labor Market", "Foreign Exchange Market"], answer: 2},
-      {q: "The 'time value of money' concept suggests that:", options: ["Money has constant value over time", "Money today is worth more than money tomorrow", "Money tomorrow is worth more than money today", "Money has no value"], answer: 1},
-      {q: "What is the purpose of an annuity?", options: ["To provide a series of equal payments over time", "To measure company profitability", "To calculate taxes", "To determine stock prices"], answer: 0},
-      {q: "Which ratio measures a company’s ability to pay short-term obligations?", options: ["Debt to Equity Ratio", "Current Ratio", "Return on Investment", "Gross Profit Margin"], answer: 1},
-      {q: "Which Nigerian bank was established in 1894?", options: ["Zenith Bank", "First Bank Nigeria", "Access Bank", "Guaranty Trust Bank"], answer: 1},
-      {q: "Capital budgeting is used to:", options: ["Evaluate long-term investments", "Manage daily cash flow", "Calculate payroll", "Prepare tax returns"], answer: 0},
-      {q: "Which financial instrument represents ownership in a company?", options: ["Bond", "Stock", "Debenture", "Loan"], answer: 1},
-
-      {q: "The liquidity ratio is also known as:", options: ["Current Ratio", "Quick Ratio", "Cash Ratio", "Debt Ratio"], answer: 0},
-      {q: "What is the primary regulator of banks in Nigeria?", options: ["SEC", "CBN", "NDIC", "FIRS"], answer: 1},
-      {q: "Which one is a direct cost?", options: ["Rent", "Raw materials", "Utilities", "Marketing"], answer: 1},
-      {q: "The formula for simple interest is:", options: ["P × r × t", "P × (1 + r)^t", "P × r / t", "P / (1 + r)^t"], answer: 0},
-      {q: "What does ROI stand for?", options: ["Return on Investment", "Rate of Interest", "Revenue on Income", "Return on Income"], answer: 0},
-      {q: "Which is NOT an example of a current asset?", options: ["Inventory", "Cash", "Land", "Accounts Receivable"], answer: 2},
-      {q: "What is equity?", options: ["Total assets minus total liabilities", "Total liabilities", "Total debt", "Net sales"], answer: 0},
-      {q: "Which financial document summarizes revenues and expenses?", options: ["Balance Sheet", "Cash Flow Statement", "Income Statement", "Statement of Shareholders' Equity"], answer: 2},
-      {q: "A bond is:", options: ["An ownership instrument", "A debt instrument", "A type of stock", "An asset"], answer: 1},
-      {q: "Which of these is a source of long-term finance?", options: ["Trade credit", "Bank overdraft", "Equity shares", "Accounts payable"], answer: 2},
-
-      {q: "In finance, diversification means:", options: ["Investing in a single asset", "Spreading investments across assets", "Keeping money in cash", "Avoiding the stock market"], answer: 1},
-      {q: "Which financial market deals with short-term funds?", options: ["Capital Market", "Money Market", "Stock Market", "Bond Market"], answer: 1},
-      {q: "A company’s debt-to-equity ratio measures:", options: ["Profitability", "Liquidity", "Leverage", "Efficiency"], answer: 2},
-      {q: "What is a dividend?", options: ["Interest paid on bonds", "Profit distributed to shareholders", "Company’s revenue", "A type of loan"], answer: 1},
-      {q: "The Nigerian Stock Exchange is located in:", options: ["Lagos", "Abuja", "Port Harcourt", "Kano"], answer: 0},
-      {q: "Which of these is an example of a fixed cost?", options: ["Salaries", "Raw materials", "Electricity", "Sales commission"], answer: 0},
-      {q: "Financial leverage involves:", options: ["Using debt to increase returns", "Investing in stocks", "Buying assets", "Increasing equity"], answer: 0},
-      {q: "The primary goal of working capital management is to:", options: ["Maximize current assets", "Ensure liquidity", "Minimize debts", "Increase fixed assets"], answer: 1},
-      {q: "What is a balance sheet?", options: ["Summary of income and expenses", "Summary of assets and liabilities", "Cash inflow statement", "Profit and loss statement"], answer: 1},
-      {q: "Which of the following is NOT part of working capital?", options: ["Cash", "Inventory", "Accounts Payable", "Fixed Assets"], answer: 3},
-
-      {q: "Which accounting principle states revenue should be recognized when earned?", options: ["Matching Principle", "Revenue Recognition Principle", "Cost Principle", "Consistency Principle"], answer: 1},
-      {q: "Which financial statement shows cash inflows and outflows?", options:
+      border: none;
+      padding:
