@@ -3,234 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Downloads | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Finance Materials | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
-      display: flex;
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
+      color: white;
+      padding: 2rem;
     }
 
-    .sidebar {
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
-
-    .sidebar h2 {
-      font-family: 'Merriweather', serif;
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
+    h1 {
       color: #ffd700;
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
 
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
+    .search-box {
+      max-width: 500px;
+      margin: 0 auto 2rem;
     }
 
-    .sidebar a:hover, .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
     }
 
-    .main {
-      margin-left: 220px;
-      flex: 1;
-      padding: 20px;
+    .file-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 15px;
     }
 
-    .topbar {
+    .file-item {
       background: rgba(255, 255, 255, 0.08);
-      padding: 15px 20px;
+      padding: 1rem;
       border-radius: 10px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .topbar h1 {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: 600;
+    .file-item span {
+      font-weight: 500;
     }
 
-    .section {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      margin-bottom: 30px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .section h2 {
-      font-size: 20px;
-      color: #ffd700;
-      margin-bottom: 15px;
-    }
-
-    .downloads-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .download-card {
-      background: rgba(255, 255, 255, 0.07);
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      border: 1px solid #ffd70030;
-    }
-
-    .download-card h3 {
-      font-size: 16px;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-
-    .download-card a {
-      display: inline-block;
+    .file-item a {
       background: #ffd700;
       color: #000;
-      padding: 8px 16px;
-      border-radius: 30px;
+      padding: 8px 14px;
+      border-radius: 6px;
       text-decoration: none;
-      font-weight: 600;
-      margin-top: 8px;
+      font-weight: bold;
+      transition: 0.3s;
     }
 
-    .download-card a:hover {
-      background: #fff;
-      color: #000;
+    .file-item a:hover {
+      background: #e6c200;
     }
 
     footer {
-      margin-top: 40px;
-      font-size: 13px;
-      color: #ccc;
+      margin-top: 3rem;
       text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 15px;
-      }
-
-      .topbar h1 {
-        font-size: 18px;
-      }
-
-      .section h2 {
-        font-size: 18px;
-      }
+      color: #bbb;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html" class="active"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  <h1>📘 Finance Study Materials</h1>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search materials... (e.g., risk, capital, investment)" onkeyup="filterFiles()">
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <h1>Download Materials</h1>
-    </div>
-
-    <div class="section">
-      <h2>100 Level Materials</h2>
-      <div class="downloads-grid">
-        <div class="download-card">
-          <h3>BUS 101 - Introduction to Business</h3>
-          <a href="#">Download PDF</a>
-        </div>
-        <div class="download-card">
-          <h3>ACC 101 - Principles of Accounting</h3>
-          <a href="#">Download PDF</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>200 Level Materials</h2>
-      <div class="downloads-grid">
-        <div class="download-card">
-          <h3>FIN 217 - Law of Banking</h3>
-          <a href="#">Download PDF</a>
-        </div>
-        <div class="download-card">
-          <h3>FIN 206 - Financial Management</h3>
-          <a href="#">Download PDF</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>300 Level Materials</h2>
-      <div class="downloads-grid">
-        <div class="download-card">
-          <h3>BNF 301 - Investment Analysis</h3>
-          <a href="#">Download PDF</a>
-        </div>
-        <div class="download-card">
-          <h3>BNF 302 - Risk Management</h3>
-          <a href="#">Download PDF</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>400 Level Materials</h2>
-      <div class="downloads-grid">
-        <div class="download-card">
-          <h3>BNF 401 - International Finance</h3>
-          <a href="#">Download PDF</a>
-        </div>
-        <div class="download-card">
-          <h3>BNF 402 - Strategic Financial Mgt</h3>
-          <a href="#">Download PDF</a>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
-    </footer>
+  <div class="file-list" id="fileList">
+    <!-- Files will be inserted here -->
   </div>
+
+  <footer>&copy; 2025 Finance Point • Created by OBA</footer>
+
+  <script>
+    const materials = [
+      { name: "Introduction to Financial Accounting", url: "#" },
+      { name: "Principles of Investment Analysis", url: "#" },
+      { name: "Risk Management Overview", url: "#" },
+      { name: "Capital Budgeting Techniques", url: "#" },
+      { name: "Financial Markets & Institutions", url: "#" },
+      { name: "Corporate Finance Handout", url: "#" },
+      { name: "Microfinance Lecture Slides", url: "#" },
+      { name: "Banking Regulations Notes", url: "#" },
+      { name: "Understanding Balance Sheets", url: "#" }
+    ];
+
+    const fileList = document.getElementById('fileList');
+
+    function renderFiles(data) {
+      fileList.innerHTML = "";
+      if (data.length === 0) {
+        fileList.innerHTML = "<p>No matching materials found.</p>";
+        return;
+      }
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        div.innerHTML = `
+          <span>${item.name}</span>
+          <a href="${item.url}" download>Download</a>
+        `;
+        fileList.appendChild(div);
+      });
+    }
+
+    function filterFiles() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = materials.filter(m => m.name.toLowerCase().includes(query));
+      renderFiles(filtered);
+    }
+
+    renderFiles(materials);
+  </script>
 </body>
 </html>
