@@ -52,16 +52,6 @@
       color: #00B386;
       margin-top: 0;
     }
-    .poll-buttons button {
-      margin-right: 1rem;
-      background-color: #00B386;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      color: white;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -102,15 +92,6 @@
       <h3>🌟 Quote of the Day</h3>
       <p id="quote">"Discipline is the bridge between goals and achievement." — Jim Rohn</p>
     </div>
-    <div class="card">
-      <h3>🗳️ Weekly Poll</h3>
-      <p>Would you attend a Finance Night event this semester?</p>
-      <div class="poll-buttons">
-        <button onclick="castVote('yes')">👍 Yes</button>
-        <button onclick="castVote('no')">👎 No</button>
-      </div>
-      <p id="poll-status" style="margin-top: 0.75rem; color: #ccc;"></p>
-    </div>
   </div>  <script>
     async function loadDashboard() {
       try {
@@ -123,32 +104,6 @@
         console.error("Error loading dashboard info:", e);
       }
     }
-
-    const pollUrl = "https://api.jsonstorage.net/v1/json/14e57e31-b1fd-4a8f-bcc9-760bd9789c83";
-
-    async function castVote(option) {
-      try {
-        const res = await fetch(pollUrl);
-        const data = await res.json();
-        data[option]++;
-
-        const update = await fetch(pollUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-
-        if (update.ok) {
-          document.getElementById("poll-status").textContent = `✅ Votes — Yes: ${data.yes}, No: ${data.no}`;
-        } else {
-          document.getElementById("poll-status").textContent = "❌ Failed to record vote.";
-        }
-      } catch (err) {
-        console.error("Vote error:", err);
-        document.getElementById("poll-status").textContent = "❌ Error submitting vote.";
-      }
-    }
-
     window.onload = loadDashboard;
   </script></body>
 </html>
