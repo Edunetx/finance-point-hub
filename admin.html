@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -51,21 +52,27 @@
   </style>
 </head>
 <body>
-  <h1>🛠️ Admin Panel - Finance Point</h1>  <div class="section">
+  <h1>🛠️ Admin Panel - Finance Point</h1>
+
+  <div class="section">
     <h2>📢 Post Announcement</h2>
     <label>Title:</label>
     <input type="text" id="announcementTitle">
     <label>Message:</label>
     <textarea id="announcementBody"></textarea>
     <button onclick="postAnnouncement()">Post Announcement</button>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h2>👥 Add Executive</h2>
     <label>Name:</label>
     <input type="text" id="execName">
     <label>Role:</label>
     <input type="text" id="execRole">
     <button onclick="addExecutive()">Add Executive</button>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h2>📅 Add Event</h2>
     <label>Event Title:</label>
     <input type="text" id="eventTitle">
@@ -74,7 +81,9 @@
     <label>Location:</label>
     <input type="text" id="eventLocation">
     <button onclick="addEvent()">Add Event</button>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h2>🗓️ Update Timetable</h2>
     <label>Day:</label>
     <select id="timetableDay">
@@ -93,7 +102,9 @@
     <label>Lecturer:</label>
     <input type="text" id="timetableLecturer">
     <button onclick="updateTimetable()">Add to Timetable</button>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h2>🔍 Lost & Found</h2>
     <label>Item Name:</label>
     <input type="text" id="lostItem">
@@ -102,11 +113,48 @@
     <label>Location Found:</label>
     <input type="text" id="lostLocation">
     <button onclick="addLostItem()">Post Lost Item</button>
-  </div>  <script>
-    const adminPassword = "OBA IS THE KING"; // 👑
+  </div>
 
-    function postAnnouncement() {
-      alert("📢 Announcement Posted (simulation)");
+  <script>
+    // 🔐 Admin Password (Optional)
+    const adminPassword = "OBA IS THE KING";
+
+    // 🔗 JSONStorage endpoint (live)
+    const announcementAPI = "https://api.jsonstorage.net/v1/json/87b79bd8-0401-4828-b419-c602c353f5d4/84221936-2b8d-4d88-9427-bbff4fd56da8";
+
+    async function postAnnouncement() {
+      const title = document.getElementById("announcementTitle").value.trim();
+      const message = document.getElementById("announcementBody").value.trim();
+
+      if (!title || !message) {
+        alert("❗ Please fill in all fields.");
+        return;
+      }
+
+      const newData = {
+        title,
+        message,
+        date: new Date().toLocaleString()
+      };
+
+      try {
+        let existing = await fetch(announcementAPI);
+        let data = await existing.json();
+        data.push(newData);
+
+        await fetch(announcementAPI, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        alert("✅ Announcement posted successfully!");
+        document.getElementById("announcementTitle").value = "";
+        document.getElementById("announcementBody").value = "";
+      } catch (err) {
+        alert("❌ Failed to post announcement. Please check your API link.");
+        console.error(err);
+      }
     }
 
     function addExecutive() {
@@ -118,11 +166,12 @@
     }
 
     function updateTimetable() {
-      alert("🗓️ Timetable Updated (simulation)");
+      alert("📘 Timetable Updated (simulation)");
     }
 
     function addLostItem() {
-      alert("📦 Lost item submitted (simulation)");
+      alert("🔍 Lost item posted (simulation)");
     }
-  </script></body>
+  </script>
+</body>
 </html>
