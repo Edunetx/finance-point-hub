@@ -27,7 +27,7 @@
       margin-top: 0.5rem;
     }
     .section {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
     .card {
       background: #1f1f1f;
@@ -72,6 +72,18 @@
 
     <h3>Past Announcements</h3>
     <ul id="announcementList"></ul>
+
+    <!-- EVENTS SECTION -->
+    <div class="section">
+      <h2>Post Upcoming Event</h2>
+      <input type="text" id="eventTitle" placeholder="Event Title (e.g. Orientation 2025)" />
+      <input type="text" id="eventDate" placeholder="Event Date (e.g. July 15, 2025)" />
+      <textarea id="eventDetails" placeholder="Event Details..." rows="4"></textarea>
+      <button onclick="postEvent()">Post Event</button>
+    </div>
+
+    <h3>Posted Events</h3>
+    <ul id="eventList"></ul>
   </div>
 
   <!-- SCRIPT -->
@@ -83,6 +95,9 @@
     const announcementsUrl = "https://api.jsonstorage.net/v1/json/4a7c8972-5b4c-4f5d-bc89-93a0fe8f3767/3ed1dbbd-0e32-4965-9e3f-5f00ec91db5d";
     const announcementsKey = "aba27aee-oba004-announcements-key";
 
+    const eventsUrl = "https://api.jsonstorage.net/v1/json/5471c9de-34ae-48a4-99a0-d1a3ab504f33/e8b3f9b1-6fd4-44a5-835e-2cbdc26e5074";
+    const eventsKey = "oba004-events-secret-key";
+
     // 🔑 LOGIN
     function verifyCode() {
       const code = document.getElementById("adminCode").value;
@@ -91,6 +106,7 @@
         document.getElementById("adminTools").classList.remove("hidden");
         loadExecutives();
         loadAnnouncements();
+        loadEvents();
       } else {
         alert("Wrong code");
       }
@@ -173,6 +189,54 @@
         });
       } catch (e) {
         document.getElementById("announcementList").innerHTML = "<li>Couldn't load announcements.</li>";
+      }
+    }
+
+    // 📅 EVENTS
+    async function postEvent() {
+      const title = document.getElementById("eventTitle").value.trim();
+      const date = document.getElementById("eventDate").value.trim();
+      const details = document.getElementById("eventDetails").value.trim();
+      if (!title || !date || !details) return alert("All fields are required.");
+
+      let old = [];
+      try {
+        const res = await fetch(eventsUrl);
+        old = await res.json();
+      } catch (e) {}
+
+      old.unshift({ title, date, details });
+
+      await fetch(eventsUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "apiKey": eventsKey
+        },
+        body: JSON.stringify(old)
+      });
+
+      alert("Event posted!");
+      document.getElementById("eventTitle").value = "";
+      document.getElementById("eventDate").value = "";
+      document.getElementById("eventDetails").value = "";
+      loadEvents();
+    }
+
+    async function loadEvents() {
+      try {
+        const res = await fetch(eventsUrl);
+        const events = await res.json();
+        const container = document.getElementById("eventList");
+        container.innerHTML = "";
+        events.forEach(ev => {
+          const li = document.createElement("li");
+          li.style.marginBottom = "0.5rem";
+          li.innerHTML = `<strong>${ev.title}</strong><br>${ev.date}<br><em>${ev.details}</em>`;
+          container.appendChild(li);
+        });
+      } catch (e) {
+        document.getElementById("eventList").innerHTML = "<li>Error loading events</li>";
       }
     }
   </script>
