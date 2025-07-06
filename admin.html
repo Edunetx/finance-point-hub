@@ -2,157 +2,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <title>Admin Panel | Finance Point</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: #121212;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }header {
-  background-color: #1f1f2e;
-  text-align: center;
-  padding: 2rem 1rem 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-
-header h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  margin: 0 0 0.5rem;
-  color: #FFD700;
-}
-
-header p {
-  font-size: 1rem;
-  color: #ccc;
-}
-
-.container {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-.card {
-  background-color: #1e1e2f;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h2 {
-  font-family: 'Poppins', sans-serif;
-  margin-top: 0;
-  color: #00B386;
-}
-
-.card p {
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-footer {
-  background-color: #1f1f2e;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  border-top: 1px solid #333;
-}
-
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.footer-nav a {
-  color: #00B386;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  .container {
-    padding: 1rem;
-  }
-}
-
-  </style>
-  <script>
-    async function loadDashboard() {
-      try {
-        const res = await fetch("https://api.jsonstorage.net/v1/json/90fa2454-0bd6-4a1d-bd2c-37decc2aab4a");
-        const data = await res.json();
-        document.getElementById("fact").textContent = data.fact;
-        document.getElementById("news").textContent = data.news;
-        document.getElementById("tip").textContent = data.tip;
-      } catch (e) {
-        console.error("Error loading dashboard info:", e);
-      }
+      color: white;
+      padding: 2rem;
     }
-    window.onload = loadDashboard;
-  </script>
+    h1 {
+      color: #00B386;
+    }
+    .section {
+      background-color: #1f1f2e;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .section h2 {
+      color: #00B386;
+      margin-top: 0;
+    }
+    label, input, textarea, button, select {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    input, textarea, select {
+      padding: 0.75rem;
+      background: #121212;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 0.5rem;
+    }
+    button {
+      background-color: #00B386;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>  <header>
-    <h1>Hello there! 👋</h1>
-    <p>Welcome to Finance Point — Stay updated, stay inspired!</p>
-  </header>  <main class="container">
-    <div class="card">
-      <h2>📢 Announcements</h2>
-      <p>All 200 level students are reminded of the upcoming test on Friday.<br>📍 Venue: LT1 <br>⏰ Time: 10am</p>
-    </div><div class="card">
-  <h2>👨‍💼 Executives</h2>
-  <p>President: John Doe<br>PRO: OBA<br>Treasurer: Jane Smith</p>
-</div>
+<body>
+  <h1>🛠️ Admin Panel - Finance Point</h1>  <div class="section">
+    <h2>📢 Post Announcement</h2>
+    <label>Title:</label>
+    <input type="text" id="announcementTitle">
+    <label>Message:</label>
+    <textarea id="announcementBody"></textarea>
+    <button onclick="postAnnouncement()">Post Announcement</button>
+  </div>  <div class="section">
+    <h2>👥 Add Executive</h2>
+    <label>Name:</label>
+    <input type="text" id="execName">
+    <label>Role:</label>
+    <input type="text" id="execRole">
+    <button onclick="addExecutive()">Add Executive</button>
+  </div>  <div class="section">
+    <h2>📅 Add Event</h2>
+    <label>Event Title:</label>
+    <input type="text" id="eventTitle">
+    <label>Date:</label>
+    <input type="text" id="eventDate">
+    <label>Location:</label>
+    <input type="text" id="eventLocation">
+    <button onclick="addEvent()">Add Event</button>
+  </div>  <div class="section">
+    <h2>🗓️ Update Timetable</h2>
+    <label>Day:</label>
+    <select id="timetableDay">
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+    </select>
+    <label>Time:</label>
+    <input type="text" id="timetableTime">
+    <label>Course:</label>
+    <input type="text" id="timetableCourse">
+    <label>Venue:</label>
+    <input type="text" id="timetableVenue">
+    <label>Lecturer:</label>
+    <input type="text" id="timetableLecturer">
+    <button onclick="updateTimetable()">Add to Timetable</button>
+  </div>  <div class="section">
+    <h2>🔍 Lost & Found</h2>
+    <label>Item Name:</label>
+    <input type="text" id="lostItem">
+    <label>Description:</label>
+    <textarea id="lostDescription"></textarea>
+    <label>Location Found:</label>
+    <input type="text" id="lostLocation">
+    <button onclick="addLostItem()">Post Lost Item</button>
+  </div>  <script>
+    const adminPassword = "OBA IS THE KING"; // 👑
 
-<div class="card">
-  <h2>📆 Events</h2>
-  <p>📌 Finance Summit 2025<br>📅 July 15th, 2025<br>🏛️ New Auditorium</p>
-</div>
+    function postAnnouncement() {
+      alert("📢 Announcement Posted (simulation)");
+    }
 
-<div class="card">
-  <h2>💡 Finance Fact</h2>
-  <p id="fact">Loading...</p>
-</div>
+    function addExecutive() {
+      alert("👤 Executive Added (simulation)");
+    }
 
-<div class="card">
-  <h2>📰 Campus News</h2>
-  <p id="news">Loading...</p>
-</div>
+    function addEvent() {
+      alert("📅 Event Added (simulation)");
+    }
 
-<div class="card">
-  <h2>🎓 Academic Tip</h2>
-  <p id="tip">Loading...</p>
-</div>
+    function updateTimetable() {
+      alert("🗓️ Timetable Updated (simulation)");
+    }
 
-  </main>  <footer>
-    <strong>Quick Navigation</strong>
-    <div class="footer-nav">
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="executives.html">👥 Executives</a>
-      <a href="announcements.html">📢 Announcements</a>
-      <a href="events.html">📅 Events</a>
-      <a href="downloads.html">📥 Downloads</a>
-      <a href="contact.html">📞 Contact</a>
-    </div>
-    <p style="margin-top:1rem; color: #888">© 2025 Finance Point. Created by OBA</p>
-  </footer></body>
+    function addLostItem() {
+      alert("📦 Lost item submitted (simulation)");
+    }
+  </script></body>
 </html>
