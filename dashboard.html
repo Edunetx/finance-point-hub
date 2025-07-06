@@ -2,272 +2,321 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <style>
+    /* Reset and basics */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
     }
-
     body {
-      display: flex;
       min-height: 100vh;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
       color: #fff;
+      padding-top: 60px; /* space for horizontal nav */
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 215, 0, 0.15); /* gold transparent overlay */
+      pointer-events: none;
+      z-index: 0;
     }
 
+    /* Sidebar */
     .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
       width: 220px;
       background: rgba(0, 0, 0, 0.85);
       padding: 20px 10px;
-      position: fixed;
-      height: 100vh;
       overflow-y: auto;
-      top: 0;
-      left: 0;
-      z-index: 100;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
     .sidebar h2 {
       font-family: 'Merriweather', serif;
       font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
       color: #ffd700;
+      margin-bottom: 30px;
+      user-select: none;
     }
-
     .sidebar a {
+      width: 100%;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       color: #ccc;
       text-decoration: none;
       padding: 12px 20px;
       margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    .sidebar a:hover, .sidebar a.active {
+    .sidebar a:hover,
+    .sidebar a.active {
       background: #ffd700;
       color: #000;
-      font-weight: bold;
+      font-weight: 700;
     }
 
+    /* Main content */
     .main {
       margin-left: 220px;
-      flex: 1;
-      padding: 20px;
+      padding: 25px 30px;
+      background: rgba(0, 0, 0, 0.6);
+      min-height: calc(100vh - 60px);
+      border-radius: 15px;
+      position: relative;
+      z-index: 5;
+      user-select: none;
     }
 
-    .topbar {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .topbar h1 {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .nav-links {
-      display: flex;
-      overflow-x: auto;
-      gap: 15px;
-      margin-top: 15px;
-      border-bottom: 2px solid gold;
-      padding-bottom: 10px;
-      white-space: nowrap;
-    }
-
-    .nav-links a {
-      color: #ffd700;
-      font-weight: bold;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      transition: 0.3s;
-    }
-
-    .nav-links a:hover {
-      background: #ffd700;
-      color: #000;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      backdrop-filter: blur(6px);
-    }
-
-    .card h3 {
+    .welcome-msg {
+      font-size: 28px;
+      font-weight: 700;
       color: #ffd700;
       margin-bottom: 10px;
+      user-select: text;
+    }
+    .finance-facts,
+    .academic-tips {
+      margin-top: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      user-select: text;
+    }
+    .finance-facts h2,
+    .academic-tips h2 {
+      color: #ffd700;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .finance-facts ul,
+    .academic-tips ul {
+      list-style: inside disc;
+      line-height: 1.6;
+      color: #ddd;
     }
 
-    .card p {
-      font-size: 15px;
-      color: #eee;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      color: #bbb;
-    }
-
-    #backToTop {
+    /* Horizontal navigation bar (mobile and desktop) */
+    .topnav {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background: #ffd700;
-      color: #000;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 18px;
-      cursor: pointer;
-      display: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      top: 0;
+      left: 220px;
+      right: 0;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      z-index: 20;
+      border-bottom: 3px solid transparent;
+      user-select: none;
     }
-
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: #ffd700;
-      color: #000;
-      padding: 12px 20px;
-      border-radius: 10px;
+    .topnav::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 220px;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(45deg, transparent 0%, #ffd700 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 30;
+    }
+    .topnav a {
+      color: #ccc;
+      text-decoration: none;
       font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-      animation: slideUp 1s ease-out, fadeOut 0.5s 6s ease-out forwards;
+      font-size: 15px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topnav a:hover,
+    .topnav a.active {
+      background: #ffd700;
+      color: #000;
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
-
+    /* Responsive */
     @media (max-width: 768px) {
       .sidebar {
         display: none;
       }
-
       .main {
         margin-left: 0;
-        padding: 15px;
+        padding: 15px 20px;
+        min-height: calc(100vh - 60px);
       }
+      .topnav {
+        left: 0;
+        border-radius: 0;
+      }
+      .topnav::after {
+        left: 0;
+      }
+    }
 
-      .topbar h1 {
-        font-size: 18px;
-      }
-
-      .nav-links {
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 8px;
-        padding-bottom: 8px;
-      }
+    /* Notification popup */
+    #notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(255, 215, 0, 0.95);
+      color: #000;
+      padding: 18px 24px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 50;
+    }
+    #notification.show {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
+  <nav class="sidebar" aria-label="Primary Sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
     <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
     <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
     <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
     <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-  </div>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+  </nav>
 
-  <!-- Main Content -->
-  <div class="main">
-    <div class="topbar">
-      <h1>🎓 Welcome to Finance Point Dashboard</h1>
-    </div>
+  <nav class="topnav" aria-label="Secondary navigation">
+    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+  </nav>
 
-    <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="downloads.html">Downloads</a>
-      <a href="events.html">Events</a>
-      <a href="birthday.html">Birthday Wall</a>
-      <a href="news.html">News</a>
-      <a href="executives.html">Executives</a>
-      <a href="contact.html">Contact</a>
-      <a href="admin.html">Admin</a>
-    </div>
+  <main class="main" tabindex="0">
+    <div class="welcome-msg" id="welcomeUser">Hello, Finance Student 👋</div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>💡 Finance Fact</h3>
-        <p>Saving ₦100 daily gives you ₦36,500 a year. Start now, the earlier the better!</p>
-      </div>
+    <section class="finance-facts" aria-labelledby="factsHeading">
+      <h2 id="factsHeading">💡 Finance Facts</h2>
+      <ul id="factList">
+        <li>Did you know? The first stock exchange was established in Amsterdam in 1602.</li>
+        <li>Compound interest can dramatically increase your savings over time.</li>
+        <li>Cryptocurrency transactions use blockchain to secure digital assets.</li>
+      </ul>
+    </section>
 
-      <div class="card">
-        <h3>🎯 Academic Tip</h3>
-        <p>Review notes within 24 hours of the class. This helps lock it into your long-term memory.</p>
-      </div>
+    <section class="academic-tips" aria-labelledby="tipsHeading">
+      <h2 id="tipsHeading">🎓 Academic Tips</h2>
+      <ul id="tipsList">
+        <li>Set aside regular study times and stick to them consistently.</li>
+        <li>Practice past exam questions to familiarize yourself with the format.</li>
+        <li>Join study groups to gain new perspectives and insights.</li>
+      </ul>
+    </section>
+  </main>
 
-      <div class="card">
-        <h3>📚 Study Advice</h3>
-        <p>Join or create a study group. Teaching others helps you remember more.</p>
-      </div>
-    </div>
-
-    <footer>
-      &copy; 2025 Finance Point • Created by OBA
-    </footer>
-  </div>
-
-  <!-- Back to Top Button -->
-  <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑</button>
-
-  <!-- Notification -->
-  <div class="notification">
-    🔔 New! Check out the Birthday Wall — Updated every day!
+  <div id="notification" role="alert" aria-live="assertive" tabindex="0" aria-atomic="true">
+    Welcome to Finance Point! Stay focused and keep learning 📈
   </div>
 
   <script>
-    window.onscroll = function() {
-      document.getElementById('backToTop').style.display =
-        window.scrollY > 300 ? 'block' : 'none';
-    };
-  </script>
+    // Greet user with prompt and store name locally
+    const welcomeUser = document.getElementById('welcomeUser');
+    let userName = localStorage.getItem('userName');
 
+    function askName() {
+      if (!userName) {
+        userName = prompt('What is your name?')?.trim();
+        if (userName) {
+          localStorage.setItem('userName', userName);
+        } else {
+          userName = 'Finance Student';
+        }
+      }
+      welcomeUser.textContent = `Hello, ${userName} 👋`;
+    }
+
+    askName();
+
+    // Sync active nav links between sidebar and topnav
+    function syncActiveLinks() {
+      const sidebarLinks = document.querySelectorAll('.sidebar a');
+      const topnavLinks = document.querySelectorAll('.topnav a');
+      const currentURL = window.location.pathname.split('/').pop();
+
+      sidebarLinks.forEach(link => {
+        if (link.getAttribute('href') === currentURL || (currentURL === '' && link.getAttribute('href') === 'dashboard.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      topnavLinks.forEach(link => {
+        if (link.getAttribute('href') === currentURL || (currentURL === '' && link.getAttribute('href') === 'dashboard.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    syncActiveLinks();
+
+    // Notification popup logic
+    const notification = document.getElementById('notification');
+    function showNotification() {
+      notification.classList.add('show');
+      notification.focus();
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 7000);
+    }
+    window.addEventListener('load', () => {
+      setTimeout(showNotification, 1500);
+    });
+
+    // Back to top button (optional enhancement)
+    // You can add it if you want later
+
+  </script>
 </body>
 </html>
