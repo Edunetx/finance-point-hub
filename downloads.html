@@ -3,64 +3,154 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point | Downloads</title>
+  <title>Downloads | Finance Point</title>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
-      display: flex; min-height: 100vh;
+      display: flex;
+      min-height: 100vh;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
+
     .sidebar {
-      width: 220px; background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px; position: fixed; height: 100vh; overflow-y: auto;
+      width: 220px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 20px 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      z-index: 100;
     }
+
     .sidebar h2 {
-      font-family: 'Merriweather', serif; font-size: 22px;
-      text-align: center; margin-bottom: 30px; color: #ffd700;
+      font-family: 'Merriweather', serif;
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffd700;
     }
+
     .sidebar a {
-      display: flex; align-items: center; gap: 10px;
-      color: #ccc; text-decoration: none; padding: 12px 20px;
-      margin: 8px 0; border-radius: 5px; transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border-radius: 5px;
+      transition: 0.3s;
     }
+
     .sidebar a:hover, .sidebar a.active {
-      background: #ffd700; color: #000; font-weight: bold;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
     }
-    .main { margin-left: 220px; flex: 1; padding: 20px; }
-    .section {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px; border-radius: 12px;
-      backdrop-filter: blur(6px); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 20px;
     }
-    .section h2 {
-      font-size: 20px; margin-bottom: 15px; color: #ffd700;
-    }
-    .downloads-list {
-      list-style: none;
-    }
-    .downloads-list li {
-      margin-bottom: 12px;
+
+    .topbar {
       background: rgba(255, 255, 255, 0.08);
-      padding: 10px 15px;
-      border-radius: 8px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .downloads-list a {
+
+    .topbar h1 {
+      font-size: 20px;
       color: #ffd700;
+      font-weight: 600;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      margin-bottom: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .section h2 {
+      font-size: 20px;
+      color: #ffd700;
+      margin-bottom: 15px;
+    }
+
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .download-card {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #ffd70030;
+    }
+
+    .download-card h3 {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .download-card a {
+      display: inline-block;
+      background: #ffd700;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 30px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
+      margin-top: 8px;
     }
+
+    .download-card a:hover {
+      background: #fff;
+      color: #000;
+    }
+
     footer {
-      margin-top: 30px; font-size: 13px; color: #ccc; text-align: center;
+      margin-top: 40px;
+      font-size: 13px;
+      color: #ccc;
+      text-align: center;
     }
+
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding: 15px; }
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 15px;
+      }
+
+      .topbar h1 {
+        font-size: 18px;
+      }
+
+      .section h2 {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -68,34 +158,74 @@
   <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
-    <a href="news.html"><i class="fas fa-newspaper"></i> News</a>
-    <a href="downloads.html" class="active"><i class="fas fa-download"></i> Downloads</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Meet Executives</a>
+    <a href="downloads.html" class="active"><i class="fas fa-file-download"></i> Downloads</a>
+    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
+    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
+    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
+    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 
   <div class="main">
+    <div class="topbar">
+      <h1>Download Materials</h1>
+    </div>
+
     <div class="section">
-      <h2>Download Materials</h2>
-      <ul class="downloads-list">
-        <li>
-          FIN 204 - Financial Accounting PDF
-          <a href="#">Download</a>
-        </li>
-        <li>
-          FIN 206 - Strategic Cost Management
-          <a href="#">Download</a>
-        </li>
-        <li>
-          FIN 217 - Law of Banking Notes
-          <a href="#">Download</a>
-        </li>
-        <li>
-          Exam Timetable (2nd Semester)
-          <a href="#">Download</a>
-        </li>
-      </ul>
+      <h2>100 Level Materials</h2>
+      <div class="downloads-grid">
+        <div class="download-card">
+          <h3>BUS 101 - Introduction to Business</h3>
+          <a href="#">Download PDF</a>
+        </div>
+        <div class="download-card">
+          <h3>ACC 101 - Principles of Accounting</h3>
+          <a href="#">Download PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>200 Level Materials</h2>
+      <div class="downloads-grid">
+        <div class="download-card">
+          <h3>FIN 217 - Law of Banking</h3>
+          <a href="#">Download PDF</a>
+        </div>
+        <div class="download-card">
+          <h3>FIN 206 - Financial Management</h3>
+          <a href="#">Download PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>300 Level Materials</h2>
+      <div class="downloads-grid">
+        <div class="download-card">
+          <h3>BNF 301 - Investment Analysis</h3>
+          <a href="#">Download PDF</a>
+        </div>
+        <div class="download-card">
+          <h3>BNF 302 - Risk Management</h3>
+          <a href="#">Download PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>400 Level Materials</h2>
+      <div class="downloads-grid">
+        <div class="download-card">
+          <h3>BNF 401 - International Finance</h3>
+          <a href="#">Download PDF</a>
+        </div>
+        <div class="download-card">
+          <h3>BNF 402 - Strategic Financial Mgt</h3>
+          <a href="#">Download PDF</a>
+        </div>
+      </div>
     </div>
 
     <footer>
