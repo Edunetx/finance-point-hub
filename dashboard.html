@@ -4,41 +4,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Finance Point</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-overlay: rgba(0,0,0,0.6);
+      --bg-overlay: rgba(0, 0, 0, 0.6);
       --text-color: #fff;
       --highlight: #ffd700;
-      --card-bg: rgba(255,255,255,0.1);
+      --card-bg: rgba(255, 255, 255, 0.1);
     }
     body.light-mode {
-      --bg-overlay: rgba(255,255,255,0.8);
+      --bg-overlay: rgba(255, 255, 255, 0.8);
       --text-color: #121212;
       --highlight: #e0a600;
-      --card-bg: rgba(0,0,0,0.05);
+      --card-bg: rgba(0, 0, 0, 0.05);
     }* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 body {
   min-height: 100vh;
   color: var(--text-color);
-  display: flex;
-  background: #000;
-  backdrop-filter: blur(3px);
+  background: url('https://images.unsplash.com/photo-1565514156637-15ec02d12174?auto=format&fit=crop&w=1400&q=80') no-repeat center/cover fixed;
+  backdrop-filter: blur(4px);
   transition: background 0.3s, color 0.3s;
-}
-
-#particles-js {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: #0f2027;
-  z-index: -1;
 }
 
 .overlay {
@@ -63,7 +54,7 @@ body {
   justify-content: center;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar {
@@ -97,7 +88,8 @@ body {
   transition: 0.3s;
 }
 
-.sidebar a:hover, .sidebar a.active {
+.sidebar a:hover,
+.sidebar a.active {
   background: var(--highlight);
   color: #000;
   font-weight: bold;
@@ -106,83 +98,88 @@ body {
 .main {
   margin-left: 220px;
   padding: 2rem;
-  flex: 1;
   z-index: 5;
-  animation: fadeIn 1.5s ease-in-out;
-}
-
-.header {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
 }
 
 .header h1 {
-  font-size: 24px;
+  font-size: 26px;
   color: var(--highlight);
+  margin-bottom: 20px;
 }
 
-.quick-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  margin-bottom: 30px;
-}
-
-.quick-nav a {
+.horizontal-nav {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  background: var(--card-bg);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  color: var(--text-color);
-  font-weight: 600;
-  text-align: center;
-  transition: 0.3s;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 10px;
+  border-bottom: 2px solid var(--highlight);
+  margin-bottom: 2rem;
 }
 
-.quick-nav a:hover {
+.horizontal-nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.horizontal-nav a:hover,
+.horizontal-nav a.active {
   background: var(--highlight);
   color: #000;
 }
 
-.facts, .notifications {
+.facts,
+.notifications {
   background: var(--card-bg);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 1.5rem;
+  animation: fadeIn 1s ease;
 }
 
-.facts h2, .notifications h2 {
+.facts h2,
+.notifications h2 {
   color: var(--highlight);
   margin-bottom: 10px;
 }
 
 .notification-popup {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
   background: var(--highlight);
   color: #000;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   animation: slideIn 1s ease-out;
-  z-index: 10;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  z-index: 100;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {
@@ -198,9 +195,8 @@ body {
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
   <div class="overlay"></div>
-  <div class="toggle-mode" onclick="toggleMode()"><i class="fas fa-adjust"></i></div>  <div class="sidebar">
+  <div class="toggle-mode" onclick="toggleMode()"><i class="fas fa-moon"></i></div>  <div class="sidebar">
     <h2>Finance Point</h2>
     <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
     <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
@@ -213,42 +209,45 @@ body {
     <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
   </div>  <div class="main">
     <div class="header">
-      <h1>👋 Welcome back to the Finance Point Dashboard!</h1>
-    </div><div class="quick-nav">
-  <a href="downloads.html"><i class="fas fa-file-download fa-2x"></i><br>Downloads</a>
-  <a href="events.html"><i class="fas fa-calendar fa-2x"></i><br>Events</a>
-  <a href="news.html"><i class="fas fa-bullhorn fa-2x"></i><br>News</a>
-  <a href="executives.html"><i class="fas fa-users fa-2x"></i><br>Executives</a>
-  <a href="lostandfound.html"><i class="fas fa-search fa-2x"></i><br>Lost & Found</a>
-  <a href="birthday.html"><i class="fas fa-birthday-cake fa-2x"></i><br>Birthday Wall</a>
-  <a href="study.html"><i class="fas fa-book fa-2x"></i><br>Study Resources</a>
+      <h1>👋 Welcome to the Finance Point Dashboard</h1>
+    </div><div class="horizontal-nav">
+  <a href="downloads.html">Downloads</a>
+  <a href="events.html">Events</a>
+  <a href="news.html">News</a>
+  <a href="executives.html">Executives</a>
+  <a href="lostandfound.html">Lost & Found</a>
+  <a href="birthday.html">Birthday Wall</a>
+  <a href="study.html">Study Resources</a>
 </div>
 
 <div class="facts">
   <h2>💡 Finance Facts</h2>
   <ul>
-    <li>The Nigerian Naira was introduced in 1973, replacing the pound.</li>
-    <li>Microfinance banks support small-scale businesses in Nigeria.</li>
-    <li>Fintech is transforming how Nigerians access credit and savings.</li>
+    <li>CBN regulates Nigeria's monetary policy using tools like MPR and CRR.</li>
+    <li>Corporate finance involves capital budgeting, financing, and dividends.</li>
+    <li>Banking in Nigeria began formally with the creation of First Bank in 1894.</li>
   </ul>
 </div>
 
 <div class="notifications">
   <h2>📚 Academic Tips</h2>
   <ul>
-    <li>Group study enhances retention and idea sharing.</li>
-    <li>Set weekly goals to stay ahead of lectures.</li>
-    <li>Make your notes colorful and summarized.</li>
+    <li>Revise notes weekly to boost long-term memory.</li>
+    <li>Use mnemonic devices to remember key financial terms.</li>
+    <li>Practice diagrams like balance sheets and income statements by hand.</li>
   </ul>
 </div>
 
-  </div>  <div class="notification-popup">
-    ✅ You're viewing the latest updates on your Finance Point hub.
-  </div>  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>  <script>
-    particlesJS.load('particles-js', 'https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/demo/particles.json');
-
+  </div>  <div class="notification-popup" id="popup">
+    ✅ You are viewing the latest student updates.
+  </div>  <script>
     function toggleMode() {
       document.body.classList.toggle('light-mode');
     }
+
+    setTimeout(() => {
+      const popup = document.getElementById('popup');
+      if (popup) popup.style.display = 'none';
+    }, 5000);
   </script></body>
 </html>
