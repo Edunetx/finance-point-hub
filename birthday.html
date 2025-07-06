@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Wall | Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 2rem;
+    }
+
+    .birthday-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      width: 280px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      backdrop-filter: blur(6px);
+    }
+
+    .card h2 {
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: #ddd;
+      margin: 0.25rem 0;
+    }
+
+    .card small {
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #bbb;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Birthday Wall</h1>
+  <div class="birthday-list" id="birthdayList">
+    <!-- Birthday cards will appear here -->
+  </div>
+
+  <footer>&copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA</footer>
+
+  <script>
+    const birthdayAPI = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554";
+
+    async function loadBirthdays() {
+      try {
+        const res = await fetch(birthdayAPI);
+        const data = await res.json();
+        const list = document.getElementById("birthdayList");
+        list.innerHTML = "";
+
+        if (data.length === 0) {
+          list.innerHTML = "<p>No birthdays added yet 🎂</p>";
+          return;
+        }
+
+        data.reverse().forEach(b => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h2>${b.name}</h2>
+            <p><strong>DOB:</strong> ${b.date}</p>
+            ${b.message ? `<p><em>“${b.message}”</em></p>` : ""}
+            <small>Added: ${b.addedOn}</small>
+          `;
+          list.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Failed to load birthdays", err);
+        document.getElementById("birthdayList").innerHTML = "<p>Error loading data 😔</p>";
+      }
+    }
+
+    loadBirthdays();
+  </script>
+</body>
+</html>
