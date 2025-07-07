@@ -1,100 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Finance Point - Admin Panel</title>
-  <style>
-    body, html {
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
-      min-height: 100vh;
-    }
-    header {
-      background: #ffb700;
-      color: #000;
-      padding: 1rem 2rem;
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-    nav {
-      display: flex;
-      background: #203a43;
-      padding: 0.5rem 1rem;
-    }
-    nav button {
-      background: none;
-      border: none;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    nav button:hover,
-    nav button.active {
-      background: #ffb700;
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
-    }
-    main {
-      padding: 1rem 2rem;
-    }
-    section {
-      display: none;
-    }
-    section.active {
-      display: block;
-    }
-    label {
-      display: block;
-      margin: 1rem 0 0.3rem;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-    button.submit-btn {
-      margin-top: 1rem;
-      background: #ffb700;
-      color: #000;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s ease;
-    }
-    button.submit-btn:hover {
-      background: #ffa500;
-    }
-    .logout-btn {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: #ff4d4d;
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-    .logout-btn:hover {
-      background: #ff0000;
-    }
-    .message {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Finance Point - Admin Panel</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    min-height: 100vh;
+  }
+  header {
+    background: #ffb700;
+    color: #000;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    background: #203a43;
+    padding: 0.5rem 1rem;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+  nav button:hover,
+  nav button.active {
+    background: #ffb700;
+    color: #000;
+    font-weight: bold;
+  }
+  main {
+    padding: 1rem 2rem;
+  }
+  section {
+    display: none;
+  }
+  section.active {
+    display: block;
+  }
+  label {
+    display: block;
+    margin: 1rem 0 0.3rem;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+  }
+  button.submit-btn {
+    margin-top: 1rem;
+    background: #ffb700;
+    color: #000;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+  button.submit-btn:hover {
+    background: #ffa500;
+  }
+  .logout-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  .logout-btn:hover {
+    background: #ff0000;
+  }
+  .message {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #ffb700;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+  ul li {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.7rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  ul li button {
+    background: #ffb700;
+    border: none;
+    padding: 0.3rem 0.7rem;
+    margin-left: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+    transition: background 0.3s ease;
+  }
+  ul li button:hover {
+    background: #ffa500;
+  }
+  ul li span.status {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  ul li span.status.active {
+    color: lightgreen;
+  }
+  ul li span.status.blocked {
+    color: red;
+  }
+</style>
 </head>
 <body>
 
@@ -107,9 +150,16 @@
   <button class="tab-btn active" data-target="executives">Executives</button>
   <button class="tab-btn" data-target="announcements">Announcements</button>
   <button class="tab-btn" data-target="events">Events</button>
+  <button class="tab-btn" data-target="users">Users</button>
+  <button class="tab-btn" data-target="birthdayWall">Birthday Wall</button>
+  <button class="tab-btn" data-target="lostAndFound">Lost & Found</button>
+  <button class="tab-btn" data-target="feedbackBox">Feedback Box</button>
+  <button class="tab-btn" data-target="studyResources">Study Resources</button>
 </nav>
 
 <main>
+
+  <!-- Executives -->
   <section id="executives" class="active">
     <h2>Manage Executives</h2>
     <label for="execName">Name:</label>
@@ -121,6 +171,7 @@
     <ul id="execList"></ul>
   </section>
 
+  <!-- Announcements -->
   <section id="announcements">
     <h2>Manage Announcements</h2>
     <label for="announcementText">Announcement:</label>
@@ -130,6 +181,7 @@
     <ul id="announcementList"></ul>
   </section>
 
+  <!-- Events -->
   <section id="events">
     <h2>Manage Events</h2>
     <label for="eventTitle">Title:</label>
@@ -140,12 +192,71 @@
     <div id="eventMessage" class="message"></div>
     <ul id="eventList"></ul>
   </section>
+
+  <!-- Users -->
+  <section id="users">
+    <h2>Registered Users</h2>
+    <ul id="userList"></ul>
+    <div id="userMessage" class="message"></div>
+  </section>
+
+  <!-- Birthday Wall -->
+  <section id="birthdayWall">
+    <h2>Birthday Wall</h2>
+    <label for="birthdayName">Name:</label>
+    <input type="text" id="birthdayName" placeholder="Name" />
+    <label for="birthdayDate">Birthday (YYYY-MM-DD):</label>
+    <input type="date" id="birthdayDate" />
+    <button class="submit-btn" id="addBirthdayBtn">Add Birthday</button>
+    <div id="birthdayMessage" class="message"></div>
+    <ul id="birthdayList"></ul>
+  </section>
+
+  <!-- Lost and Found -->
+  <section id="lostAndFound">
+    <h2>Lost & Found</h2>
+    <label for="lostItem">Item Name:</label>
+    <input type="text" id="lostItem" placeholder="Item Name" />
+    <label for="lostDescription">Description:</label>
+    <textarea id="lostDescription" rows="3" placeholder="Description"></textarea>
+    <button class="submit-btn" id="addLostBtn">Add Lost Item</button>
+    <div id="lostMessage" class="message"></div>
+    <ul id="lostList"></ul>
+  </section>
+
+  <!-- Feedback Box -->
+  <section id="feedbackBox">
+    <h2>Feedback Box</h2>
+    <label for="feedbackText">Feedback:</label>
+    <textarea id="feedbackText" rows="4" placeholder="Write feedback here"></textarea>
+    <button class="submit-btn" id="addFeedbackBtn">Submit Feedback</button>
+    <div id="feedbackMessage" class="message"></div>
+    <ul id="feedbackList"></ul>
+  </section>
+
+  <!-- Study Resources -->
+  <section id="studyResources">
+    <h2>Study Resources</h2>
+    <label for="resourceTitle">Title:</label>
+    <input type="text" id="resourceTitle" placeholder="Resource Title" />
+    <label for="resourceLink">Link:</label>
+    <input type="url" id="resourceLink" placeholder="URL" />
+    <button class="submit-btn" id="addResourceBtn">Add Resource</button>
+    <div id="resourceMessage" class="message"></div>
+    <ul id="resourceList"></ul>
+  </section>
+
 </main>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  import {
+    getAuth, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import {
+    getFirestore,
+    collection, addDoc, getDocs, deleteDoc, doc, setDoc, serverTimestamp, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -160,21 +271,15 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Redirect non-admin users to login
+  // Auth check for admin access
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = doc(db, "users", user.uid);
       const userSnap = await getDocs(collection(db, "users"));
-      const userRef = userSnap.docs.find(doc => doc.id === user.uid);
-      if (userRef) {
-        const userData = userRef.data();
-        if (!userData.admin) {
-          alert("Access denied. You are not an admin.");
-          await signOut(auth);
-          window.location.href = "login.html";
-        }
-      } else {
-        alert("User data not found.");
+      const currentUser = userSnap.docs.find(d => d.id === user.uid)?.data();
+
+      if (!currentUser || !currentUser.admin) {
+        alert("Access denied: Admins only.");
         await signOut(auth);
         window.location.href = "login.html";
       }
@@ -183,14 +288,13 @@
     }
   });
 
-  // Logout button
-  const logoutBtn = document.getElementById('logoutBtn');
-  logoutBtn.addEventListener('click', async () => {
+  // Logout handler
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
     await signOut(auth);
     window.location.href = "login.html";
   });
 
-  // Tabs
+  // Tab navigation
   const tabButtons = document.querySelectorAll('.tab-btn');
   const sections = document.querySelectorAll('main section');
   tabButtons.forEach(btn => {
@@ -198,105 +302,43 @@
       tabButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const target = btn.getAttribute('data-target');
-      sections.forEach(sec => {
-        sec.classList.toggle('active', sec.id === target);
-      });
+      sections.forEach(sec => sec.classList.toggle('active', sec.id === target));
     });
   });
 
-  // === Executives Management ===
+  // === Executives ===
   const execList = document.getElementById('execList');
   const execNameInput = document.getElementById('execName');
   const execRoleInput = document.getElementById('execRole');
   const execMessage = document.getElementById('execMessage');
   const execCollection = collection(db, "executives");
 
+  function clearExecInputs() {
+    execNameInput.value = "";
+    execRoleInput.value = "";
+  }
+
   async function loadExecutives() {
-    execList.innerHTML = "";
-    const querySnapshot = await getDocs(execCollection);
-    querySnapshot.forEach(docSnap => {
-      const exec = docSnap.data();
-      const li = document.createElement('li');
-      li.textContent = `${exec.name} - ${exec.role}`;
-      const delBtn = document.createElement('button');
-      delBtn.textContent = "Delete";
-      delBtn.style.marginLeft = "10px";
-      delBtn.onclick = async () => {
-        await deleteDoc(doc(db, "executives", docSnap.id));
-        execMessage.textContent = "Executive deleted.";
-        loadExecutives();
-      };
-      li.appendChild(delBtn);
-      execList.appendChild(li);
+    onSnapshot(execCollection, snapshot => {
+      execList.innerHTML = "";
+      snapshot.forEach(docSnap => {
+        const exec = docSnap.data();
+        const li = document.createElement('li');
+        li.textContent = `${exec.name} - ${exec.role}`;
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = "Delete";
+        delBtn.onclick = async () => {
+          await deleteDoc(doc(db, "executives", docSnap.id));
+          execMessage.textContent = "Executive deleted.";
+        };
+
+        li.appendChild(delBtn);
+        execList.appendChild(li);
+      });
     });
   }
 
   document.getElementById('addExecBtn').addEventListener('click', async () => {
     const name = execNameInput.value.trim();
-    const role = execRoleInput.value.trim();
-    execMessage.textContent = "";
-    if (!name || !role) {
-      execMessage.textContent = "Please fill both fields.";
-      return;
-    }
-    await addDoc(execCollection, { name, role });
-    execMessage.textContent = "Executive added.";
-    execNameInput.value = "";
-    execRoleInput.value = "";
-    loadExecutives();
-  });
-
-  loadExecutives();
-
-  // === Announcements Management ===
-  const announcementList = document.getElementById('announcementList');
-  const announcementText = document.getElementById('announcementText');
-  const announcementMessage = document.getElementById('announcementMessage');
-  const announcementCollection = collection(db, "announcements");
-
-  async function loadAnnouncements() {
-    announcementList.innerHTML = "";
-    const querySnapshot = await getDocs(announcementCollection);
-    querySnapshot.forEach(docSnap => {
-      const ann = docSnap.data();
-      const li = document.createElement('li');
-      li.textContent = ann.text;
-      const delBtn = document.createElement('button');
-      delBtn.textContent = "Delete";
-      delBtn.style.marginLeft = "10px";
-      delBtn.onclick = async () => {
-        await deleteDoc(doc(db, "announcements", docSnap.id));
-        announcementMessage.textContent = "Announcement deleted.";
-        loadAnnouncements();
-      };
-      li.appendChild(delBtn);
-      announcementList.appendChild(li);
-    });
-  }
-
-  document.getElementById('addAnnouncementBtn').addEventListener('click', async () => {
-    const text = announcementText.value.trim();
-    announcementMessage.textContent = "";
-    if (!text) {
-      announcementMessage.textContent = "Please enter announcement text.";
-      return;
-    }
-    await addDoc(announcementCollection, { text });
-    announcementMessage.textContent = "Announcement added.";
-    announcementText.value = "";
-    loadAnnouncements();
-  });
-
-  loadAnnouncements();
-
-  // === Events Management ===
-  const eventList = document.getElementById('eventList');
-  const eventTitleInput = document.getElementById('eventTitle');
-  const eventDateInput = document.getElementById('eventDate');
-  const eventMessage = document.getElementById('eventMessage');
-  const eventsCollection = collection(db, "events");
-
-  async function loadEvents() {
-    eventList.innerHTML = "";
-    const querySnapshot = await getDocs(eventsCollection);
-    querySnapshot.forEach(docSnap => {
+    const role
