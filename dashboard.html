@@ -1,4 +1,4 @@
-<!-- Restored Dashboard.html with fixed logout button --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,6 +48,15 @@
     section.active {
       display: block;
     }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+    }
+    .card h3, .card p, .card a {
+      color: white;
+    }
     #logoutBtn {
       position: fixed;
       bottom: 20px;
@@ -75,29 +84,30 @@
 <main>
   <section id="announcements" class="active">
     <h2>Announcements</h2>
-    <!-- Announcement content here -->
+    <div id="announcementsList"></div>
   </section>  <section id="events">
     <h2>Events</h2>
-    <!-- Events content here -->
+    <div id="eventsList"></div>
   </section>  <section id="quiz">
     <h2>Quiz of the Week</h2>
-    <!-- Quiz content here -->
+    <p>🧠 What is the time value of money? Hint: Future worth vs present.</p>
   </section>  <section id="resources">
     <h2>Study Resources</h2>
-    <!-- Resources content here -->
+    <div id="resourcesList"></div>
   </section>  <section id="birthday">
     <h2>Birthday Wall</h2>
-    <!-- Birthday content here -->
+    <div id="birthdayList"></div>
   </section>  <section id="lost">
     <h2>Lost & Found</h2>
-    <!-- Lost & Found content here -->
+    <div id="lostList"></div>
   </section>  <section id="feedback">
     <h2>Feedback Box</h2>
-    <!-- Feedback content here -->
+    <p>Send suggestions directly to the PRO on WhatsApp 📲 08142452729</p>
   </section>
 </main><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -110,19 +120,54 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth)
-      .then(() => {
-        console.log("User signed out.");
-        window.location.href = "login.html";
-      })
-      .catch((error) => {
-        console.error("Logout Error:", error);
-        alert("Logout failed. Try again.");
-      });
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    }).catch((error) => {
+      alert("Logout failed.");
+    });
   });
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    }
+  });
+
+  async function loadData(colName, targetId) {
+    const colRef = collection(db, colName);
+    const q = query(colRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    const container = document.getElementById(targetId);
+    container.innerHTML = "";
+    if (snapshot.empty) {
+      container.innerHTML = `<div class="card"><h3>Sample Post</h3><p>This is a placeholder until real data is added.</p></div>`;
+      return;
+    }
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      let card = "<div class='card'>";
+      if (colName === "resources") {
+        card += `<h3>${data.title}</h3><a href="${data.link}" target="_blank">Download</a>`;
+      } else if (colName === "birthdays") {
+        card += `<p>🎉 ${data.name} - ${data.date}</p>`;
+      } else if (colName === "lostFound") {
+        card += `<h3>${data.name}</h3><p>${data.desc}</p>`;
+      } else {
+        card += `<h3>${data.title}</h3><p>${data.body}</p>`;
+      }
+      card += "</div>";
+      container.innerHTML += card;
+    });
+  }
+
+  loadData("announcements", "announcementsList");
+  loadData("events", "eventsList");
+  loadData("resources", "resourcesList");
+  loadData("birthdays", "birthdayList");
+  loadData("lostFound", "lostList");
 
   const tabBtns = document.querySelectorAll(".tab-btn");
   const sections = document.querySelectorAll("main section");
@@ -131,17 +176,9 @@
     btn.addEventListener("click", () => {
       tabBtns.forEach(b => b.classList.remove("active"));
       sections.forEach(sec => sec.classList.remove("active"));
-
       btn.classList.add("active");
-      const target = btn.getAttribute("data-target");
-      document.getElementById(target).classList.add("active");
+      document.getElementById(btn.dataset.target).classList.add("active");
     });
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-    }
   });
 </script></body>
 </html>
