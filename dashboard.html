@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Finance Point - Admin Panel</title>
+<title>Finance Point Dashboard</title>
 <style>
   /* Background + font */
   body, html {
@@ -14,7 +14,6 @@
     background-size: cover;
     color: white;
   }
-
   header {
     background: rgba(255, 183, 0, 0.95);
     color: #000;
@@ -22,20 +21,18 @@
     font-weight: bold;
     font-size: 1.5rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
-
   nav {
     display: flex;
     flex-wrap: wrap;
     background: rgba(32, 58, 67, 0.9);
     padding: 0.5rem 1rem;
     align-items: center;
-    justify-content: center;
     gap: 10px;
+    justify-content: center;
   }
-
   nav button.tab-btn {
     background: none;
     border: none;
@@ -89,6 +86,21 @@
   }
   section.active {
     display: block;
+  }
+
+  /* Admin toggle */
+  #adminToggleBtn {
+    background: #ffb700;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  #adminToggleBtn:hover {
+    background: #ffa500;
   }
 
   label {
@@ -152,31 +164,27 @@
   ul li button:hover {
     background: #ffa500;
   }
-  ul li span.status {
-    font-weight: bold;
-    margin-left: 10px;
-  }
-  ul li span.status.active {
-    color: lightgreen;
-  }
-  ul li span.status.blocked {
-    color: red;
-  }
 </style>
 </head>
 <body>
 
-<header>Finance Point Admin Panel</header>
+<header>
+  Finance Point Dashboard
+  <button id="adminToggleBtn" style="display:none;">Show Admin Panel</button>
+</header>
 
-<nav>
-  <button class="tab-btn active" data-target="executives">Executives</button>
-  <button class="tab-btn" data-target="announcements">Announcements</button>
+<nav id="tabsNav">
+  <button class="tab-btn active" data-target="announcements">Announcements</button>
   <button class="tab-btn" data-target="events">Events</button>
-  <button class="tab-btn" data-target="users">Users</button>
+  <button class="tab-btn" data-target="quizOfTheWeek">Quiz of the Week</button>
   <button class="tab-btn" data-target="birthdayWall">Birthday Wall</button>
   <button class="tab-btn" data-target="lostAndFound">Lost & Found</button>
-  <button class="tab-btn" data-target="feedbackBox">Feedback Box</button>
   <button class="tab-btn" data-target="studyResources">Study Resources</button>
+  <button class="tab-btn" data-target="feedbackBox">Feedback Box</button>
+  <button class="tab-btn" data-target="financeChallenges">Finance Challenges</button>
+  <!-- Admin tabs, hidden by default -->
+  <button class="tab-btn admin-only" data-target="executives" style="display:none;">Manage Executives</button>
+  <button class="tab-btn admin-only" data-target="users" style="display:none;">Manage Users</button>
 </nav>
 
 <div id="logoutWrapper">
@@ -184,9 +192,49 @@
 </div>
 
 <main>
+  <!-- General User Sections -->
+  <section id="announcements" class="active">
+    <h2>Announcements</h2>
+    <ul id="announcementList"></ul>
+  </section>
 
-  <!-- Executives -->
-  <section id="executives" class="active">
+  <section id="events">
+    <h2>Events</h2>
+    <ul id="eventList"></ul>
+  </section>
+
+  <section id="quizOfTheWeek">
+    <h2>Quiz of the Week</h2>
+    <p>Coming soon...</p>
+  </section>
+
+  <section id="birthdayWall">
+    <h2>Birthday Wall</h2>
+    <ul id="birthdayList"></ul>
+  </section>
+
+  <section id="lostAndFound">
+    <h2>Lost & Found</h2>
+    <ul id="lostList"></ul>
+  </section>
+
+  <section id="studyResources">
+    <h2>Study Resources</h2>
+    <ul id="resourceList"></ul>
+  </section>
+
+  <section id="feedbackBox">
+    <h2>Feedback Box</h2>
+    <ul id="feedbackList"></ul>
+  </section>
+
+  <section id="financeChallenges">
+    <h2>Finance Challenges</h2>
+    <p>Coming soon...</p>
+  </section>
+
+  <!-- Admin Only Sections -->
+  <section id="executives" style="display:none;">
     <h2>Manage Executives</h2>
     <label for="execName">Name:</label>
     <input type="text" id="execName" placeholder="Executive Name" />
@@ -197,79 +245,10 @@
     <ul id="execList"></ul>
   </section>
 
-  <!-- Announcements -->
-  <section id="announcements">
-    <h2>Manage Announcements</h2>
-    <label for="announcementText">Announcement:</label>
-    <textarea id="announcementText" rows="3" placeholder="Write announcement here"></textarea>
-    <button class="submit-btn" id="addAnnouncementBtn">Add Announcement</button>
-    <div id="announcementMessage" class="message"></div>
-    <ul id="announcementList"></ul>
-  </section>
-
-  <!-- Events -->
-  <section id="events">
-    <h2>Manage Events</h2>
-    <label for="eventTitle">Title:</label>
-    <input type="text" id="eventTitle" placeholder="Event Title" />
-    <label for="eventDate">Date:</label>
-    <input type="date" id="eventDate" />
-    <button class="submit-btn" id="addEventBtn">Add Event</button>
-    <div id="eventMessage" class="message"></div>
-    <ul id="eventList"></ul>
-  </section>
-
-  <!-- Users -->
-  <section id="users">
-    <h2>Registered Users</h2>
+  <section id="users" style="display:none;">
+    <h2>Manage Users</h2>
     <ul id="userList"></ul>
     <div id="userMessage" class="message"></div>
-  </section>
-
-  <!-- Birthday Wall -->
-  <section id="birthdayWall">
-    <h2>Birthday Wall</h2>
-    <label for="birthdayName">Name:</label>
-    <input type="text" id="birthdayName" placeholder="Name" />
-    <label for="birthdayDate">Birthday (YYYY-MM-DD):</label>
-    <input type="date" id="birthdayDate" />
-    <button class="submit-btn" id="addBirthdayBtn">Add Birthday</button>
-    <div id="birthdayMessage" class="message"></div>
-    <ul id="birthdayList"></ul>
-  </section>
-
-  <!-- Lost and Found -->
-  <section id="lostAndFound">
-    <h2>Lost & Found</h2>
-    <label for="lostItem">Item Name:</label>
-    <input type="text" id="lostItem" placeholder="Item Name" />
-    <label for="lostDescription">Description:</label>
-    <textarea id="lostDescription" rows="3" placeholder="Description"></textarea>
-    <button class="submit-btn" id="addLostBtn">Add Lost Item</button>
-    <div id="lostMessage" class="message"></div>
-    <ul id="lostList"></ul>
-  </section>
-
-  <!-- Feedback Box -->
-  <section id="feedbackBox">
-    <h2>Feedback Box</h2>
-    <label for="feedbackText">Feedback:</label>
-    <textarea id="feedbackText" rows="4" placeholder="Write feedback here"></textarea>
-    <button class="submit-btn" id="addFeedbackBtn">Submit Feedback</button>
-    <div id="feedbackMessage" class="message"></div>
-    <ul id="feedbackList"></ul>
-  </section>
-
-  <!-- Study Resources -->
-  <section id="studyResources">
-    <h2>Study Resources</h2>
-    <label for="resourceTitle">Title:</label>
-    <input type="text" id="resourceTitle" placeholder="Resource Title" />
-    <label for="resourceLink">Link:</label>
-    <input type="url" id="resourceLink" placeholder="URL" />
-    <button class="submit-btn" id="addResourceBtn">Add Resource</button>
-    <div id="resourceMessage" class="message"></div>
-    <ul id="resourceList"></ul>
   </section>
 
 </main>
@@ -281,7 +260,7 @@
   } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
   import {
     getFirestore,
-    collection, addDoc, getDocs, deleteDoc, doc, onSnapshot
+    collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, updateDoc
   } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -297,46 +276,249 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Admin auth check
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const userDoc = doc(db, "users", user.uid);
-      const userSnap = await getDocs(collection(db, "users"));
-      const currentUser = userSnap.docs.find(d => d.id === user.uid)?.data();
-
-      if (!currentUser || !currentUser.admin) {
-        alert("Access denied: Admins only.");
-        await signOut(auth);
-        window.location.href = "login.html";
-      }
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-
-  // Logout event
-  document.getElementById('logoutBtn').addEventListener('click', async () => {
-    await signOut(auth);
-    window.location.href = "login.html";
-  });
-
-  // Tabs functionality
-  const tabButtons = document.querySelectorAll('.tab-btn');
+  // DOM elements
+  const logoutBtn = document.getElementById('logoutBtn');
+  const adminToggleBtn = document.getElementById('adminToggleBtn');
+  const tabsNav = document.getElementById('tabsNav');
+  const tabButtons = tabsNav.querySelectorAll('button.tab-btn');
   const sections = document.querySelectorAll('main section');
+
+  let currentUser = null;
+  let isAdmin = false;
+  let adminPanelVisible = false;
+
+  // Helper: show section by id
+  function showSection(id) {
+    sections.forEach(sec => {
+      sec.style.display = (sec.id === id) ? 'block' : 'none';
+    });
+    tabButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-target') === id);
+    });
+  }
+
+  // Handle tab clicks
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
       const target = btn.getAttribute('data-target');
-      sections.forEach(sec => sec.classList.toggle('active', sec.id === target));
+      showSection(target);
     });
   });
 
-  // === Executives ===
+  // Logout
+  logoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  });
+
+  // Load and display announcements
+  const announcementsCol = collection(db, "announcements");
+  const announcementList = document.getElementById('announcementList');
+  function loadAnnouncements() {
+    onSnapshot(announcementsCol, (snapshot) => {
+      announcementList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = data.text || "(No content)";
+        announcementList.appendChild(li);
+      });
+    });
+  }
+
+  // Load and display events
+  const eventsCol = collection(db, "events");
+  const eventList = document.getElementById('eventList');
+  function loadEvents() {
+    onSnapshot(eventsCol, (snapshot) => {
+      eventList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = `${data.title || "(No title)"} - ${data.date || "(No date)"}`;
+        eventList.appendChild(li);
+      });
+    });
+  }
+
+  // Load and display birthday wall
+  const birthdayCol = collection(db, "birthdayWall");
+  const birthdayList = document.getElementById('birthdayList');
+  function loadBirthdayWall() {
+    onSnapshot(birthdayCol, (snapshot) => {
+      birthdayList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = `${data.name || "(No name)"} — ${data.birthday || "(No birthday)"}`;
+        birthdayList.appendChild(li);
+      });
+    });
+  }
+
+  // Load and display lost and found
+  const lostCol = collection(db, "lostAndFound");
+  const lostList = document.getElementById('lostList');
+  function loadLostAndFound() {
+    onSnapshot(lostCol, (snapshot) => {
+      lostList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = `${data.itemName || "(No item)"} — ${data.description || "(No description)"}`;
+        lostList.appendChild(li);
+      });
+    });
+  }
+
+  // Load and display study resources
+  const resourceCol = collection(db, "studyResources");
+  const resourceList = document.getElementById('resourceList');
+  function loadResources() {
+    onSnapshot(resourceCol, (snapshot) => {
+      resourceList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = data.link || "#";
+        a.target = "_blank";
+        a.textContent = data.title || "(No title)";
+        li.appendChild(a);
+        resourceList.appendChild(li);
+      });
+    });
+  }
+
+  // Load and display feedback
+  const feedbackCol = collection(db, "feedback");
+  const feedbackList = document.getElementById('feedbackList');
+  function loadFeedback() {
+    onSnapshot(feedbackCol, (snapshot) => {
+      feedbackList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = data.text || "(No feedback)";
+        feedbackList.appendChild(li);
+      });
+    });
+  }
+
+  // Admin-only: Manage executives
+  const execSection = document.getElementById('executives');
   const execList = document.getElementById('execList');
   const execNameInput = document.getElementById('execName');
   const execRoleInput = document.getElementById('execRole');
   const execMessage = document.getElementById('execMessage');
-  const execCollection = collection(db, "executives");
+  const executivesCol = collection(db, "executives");
 
-  function clear
+  async function loadExecutives() {
+    onSnapshot(executivesCol, (snapshot) => {
+      execList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = `${data.name} — ${data.role}`;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = async () => {
+          await deleteDoc(doc(db, "executives", doc.id));
+        };
+        li.appendChild(delBtn);
+        execList.appendChild(li);
+      });
+    });
+  }
+  document.getElementById('addExecBtn').addEventListener('click', async () => {
+    if(!execNameInput.value || !execRoleInput.value) {
+      execMessage.textContent = "Please fill all fields.";
+      return;
+    }
+    await addDoc(executivesCol, {
+      name: execNameInput.value.trim(),
+      role: execRoleInput.value.trim()
+    });
+    execNameInput.value = '';
+    execRoleInput.value = '';
+    execMessage.textContent = "Executive added.";
+  });
+
+  // Admin-only: Manage users
+  const usersCol = collection(db, "users");
+  const userList = document.getElementById('userList');
+  const userMessage = document.getElementById('userMessage');
+
+  async function loadUsers() {
+    onSnapshot(usersCol, (snapshot) => {
+      userList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.textContent = `${data.fullName || 'No name'} — ${data.email || 'No email'}`;
+        const blockBtn = document.createElement('button');
+        blockBtn.textContent = data.blocked ? 'Unblock' : 'Block';
+        blockBtn.onclick = async () => {
+          await updateDoc(doc(db, "users", doc.id), { blocked: !data.blocked });
+        };
+        li.appendChild(blockBtn);
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = async () => {
+          await deleteDoc(doc(db, "users", doc.id));
+        };
+        li.appendChild(delBtn);
+        userList.appendChild(li);
+      });
+    });
+  }
+
+  // Toggle admin panel visibility
+  adminToggleBtn.addEventListener('click', () => {
+    adminPanelVisible = !adminPanelVisible;
+    document.querySelectorAll('.admin-only').forEach(btn => {
+      btn.style.display = adminPanelVisible ? 'inline-block' : 'none';
+    });
+    document.querySelectorAll('section.admin-only').forEach(sec => {
+      sec.style.display = adminPanelVisible && sec.id === document.querySelector('.tab-btn.active').dataset.target ? 'block' : 'none';
+    });
+    adminToggleBtn.textContent = adminPanelVisible ? "Hide Admin Panel" : "Show Admin Panel";
+
+    // If admin panel hidden, switch to default tab
+    if(!adminPanelVisible) {
+      showSection('announcements');
+    }
+  });
+
+  // On auth state change
+  onAuthStateChanged(auth, async (user) => {
+    if(user) {
+      currentUser = user;
+      // Load user data from Firestore
+      const userDoc = doc(db, "users", user.uid);
+      const userSnap = await getDocs(collection(db, "users"));
+      const currentUserData = userSnap.docs.find(d => d.id === user.uid)?.data();
+      isAdmin = currentUserData?.admin || false;
+
+      if(isAdmin){
+        adminToggleBtn.style.display = 'inline-block';
+        // Preload admin data
+        loadExecutives();
+        loadUsers();
+      } else {
+        adminToggleBtn.style.display = 'none';
+      }
+
+      // Load common data for all users
+      loadAnnouncements();
+      loadEvents();
+      loadBirthdayWall();
+      loadLostAndFound();
+      loadResources();
+      loadFeedback();
+
+      // Show default section
+      showSection('announcements');
+
+    } else {
+      // Not logged in
