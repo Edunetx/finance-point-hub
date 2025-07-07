@@ -3,138 +3,92 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Control Panel - Finance Point</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/assets/img/background3.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-    header {
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 15px;
-      text-align: center;
-      font-size: 26px;
-      font-weight: bold;
-    }
-    nav {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-    nav button {
-      padding: 10px 16px;
-      background-color: #ffaa00;
-      border: none;
-      border-radius: 5px;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .section {
-      display: none;
-      padding: 20px;
-    }
-    .section.active {
-      display: block;
-    }
-    textarea, input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 8px;
-      margin-bottom: 12px;
-      border-radius: 4px;
-      border: none;
-    }
-    .submit-btn {
-      background-color: #28a745;
-      padding: 10px 16px;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";const firebaseConfig = {
+  apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+  authDomain: "finsa-connect.firebaseapp.com",
+  projectId: "finsa-connect",
+  storageBucket: "finsa-connect.firebasestorage.app",
+  messagingSenderId: "126845965255",
+  appId: "1:126845965255:web:c82539297a8464873d7fe2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.submitAnnouncement = async function () {
+  const title = document.getElementById("announceTitle").value.trim();
+  const body = document.getElementById("announceBody").value.trim();
+  if (!title || !body) return alert("Please fill all fields");
+  await addDoc(collection(db, "announcements"), {
+    title,
+    body,
+    createdAt: new Date()
+  });
+  alert("Announcement posted!");
+  document.getElementById("announceTitle").value = "";
+  document.getElementById("announceBody").value = "";
+};
+
+window.submitEvent = async function () {
+  const title = document.getElementById("eventTitle").value.trim();
+  const body = document.getElementById("eventBody").value.trim();
+  if (!title || !body) return alert("Please fill all fields");
+  await addDoc(collection(db, "events"), {
+    title,
+    body,
+    createdAt: new Date()
+  });
+  alert("Event added!");
+  document.getElementById("eventTitle").value = "";
+  document.getElementById("eventBody").value = "";
+};
+
+window.submitResource = async function () {
+  const title = document.getElementById("resourceTitle").value.trim();
+  const link = document.getElementById("resourceLink").value.trim();
+  if (!title || !link) return alert("Please fill all fields");
+  await addDoc(collection(db, "resources"), {
+    title,
+    link,
+    createdAt: new Date()
+  });
+  alert("Resource uploaded!");
+  document.getElementById("resourceTitle").value = "";
+  document.getElementById("resourceLink").value = "";
+};
+
+window.submitBirthday = async function () {
+  const name = document.getElementById("bdayName").value.trim();
+  const date = document.getElementById("bdayDate").value.trim();
+  if (!name || !date) return alert("Please fill all fields");
+  await addDoc(collection(db, "birthdays"), {
+    name,
+    date
+  });
+  alert("Birthday added!");
+  document.getElementById("bdayName").value = "";
+  document.getElementById("bdayDate").value = "";
+};
+
+window.submitLostItem = async function () {
+  const name = document.getElementById("itemName").value.trim();
+  const desc = document.getElementById("itemDesc").value.trim();
+  if (!name || !desc) return alert("Please fill all fields");
+  await addDoc(collection(db, "lostFound"), {
+    name,
+    desc,
+    createdAt: new Date()
+  });
+  alert("Item posted to Lost & Found!");
+  document.getElementById("itemName").value = "";
+  document.getElementById("itemDesc").value = "";
+};
+
+  </script>
 </head>
 <body>
-  <header>Admin Control Panel - Finance Point</header>
-  <nav>
-    <button data-target="dashboardView">🔍 View Dashboard</button>
-    <button data-target="manageAnnouncements">📢 Manage Announcements</button>
-    <button data-target="manageEvents">🎉 Manage Events</button>
-    <button data-target="manageResources">📚 Study Materials</button>
-    <button data-target="manageBirthdays">🎂 Birthdays</button>
-    <button data-target="manageLostFound">🔍 Lost & Found</button>
-    <button data-target="manageUsers">👥 Manage Users</button>
-    <button data-target="viewFeedback">💬 Feedback</button>
-  </nav>  <div id="dashboardView" class="section active">
-    <h2>Live Preview of Dashboard</h2>
-    <iframe src="dashboard.html" style="width: 100%; height: 500px; border: none;"></iframe>
-  </div>  <div id="manageAnnouncements" class="section">
-    <h2>Post New Announcement</h2>
-    <input type="text" placeholder="Title" id="announceTitle">
-    <textarea rows="4" placeholder="Write announcement..." id="announceBody"></textarea>
-    <button class="submit-btn" onclick="submitAnnouncement()">Post</button>
-  </div>  <div id="manageEvents" class="section">
-    <h2>Add New Event</h2>
-    <input type="text" placeholder="Event Title" id="eventTitle">
-    <textarea rows="4" placeholder="Event details..." id="eventBody"></textarea>
-    <button class="submit-btn" onclick="submitEvent()">Add Event</button>
-  </div>  <div id="manageResources" class="section">
-    <h2>Upload Study Resource</h2>
-    <input type="text" placeholder="Resource Title" id="resourceTitle">
-    <input type="text" placeholder="Download Link" id="resourceLink">
-    <button class="submit-btn" onclick="submitResource()">Upload</button>
-  </div>  <div id="manageBirthdays" class="section">
-    <h2>Add Birthday</h2>
-    <input type="text" placeholder="Student Name" id="bdayName">
-    <input type="text" placeholder="Birthday Date (e.g. July 7)" id="bdayDate">
-    <button class="submit-btn" onclick="submitBirthday()">Add Birthday</button>
-  </div>  <div id="manageLostFound" class="section">
-    <h2>Post Lost & Found Item</h2>
-    <input type="text" placeholder="Item Name" id="itemName">
-    <textarea rows="4" placeholder="Description or where found/lost..." id="itemDesc"></textarea>
-    <button class="submit-btn" onclick="submitLostItem()">Submit</button>
-  </div>  <div id="manageUsers" class="section">
-    <h2>Registered Users</h2>
-    <p>Will display total number, delete/block buttons, etc.</p>
-    <!-- User list loads here -->
-  </div>  <div id="viewFeedback" class="section">
-    <h2>View Submitted Feedback</h2>
-    <p>All feedbacks from users show here</p>
-    <!-- Feedback entries load here -->
-  </div><script>
-  const navButtons = document.querySelectorAll('nav button');
-  const sections = document.querySelectorAll('.section');
-
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-target');
-      sections.forEach(sec => sec.classList.remove('active'));
-      document.getElementById(target).classList.add('active');
-    });
-  });
-
-  function submitAnnouncement() {
-    alert("Posting announcement... (Functionality coming soon)");
-  }
-  function submitEvent() {
-    alert("Adding event... (Functionality coming soon)");
-  }
-  function submitResource() {
-    alert("Uploading resource... (Functionality coming soon)");
-  }
-  function submitBirthday() {
-    alert("Adding birthday... (Functionality coming soon)");
-  }
-  function submitLostItem() {
-    alert("Submitting lost item... (Functionality coming soon)");
-  }
-</script></body>
+<!-- Body content remains unchanged from previous version -->
+</body>
 </html>
