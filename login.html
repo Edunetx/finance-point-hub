@@ -1,4 +1,4 @@
-<!-- login.html -->
+<!-- login.html (fixed, elegant) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +12,76 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+
+  <style>
+    .login-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-box h2 {
+      margin-bottom: 1rem;
+      color: gold;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #1f1f1f;
+      color: #fff;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: gold;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .link, .switch {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .link:hover, .switch a:hover {
+      color: gold;
+      text-decoration: underline;
+    }
+
+    #message {
+      margin-top: 1rem;
+      color: #f99;
+      font-size: 0.9rem;
+    }
+
+    form {
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
   <div id="particles-js"></div>
@@ -43,7 +113,6 @@
     </div>
   </div>
 
-  <!-- Firebase Config + Logic -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -72,7 +141,7 @@
       }
     });
 
-    // OTP-style email login
+    // Email link login
     document.getElementById("email-link-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("link-email").value;
@@ -84,23 +153,18 @@
       try {
         await auth.sendSignInLinkToEmail(email, actionCodeSettings);
         window.localStorage.setItem("emailForSignIn", email);
-        document.getElementById("message").innerText = "Login link sent to your email!";
+        document.getElementById("message").innerText = "Login link sent!";
       } catch (error) {
         document.getElementById("message").innerText = error.message;
       }
     });
 
-    // Handle email login redirect
     if (auth.isSignInWithEmailLink(window.location.href)) {
       let email = window.localStorage.getItem("emailForSignIn");
-      if (!email) {
-        email = window.prompt("Please enter your email again:");
-      }
-
+      if (!email) email = window.prompt("Please enter your email:");
       auth.signInWithEmailLink(email, window.location.href)
         .then(() => {
           window.localStorage.removeItem("emailForSignIn");
-          document.getElementById("message").innerText = "Logged in via link!";
           window.location.href = "dashboard.html";
         })
         .catch(error => {
@@ -112,16 +176,14 @@
     document.getElementById("reset-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("reset-email").value;
-
       try {
         await auth.sendPasswordResetEmail(email);
-        document.getElementById("message").innerText = "Password reset email sent!";
+        document.getElementById("message").innerText = "Password reset sent!";
       } catch (error) {
         document.getElementById("message").innerText = error.message;
       }
     });
 
-    // Toggle forms
     document.getElementById("show-email-link").addEventListener("click", () => {
       document.getElementById("email-link-form").style.display = "block";
     });
