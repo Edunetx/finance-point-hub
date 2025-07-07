@@ -1,0 +1,122 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - Finance Point</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
+</head>
+<body>
+  <h2>Login</h2>
+
+  <!-- Email + Password Login -->
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required /><br />
+    <input type="password" id="password" placeholder="Password" required /><br />
+    <button type="submit">Login</button>
+  </form>
+
+  <!-- OR -->
+  <p>OR</p>
+
+  <!-- Email Link Login -->
+  <form id="link-login-form">
+    <input type="email" id="link-email" placeholder="Email for OTP Link" required /><br />
+    <button type="submit">Send Login Link</button>
+  </form>
+
+  <!-- Forgot Password -->
+  <p>Forgot your password?</p>
+  <form id="reset-form">
+    <input type="email" id="reset-email" placeholder="Email to Reset Password" required /><br />
+    <button type="submit">Send Reset Link</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    // Email + Password login
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        document.getElementById("message").innerText = "Login successful!";
+        // Redirect to dashboard if needed
+        // window.location.href = "dashboard.html";
+      } catch (error) {
+        document.getElementById("message").innerText = error.message;
+      }
+    });
+
+    // Email Link Login (OTP-style)
+    document.getElementById("link-login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("link-email").value;
+
+      const actionCodeSettings = {
+        url: "https://financepoint.netlify.app/login.html", // Replace with your actual domain
+        handleCodeInApp: true,
+      };
+
+      try {
+        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+        window.localStorage.setItem("emailForSignIn", email);
+        document.getElementById("message").innerText = "Login link sent to your email.";
+      } catch (error) {
+        document.getElementById("message").innerText = error.message;
+      }
+    });
+
+    // Handle email link if clicked
+    if (auth.isSignInWithEmailLink(window.location.href)) {
+      let email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        email = window.prompt("Please enter your email again to confirm.");
+      }
+
+      auth.signInWithEmailLink(email, window.location.href)
+        .then(() => {
+          document.getElementById("message").innerText = "Logged in with email link!";
+          // window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          document.getElementById("message").innerText = error.message;
+        });
+    }
+
+    // Forgot Password
+    document.getElementById("reset-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("reset-email").value;
+
+      try {
+        await auth.sendPasswordResetEmail(email);
+        document.getElementById("message").innerText = "Password reset email sent.";
+      } catch (error) {
+        document.getElementById("message").innerText = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
