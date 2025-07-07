@@ -1,15 +1,38 @@
 <!-- signup.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Signup - Finance Point</title>
   <meta charset="UTF-8" />
+  <title>Sign Up - Finance Point</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Finance Point Sign Up</h2>
+
+      <form id="signup-form">
+        <input type="text" id="fullName" placeholder="Full Name" required />
+        <input type="text" id="matricNumber" placeholder="Matric Number" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Create Account</button>
+      </form>
+
+      <p class="switch">Already have an account? <a href="login.html">Login</a></p>
+      <p id="message"></p>
+    </div>
+  </div>
 
   <script>
     const firebaseConfig = {
@@ -24,45 +47,34 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-  </script>
-</head>
-<body>
-  <h2>Sign Up</h2>
-  <form id="signup-form">
-    <input type="text" id="fullname" placeholder="Full Name" required /><br />
-    <input type="text" id="matric" placeholder="Matric Number" required /><br />
-    <input type="email" id="email" placeholder="Email" required /><br />
-    <input type="password" id="password" placeholder="Password" required /><br />
-    <button type="submit">Sign Up</button>
-  </form>
 
-  <p id="message"></p>
-
-  <script>
-    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    document.getElementById("signup-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const fullname = document.getElementById('fullname').value;
-      const matric = document.getElementById('matric').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+
+      const fullName = document.getElementById("fullName").value;
+      const matricNumber = document.getElementById("matricNumber").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
       try {
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
+        const uid = userCredential.user.uid;
 
-        // Save extra data to Firestore
-        await db.collection('users').doc(user.uid).set({
-          fullName: fullname,
-          matricNumber: matric,
-          email: email,
+        await db.collection("users").doc(uid).set({
+          fullName,
+          matricNumber,
+          email,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        document.getElementById('message').innerText = 'Signup successful!';
+        document.getElementById("message").innerText = "Sign-up successful!";
+        window.location.href = "dashboard.html";
       } catch (error) {
-        document.getElementById('message').innerText = error.message;
+        document.getElementById("message").innerText = error.message;
       }
     });
   </script>
+
+  <script src="particles-config.js"></script>
 </body>
 </html>
