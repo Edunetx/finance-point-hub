@@ -1,198 +1,145 @@
-<!-- login.html (fixed, elegant) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login - Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Finance Point - Login</title>
   <style>
-    .login-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 400px;
+    /* Basic center and background */
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
     }
-
-    .login-box {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
+    .container {
+      background: rgba(0,0,0,0.7);
       padding: 2rem;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
-      text-align: center;
-      color: #fff;
+      border-radius: 10px;
+      width: 320px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
     }
-
-    .login-box h2 {
-      margin-bottom: 1rem;
-      color: gold;
-    }
-
-    .login-box input {
+    input[type=email], input[type=password] {
       width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
       border: none;
-      border-radius: 8px;
-      background-color: #1f1f1f;
-      color: #fff;
+      font-size: 1rem;
     }
-
-    .login-box button {
+    button {
+      margin-top: 15px;
       width: 100%;
-      padding: 0.7rem;
-      background-color: gold;
-      color: #000;
+      padding: 10px;
+      background-color: #ffb700;
       border: none;
-      border-radius: 8px;
+      border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 0.5rem;
+      color: #000;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
     }
-
-    .link, .switch {
-      margin-top: 1rem;
+    button:hover {
+      background-color: #ffa500;
+    }
+    .link {
+      margin-top: 10px;
       font-size: 0.9rem;
-      color: #ccc;
-      cursor: pointer;
+      text-align: center;
     }
-
-    .link:hover, .switch a:hover {
-      color: gold;
+    .link a {
+      color: #ffb700;
+      text-decoration: none;
+    }
+    .link a:hover {
       text-decoration: underline;
     }
-
-    #message {
-      margin-top: 1rem;
-      color: #f99;
-      font-size: 0.9rem;
-    }
-
-    form {
-      margin-bottom: 0.5rem;
+    .error {
+      margin-top: 10px;
+      color: #ff4d4d;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
 
-  <div class="login-container">
-    <div class="login-box">
-      <h2>Finance Point Login</h2>
-
-      <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-
-      <p class="link" id="show-email-link">🔁 Login with email link</p>
-      <form id="email-link-form" style="display: none;">
-        <input type="email" id="link-email" placeholder="Your Email" required />
-        <button type="submit">Send Login Link</button>
-      </form>
-
-      <p class="link" id="forgot">Forgot Password?</p>
-      <form id="reset-form" style="display: none;">
-        <input type="email" id="reset-email" placeholder="Your Email" required />
-        <button type="submit">Send Reset Email</button>
-      </form>
-
-      <p class="switch">Don't have an account? <a href="signup.html">Sign Up</a></p>
-      <p id="message"></p>
-    </div>
+<div class="container">
+  <h2>Finance Point Login</h2>
+  <input type="email" id="email" placeholder="Email" autocomplete="username" />
+  <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+  <button id="loginBtn">Login</button>
+  <div class="link">
+    Don't have an account? <a href="signup.html">Sign Up</a>
   </div>
+  <div class="error" id="error"></div>
+</div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.firebasestorage.app",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
 
-    // Login with email & password
-    document.getElementById("login-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-        document.getElementById("message").innerText = "Login successful!";
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        document.getElementById("message").innerText = error.message;
-      }
-    });
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const errorDiv = document.getElementById('error');
 
-    // Email link login
-    document.getElementById("email-link-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("link-email").value;
-      const actionCodeSettings = {
-        url: "https://financepoint.netlify.app/login.html",
-        handleCodeInApp: true
-      };
+  loginBtn.addEventListener('click', async () => {
+    errorDiv.textContent = "";
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-      try {
-        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
-        window.localStorage.setItem("emailForSignIn", email);
-        document.getElementById("message").innerText = "Login link sent!";
-      } catch (error) {
-        document.getElementById("message").innerText = error.message;
-      }
-    });
-
-    if (auth.isSignInWithEmailLink(window.location.href)) {
-      let email = window.localStorage.getItem("emailForSignIn");
-      if (!email) email = window.prompt("Please enter your email:");
-      auth.signInWithEmailLink(email, window.location.href)
-        .then(() => {
-          window.localStorage.removeItem("emailForSignIn");
-          window.location.href = "dashboard.html";
-        })
-        .catch(error => {
-          document.getElementById("message").innerText = error.message;
-        });
+    if (!email || !password) {
+      errorDiv.textContent = "Please enter email and password.";
+      return;
     }
 
-    // Password reset
-    document.getElementById("reset-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("reset-email").value;
-      try {
-        await auth.sendPasswordResetEmail(email);
-        document.getElementById("message").innerText = "Password reset sent!";
-      } catch (error) {
-        document.getElementById("message").innerText = error.message;
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check Firestore if user is admin
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userDocRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        if (userData.admin === true) {
+          // Redirect admin to admin.html
+          window.location.href = "admin.html";
+        } else {
+          // Redirect normal users to dashboard.html
+          window.location.href = "dashboard.html";
+        }
+      } else {
+        errorDiv.textContent = "User data not found.";
       }
-    });
+    } catch (error) {
+      errorDiv.textContent = error.message;
+    }
+  });
+</script>
 
-    document.getElementById("show-email-link").addEventListener("click", () => {
-      document.getElementById("email-link-form").style.display = "block";
-    });
-
-    document.getElementById("forgot").addEventListener("click", () => {
-      document.getElementById("reset-form").style.display = "block";
-    });
-  </script>
-
-  <script src="particles-config.js"></script>
 </body>
 </html>
