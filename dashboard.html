@@ -1,238 +1,115 @@
+<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard | Finance Point</title>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+  <title>Finance Point Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    body {
-      min-height: 100vh;
-      background: #0e0e0e
-        url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif')
-        no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      display: flex;
-      overflow-x: hidden;
-    }
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 20px 10px;
-      z-index: 10;
-      overflow-y: auto;
-    }
+  <!-- Style -->
+  <link rel="stylesheet" href="style.css" />
 
-    .sidebar h2 {
-      color: #ffd700;
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 30px;
-      font-weight: 600;
-    }
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: background 0.3s;
-      font-weight: 500;
-    }
-
-    .sidebar a:hover,
-    .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: 700;
-    }
-
-    .main {
-      margin-left: 220px;
-      padding: 2rem;
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    .header {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-
-    .header h1 {
-      font-size: 24px;
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .quick-nav {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin: 20px 0;
-    }
-
-    .quick-nav a {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 1.2rem;
-      border-radius: 12px;
-      text-align: center;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .quick-nav a:hover {
-      background: #ffd700;
-      color: #000;
-    }
-
-    .quick-nav a i {
-      font-size: 2rem;
-    }
-
-    .facts,
-    .notifications {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-    }
-
-    .facts h2,
-    .notifications h2 {
-      color: #ffd700;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .facts ul,
-    .notifications ul {
-      list-style: disc;
-      padding-left: 20px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-      .main {
-        margin-left: 0;
-        padding: 1rem;
-      }
-      .quick-nav {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      }
-      .quick-nav a i {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html" class="active"
-      ><i class="fas fa-home"></i> Dashboard</a
-    >
-    <a href="downloads.html"
-      ><i class="fas fa-file-download"></i> Downloads</a
-    >
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="lostandfound.html"><i class="fas fa-search"></i> Lost & Found</a>
-    <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
-    <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>
+  <!-- Particles background -->
+  <div id="particles-js"></div>
 
-  <div class="main">
-    <div class="header">
-      <h1>👋 Welcome to the Finance Point Dashboard</h1>
+  <!-- Top Nav -->
+  <header class="topnav">
+    <h1>Finance Point</h1>
+    <div class="user-info">
+      <span id="user-name">Loading...</span>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <ul>
+      <li><a href="announcements.html">📢 Announcements</a></li>
+      <li><a href="events.html">📅 Events</a></li>
+      <li><a href="executives.html">👥 Executives</a></li>
+      <li><a href="downloads.html">📥 Downloads</a></li>
+      <li><a href="quiz.html">🧠 Quiz of the Week</a></li>
+      <li><a href="birthday.html">🎂 Birthday Wall</a></li>
+      <li><a href="lost-found.html">📦 Lost & Found</a></li>
+      <li><a href="feedback.html">📣 Feedback Box</a></li>
+      <li><a href="tips.html">💡 Finance Tips</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Dashboard -->
+  <main class="dashboard-content">
+    <h2 id="greeting">Welcome!</h2>
+    <p><strong>Matric Number:</strong> <span id="matric-number">...</span></p>
+    <p><strong>Email:</strong> <span id="user-email">...</span></p>
+
+    <div class="card">
+      <h3>📊 Finance Fact of the Day</h3>
+      <p id="fact">Money is not the root of all evil — the *love* of money is. 😉</p>
     </div>
 
-    <div class="quick-nav">
-      <a href="downloads.html">
-        <i class="fas fa-file-download"></i>
-        Downloads
-      </a>
-      <a href="events.html">
-        <i class="fas fa-calendar"></i>
-        Events
-      </a>
-      <a href="news.html">
-        <i class="fas fa-bullhorn"></i>
-        News
-      </a>
-      <a href="executives.html">
-        <i class="fas fa-users"></i>
-        Executives
-      </a>
-      <a href="lostandfound.html">
-        <i class="fas fa-search"></i>
-        Lost & Found
-      </a>
-      <a href="birthday.html">
-        <i class="fas fa-birthday-cake"></i>
-        Birthday Wall
-      </a>
-      <a href="study.html">
-        <i class="fas fa-book"></i>
-        Study Resources
-      </a>
+    <div class="card">
+      <h3>📰 Quick Tip</h3>
+      <p>Budgeting is telling your money where to go, not wondering where it went.</p>
     </div>
 
-    <div class="facts">
-      <h2>💡 Finance Facts</h2>
-      <ul>
-        <li>CBN regulates Nigeria’s monetary policy using tools like MPR, CRR, and liquidity ratio.</li>
-        <li>First Bank Nigeria was established in 1894 as the Bank of British West Africa.</li>
-        <li>Capital budgeting helps determine the viability of long-term financial investments.</li>
-      </ul>
+    <div class="card">
+      <h3>📢 Latest Announcement</h3>
+      <p>New Finance Challenge begins next week. Stay tuned!</p>
     </div>
+  </main>
 
-    <div class="notifications">
-      <h2>📚 Academic Tips</h2>
-      <ul>
-        <li>Always revise your lecture notes within 24 hours to improve retention.</li>
-        <li>Use color-coded flashcards for definitions and concepts.</li>
-        <li>Join a study group to discuss and simplify tough topics like finance law.</li>
-      </ul>
-    </div>
-  </div>
+  <!-- Firebase Config -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+
+  <!-- Auth & Data Script -->
+  <script>
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const doc = await db.collection("users").doc(user.uid).get();
+      const data = doc.data();
+
+      document.getElementById("user-name").innerText = data.fullName || "Student";
+      document.getElementById("greeting").innerText = `Welcome, ${data.fullName || "Student"}!`;
+      document.getElementById("matric-number").innerText = data.matricNumber || "N/A";
+      document.getElementById("user-email").innerText = user.email;
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+
+  <!-- Particles Config -->
+  <script src="particles-config.js"></script>
 </body>
 </html>
