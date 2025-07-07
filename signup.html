@@ -1,4 +1,4 @@
-<!-- signup.html -->
+<!-- signup.html (final polished version) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,70 @@
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    .login-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-box h2 {
+      margin-bottom: 1rem;
+      color: gold;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #1f1f1f;
+      color: #fff;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: gold;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .switch {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .switch a:hover {
+      color: gold;
+    }
+
+    #message {
+      margin-top: 1rem;
+      color: #f99;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
   <div id="particles-js"></div>
