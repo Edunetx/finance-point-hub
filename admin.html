@@ -1,302 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CBT Admin | Finance Point</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
-<style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
-  body {
-    background: #0e0e0e url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-    padding: 20px;
-    min-height: 100vh;
-  }
-  h1 {
-    color: #ffd700;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  #questions {
-    max-width: 900px;
-    margin: auto;
-  }
-  .question-item {
-    background: rgba(255,255,255,0.08);
-    padding: 15px 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    position: relative;
-  }
-  .question-item textarea,
-  .question-item input[type="text"],
-  .question-item select {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: none;
-    margin: 5px 0 12px;
-    font-size: 14px;
-  }
-  .question-item label {
-    font-weight: 600;
-    display: block;
-    margin-top: 10px;
-  }
-  .remove-btn {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    background: #ff4c4c;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-  }
-  #addBtn, #saveBtn {
-    background: #ffd700;
-    color: #000;
-    border: none;
-    padding: 12px 25px;
-    margin: 10px 5px;
-    border-radius: 30px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    display: block;
-    width: 200px;
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #addBtn:hover, #saveBtn:hover {
-    background: #e0a600;
-  }
-  .status {
-    text-align: center;
-    margin-top: 15px;
-    font-weight: 600;
-    color: #ffd700;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Finance Point - Admin Panel</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      min-height: 100vh;
+    }
+    header {
+      background: #ffb700;
+      color: #000;
+      padding: 1rem 2rem;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    nav {
+      display: flex;
+      background: #203a43;
+      padding: 0.5rem 1rem;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    nav button:hover,
+    nav button.active {
+      background: #ffb700;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    main {
+      padding: 1rem 2rem;
+    }
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.3rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+    }
+    button.submit-btn {
+      margin-top: 1rem;
+      background: #ffb700;
+      color: #000;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    button.submit-btn:hover {
+      background: #ffa500;
+    }
+    .logout-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: #ff0000;
+    }
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>CBT Questions Admin Panel</h1>
 
-  <div id="questions">
-    <!-- Question items will be dynamically added here -->
-  </div>
+<header>
+  Finance Point Admin Panel
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</header>
 
-  <button id="addBtn">+ Add New Question</button>
-  <button id="saveBtn">Save All Questions</button>
-  <div class="status" id="status"></div>
+<nav>
+  <button class="tab-btn active" data-target="executives">Executives</button>
+  <button class="tab-btn" data-target="announcements">Announcements</button>
+  <button class="tab-btn" data-target="events">Events</button>
+</nav>
 
-  <script>
-    const STORAGE_URL = "https://api.jsonstorage.net/v1/json";
-    const STORAGE_ID_KEY = "finance_cbt_json_id";
+<main>
+  <section id="executives" class="active">
+    <h2>Manage Executives</h2>
+    <label for="execName">Name:</label>
+    <input type="text" id="execName" placeholder="Executive Name" />
+    <label for="execRole">Role:</label>
+    <input type="text" id="execRole" placeholder="Role (e.g. President)" />
+    <button class="submit-btn" id="addExecBtn">Add Executive</button>
+    <div id="execMessage" class="message"></div>
+    <ul id="execList"></ul>
+  </section>
 
-    let jsonStorageId = localStorage.getItem(STORAGE_ID_KEY) || "";
+  <section id="announcements">
+    <h2>Manage Announcements</h2>
+    <label for="announcementText">Announcement:</label>
+    <textarea id="announcementText" rows="3" placeholder="Write announcement here"></textarea>
+    <button class="submit-btn" id="addAnnouncementBtn">Add Announcement</button>
+    <div id="announcementMessage" class="message"></div>
+    <ul id="announcementList"></ul>
+  </section>
 
-    const questionsContainer = document.getElementById('questions');
-    const addBtn = document.getElementById('addBtn');
-    const saveBtn = document.getElementById('saveBtn');
-    const statusDiv = document.getElementById('status');
+  <section id="events">
+    <h2>Manage Events</h2>
+    <label for="eventTitle">Title:</label>
+    <input type="text" id="eventTitle" placeholder="Event Title" />
+    <label for="eventDate">Date:</label>
+    <input type="date" id="eventDate" />
+    <button class="submit-btn" id="addEventBtn">Add Event</button>
+    <div id="eventMessage" class="message"></div>
+    <ul id="eventList"></ul>
+  </section>
+</main>
 
-    // Sample questions to create initially
-    const sampleQuestions = [
-      {
-        question: "What is the main function of the Central Bank of Nigeria?",
-        options: {
-          A: "Control inflation",
-          B: "Regulate banks",
-          C: "Print currency",
-          D: "Collect taxes"
-        },
-        correctAnswer: "B"
-      },
-      {
-        question: "Which of these is an example of a financial asset?",
-        options: {
-          A: "Building",
-          B: "Cash",
-          C: "Machine",
-          D: "Vehicle"
-        },
-        correctAnswer: "B"
-      },
-      {
-        question: "What does 'liquidity' refer to in finance?",
-        options: {
-          A: "Profitability of a company",
-          B: "Ease of converting assets to cash",
-          C: "Company's debt level",
-          D: "Investment risk"
-        },
-        correctAnswer: "B"
-      }
-    ];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    async function init() {
-      if (!jsonStorageId) {
-        statusDiv.textContent = "Creating storage document with sample questions...";
-        try {
-          const created = await createStorage(sampleQuestions);
-          jsonStorageId = created.id;
-          localStorage.setItem(STORAGE_ID_KEY, jsonStorageId);
-          statusDiv.textContent = "Storage created! Loaded sample questions.";
-          renderQuestions(sampleQuestions);
-        } catch (err) {
-          statusDiv.textContent = "Failed to create storage: " + err.message;
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Redirect non-admin users to login
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnap = await getDocs(collection(db, "users"));
+      const userRef = userSnap.docs.find(doc => doc.id === user.uid);
+      if (userRef) {
+        const userData = userRef.data();
+        if (!userData.admin) {
+          alert("Access denied. You are not an admin.");
+          await signOut(auth);
+          window.location.href = "login.html";
         }
       } else {
-        statusDiv.textContent = "Loading questions...";
-        try {
-          const questions = await loadQuestions();
-          renderQuestions(questions);
-          statusDiv.textContent = "Questions loaded.";
-        } catch (err) {
-          statusDiv.textContent = "Failed to load questions: " + err.message;
-        }
+        alert("User data not found.");
+        await signOut(auth);
+        window.location.href = "login.html";
       }
+    } else {
+      window.location.href = "login.html";
     }
+  });
 
-    async function createStorage(initialData) {
-      const response = await fetch(STORAGE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(initialData)
+  // Logout button
+  const logoutBtn = document.getElementById('logoutBtn');
+  logoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+  });
+
+  // Tabs
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('main section');
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-target');
+      sections.forEach(sec => {
+        sec.classList.toggle('active', sec.id === target);
       });
-      if (!response.ok) throw new Error("Failed to create JSON storage");
-      return await response.json();
-    }
+    });
+  });
 
-    async function loadQuestions() {
-      if (!jsonStorageId) throw new Error("No storage ID found.");
-      const response = await fetch(`${STORAGE_URL}/${jsonStorageId}`);
-      if (!response.ok) throw new Error("Failed to fetch questions");
-      return await response.json();
-    }
+  // === Executives Management ===
+  const execList = document.getElementById('execList');
+  const execNameInput = document.getElementById('execName');
+  const execRoleInput = document.getElementById('execRole');
+  const execMessage = document.getElementById('execMessage');
+  const execCollection = collection(db, "executives");
 
-    async function saveQuestions(data) {
-      if (!jsonStorageId) throw new Error("No storage ID found.");
-      const response = await fetch(`${STORAGE_URL}/${jsonStorageId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      if (!response.ok) throw new Error("Failed to save questions");
-      return await response.json();
-    }
-
-    function renderQuestions(questions) {
-      questionsContainer.innerHTML = '';
-      questions.forEach((q, idx) => {
-        questionsContainer.appendChild(createQuestionElement(q, idx));
-      });
-    }
-
-    function createQuestionElement(question = null, index) {
-      const div = document.createElement('div');
-      div.className = "question-item";
-
-      const removeBtn = document.createElement('button');
-      removeBtn.className = "remove-btn";
-      removeBtn.textContent = "×";
-      removeBtn.onclick = () => {
-        div.remove();
+  async function loadExecutives() {
+    execList.innerHTML = "";
+    const querySnapshot = await getDocs(execCollection);
+    querySnapshot.forEach(docSnap => {
+      const exec = docSnap.data();
+      const li = document.createElement('li');
+      li.textContent = `${exec.name} - ${exec.role}`;
+      const delBtn = document.createElement('button');
+      delBtn.textContent = "Delete";
+      delBtn.style.marginLeft = "10px";
+      delBtn.onclick = async () => {
+        await deleteDoc(doc(db, "executives", docSnap.id));
+        execMessage.textContent = "Executive deleted.";
+        loadExecutives();
       };
-      div.appendChild(removeBtn);
+      li.appendChild(delBtn);
+      execList.appendChild(li);
+    });
+  }
 
-      const qLabel = document.createElement('label');
-      qLabel.textContent = `Question #${index + 1}`;
-      div.appendChild(qLabel);
-
-      const qTextarea = document.createElement('textarea');
-      qTextarea.rows = 3;
-      qTextarea.placeholder = "Enter the question here...";
-      qTextarea.value = question ? question.question : "";
-      div.appendChild(qTextarea);
-
-      ['A','B','C','D'].forEach(option => {
-        const optLabel = document.createElement('label');
-        optLabel.textContent = `Option ${option}:`;
-        div.appendChild(optLabel);
-
-        const optInput = document.createElement('input');
-        optInput.type = "text";
-        optInput.placeholder = `Enter option ${option}`;
-        optInput.value = question && question.options ? question.options[option] || "" : "";
-        optInput.dataset.opt = option;
-        div.appendChild(optInput);
-      });
-
-      const correctLabel = document.createElement('label');
-      correctLabel.textContent = "Correct Answer:";
-      div.appendChild(correctLabel);
-
-      const select = document.createElement('select');
-      ['A','B','C','D'].forEach(option => {
-        const opt = document.createElement('option');
-        opt.value = option;
-        opt.textContent = option;
-        select.appendChild(opt);
-      });
-      select.value = question ? question.correctAnswer : 'A';
-      div.appendChild(select);
-
-      return div;
+  document.getElementById('addExecBtn').addEventListener('click', async () => {
+    const name = execNameInput.value.trim();
+    const role = execRoleInput.value.trim();
+    execMessage.textContent = "";
+    if (!name || !role) {
+      execMessage.textContent = "Please fill both fields.";
+      return;
     }
+    await addDoc(execCollection, { name, role });
+    execMessage.textContent = "Executive added.";
+    execNameInput.value = "";
+    execRoleInput.value = "";
+    loadExecutives();
+  });
 
-    function collectQuestions() {
-      const allQuestions = [];
-      const items = document.querySelectorAll('.question-item');
-      items.forEach(div => {
-        const questionText = div.querySelector('textarea').value.trim();
-        const options = {};
-        div.querySelectorAll('input[type=text]').forEach(input => {
-          options[input.dataset.opt] = input.value.trim();
-        });
-        const correctAnswer = div.querySelector('select').value;
-        if(questionText && Object.values(options).every(opt => opt !== "")) {
-          allQuestions.push({ question: questionText, options, correctAnswer });
-        }
-      });
-      return allQuestions;
+  loadExecutives();
+
+  // === Announcements Management ===
+  const announcementList = document.getElementById('announcementList');
+  const announcementText = document.getElementById('announcementText');
+  const announcementMessage = document.getElementById('announcementMessage');
+  const announcementCollection = collection(db, "announcements");
+
+  async function loadAnnouncements() {
+    announcementList.innerHTML = "";
+    const querySnapshot = await getDocs(announcementCollection);
+    querySnapshot.forEach(docSnap => {
+      const ann = docSnap.data();
+      const li = document.createElement('li');
+      li.textContent = ann.text;
+      const delBtn = document.createElement('button');
+      delBtn.textContent = "Delete";
+      delBtn.style.marginLeft = "10px";
+      delBtn.onclick = async () => {
+        await deleteDoc(doc(db, "announcements", docSnap.id));
+        announcementMessage.textContent = "Announcement deleted.";
+        loadAnnouncements();
+      };
+      li.appendChild(delBtn);
+      announcementList.appendChild(li);
+    });
+  }
+
+  document.getElementById('addAnnouncementBtn').addEventListener('click', async () => {
+    const text = announcementText.value.trim();
+    announcementMessage.textContent = "";
+    if (!text) {
+      announcementMessage.textContent = "Please enter announcement text.";
+      return;
     }
+    await addDoc(announcementCollection, { text });
+    announcementMessage.textContent = "Announcement added.";
+    announcementText.value = "";
+    loadAnnouncements();
+  });
 
-    addBtn.onclick = () => {
-      const currentCount = document.querySelectorAll('.question-item').length;
-      questionsContainer.appendChild(createQuestionElement(null, currentCount));
-    };
+  loadAnnouncements();
 
-    saveBtn.onclick = async () => {
-      statusDiv.textContent = "Saving questions...";
-      const data = collectQuestions();
-      if(data.length === 0) {
-        statusDiv.textContent = "Add at least one complete question before saving.";
-        return;
-      }
-      try {
-        await saveQuestions(data);
-        statusDiv.textContent = "Questions saved successfully!";
-      } catch (e) {
-        statusDiv.textContent = "Failed to save questions: " + e.message;
-      }
-    };
+  // === Events Management ===
+  const eventList = document.getElementById('eventList');
+  const eventTitleInput = document.getElementById('eventTitle');
+  const eventDateInput = document.getElementById('eventDate');
+  const eventMessage = document.getElementById('eventMessage');
+  const eventsCollection = collection(db, "events");
 
-    init();
-  </script>
-</body>
-</html>
+  async function loadEvents() {
+    eventList.innerHTML = "";
+    const querySnapshot = await getDocs(eventsCollection);
+    querySnapshot.forEach(docSnap => {
