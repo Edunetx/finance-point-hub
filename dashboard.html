@@ -1,184 +1,160 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Finance Point Dashboard</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/assets/img/background3.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #111, #1a1a1a);
+      color: #fff;
     }
     header {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 10px;
+      padding: 15px;
       text-align: center;
-      font-size: 24px;
+      font-size: 28px;
       font-weight: bold;
+      background: #000000c2;
     }
     nav {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      background: #1c1c1c;
       padding: 10px;
     }
     nav button {
       background: transparent;
-      border: 1px solid white;
+      border: 1px solid #ffd700;
       color: white;
-      padding: 10px;
-      margin: 5px;
+      padding: 8px 12px;
+      margin: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 5px;
     }
     nav button.active {
-      background: #ffb700;
+      background: #ffd700;
       color: black;
-    }
-    main {
-      padding: 20px;
     }
     section {
       display: none;
+      padding: 20px;
     }
     section.active {
       display: block;
     }
     .card {
-      background: rgba(255, 255, 255, 0.1);
+      background: #222;
+      border-left: 5px solid #ffd700;
       padding: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       border-radius: 6px;
     }
-    .card h3, .card p, .card a {
-      color: white;
+    .card h3 {
+      margin: 0 0 6px;
+    }
+    .card a {
+      color: #ffd700;
+      text-decoration: underline;
     }
     #logoutBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      padding: 10px 20px;
-      background: #ff4d4d;
-      color: white;
+      padding: 10px 18px;
+      background: crimson;
       border: none;
+      color: white;
       border-radius: 5px;
       cursor: pointer;
-      z-index: 999;
     }
   </style>
 </head>
-<body><header>Finance Point Dashboard</header><nav>
-  <button class="tab-btn active" data-target="announcements">Announcements</button>
-  <button class="tab-btn" data-target="events">Events</button>
-  <button class="tab-btn" data-target="quiz">Quiz of the Week</button>
-  <button class="tab-btn" data-target="resources">Study Resources</button>
-  <button class="tab-btn" data-target="birthday">Birthday Wall</button>
-  <button class="tab-btn" data-target="lost">Lost & Found</button>
-  <button class="tab-btn" data-target="feedback">Feedback Box</button>
-</nav><button id="logoutBtn">Logout</button>
+<body>
+  <header>Finance Point Dashboard</header>  <nav>
+    <button class="tab-btn active" data-target="announcements">📢 Announcements</button>
+    <button class="tab-btn" data-target="events">🎉 Events</button>
+    <button class="tab-btn" data-target="resources">📚 Resources</button>
+    <button class="tab-btn" data-target="birthday">🎂 Birthdays</button>
+    <button class="tab-btn" data-target="lost">🔍 Lost & Found</button>
+    <button class="tab-btn" data-target="feedback">💬 Feedback</button>
+  </nav><button id="logoutBtn">Logout</button>
 
-<main>
-  <section id="announcements" class="active">
-    <h2>Announcements</h2>
-    <div id="announcementsList"></div>
-  </section>  <section id="events">
-    <h2>Events</h2>
-    <div id="eventsList"></div>
-  </section>  <section id="quiz">
-    <h2>Quiz of the Week</h2>
-    <p>🧠 What is the time value of money? Hint: Future worth vs present.</p>
-  </section>  <section id="resources">
-    <h2>Study Resources</h2>
-    <div id="resourcesList"></div>
-  </section>  <section id="birthday">
-    <h2>Birthday Wall</h2>
-    <div id="birthdayList"></div>
-  </section>  <section id="lost">
-    <h2>Lost & Found</h2>
-    <div id="lostList"></div>
-  </section>  <section id="feedback">
-    <h2>Feedback Box</h2>
-    <p>Send suggestions directly to the PRO on WhatsApp 📲 08142452729</p>
-  </section>
-</main><script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <main>
+    <section id="announcements" class="active"><div id="announcementsList"></div></section>
+    <section id="events"><div id="eventsList"></div></section>
+    <section id="resources"><div id="resourcesList"></div></section>
+    <section id="birthday"><div id="birthdayList"></div></section>
+    <section id="lost"><div id="lostList"></div></section>
+    <section id="feedback"><p>Contact PRO via WhatsApp: <a href="https://wa.me/2348142452729">08142452729</a></p></section>
+  </main>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.firebasestorage.app",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "login.html";
-    }).catch((error) => {
-      alert("Logout failed.");
+    onAuthStateChanged(auth, user => {
+      if (!user) window.location.href = "login.html";
     });
-  });
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-    }
-  });
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      signOut(auth).then(() => location.href = "login.html");
+    });
 
-  async function loadData(colName, targetId) {
-    const colRef = collection(db, colName);
-    const q = query(colRef, orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-    const container = document.getElementById(targetId);
-    container.innerHTML = "";
-    if (snapshot.empty) {
-      container.innerHTML = `<div class="card"><h3>Sample Post</h3><p>This is a placeholder until real data is added.</p></div>`;
-      return;
-    }
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      let card = "<div class='card'>";
-      if (colName === "resources") {
-        card += `<h3>${data.title}</h3><a href="${data.link}" target="_blank">Download</a>`;
-      } else if (colName === "birthdays") {
-        card += `<p>🎉 ${data.name} - ${data.date}</p>`;
-      } else if (colName === "lostFound") {
-        card += `<h3>${data.name}</h3><p>${data.desc}</p>`;
-      } else {
-        card += `<h3>${data.title}</h3><p>${data.body}</p>`;
+    async function loadSection(col, containerId) {
+      const colRef = collection(db, col);
+      const q = query(colRef, orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      if (snapshot.empty) {
+        container.innerHTML = `<div class='card'><p>No data yet. Stay tuned!</p></div>`;
+        return;
       }
-      card += "</div>";
-      container.innerHTML += card;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        let html = `<div class='card'>`;
+        if (col === "resources") {
+          html += `<h3>${data.title}</h3><a href='${data.link}' target='_blank'>Download</a>`;
+        } else if (col === "birthdays") {
+          html += `<p>🎉 ${data.name} - ${data.date}</p>`;
+        } else if (col === "lostFound") {
+          html += `<h3>${data.name}</h3><p>${data.desc}</p>`;
+        } else {
+          html += `<h3>${data.title}</h3><p>${data.body}</p>`;
+        }
+        html += `</div>`;
+        container.innerHTML += html;
+      });
+    }
+
+    loadSection("announcements", "announcementsList");
+    loadSection("events", "eventsList");
+    loadSection("resources", "resourcesList");
+    loadSection("birthdays", "birthdayList");
+    loadSection("lostFound", "lostList");
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("main section").forEach(sec => sec.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.target).classList.add("active");
+      });
     });
-  }
-
-  loadData("announcements", "announcementsList");
-  loadData("events", "eventsList");
-  loadData("resources", "resourcesList");
-  loadData("birthdays", "birthdayList");
-  loadData("lostFound", "lostList");
-
-  const tabBtns = document.querySelectorAll(".tab-btn");
-  const sections = document.querySelectorAll("main section");
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabBtns.forEach(b => b.classList.remove("active"));
-      sections.forEach(sec => sec.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.target).classList.add("active");
-    });
-  });
-</script></body>
+  </script></body>
 </html>
