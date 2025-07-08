@@ -28,22 +28,14 @@
       text-align: center;
       position: relative;
     }
-    .logout-icon {
-      position: absolute;
-      top: 0;
-      right: -30px;
-      font-size: 18px;
-      color: gold;
-      cursor: pointer;
-    }
     .logout-fixed-icon {
       position: fixed;
-      top: 10px;
-      right: 20px;
+      top: 15px;
+      left: 15px;
       font-size: 20px;
       color: gold;
       cursor: pointer;
-      z-index: 999;
+      z-index: 9999;
     }
     .sidebar a {
       display: block;
@@ -138,7 +130,7 @@
       border: 1px dashed gold;
       border-radius: 10px;
       text-align: center;
-      margin: 20px 0;
+      margin: 40px 0 0 0;
     }
     .ad-section p {
       color: #ccc;
@@ -162,7 +154,7 @@
   </style>
 </head>
 <body>
-  <i class="fas fa-right-from-bracket logout-fixed-icon" title="Sign out" onclick="logout()"></i>
+  <i class="fas fa-arrow-right-from-bracket logout-fixed-icon" title="Sign out" onclick="logout()"></i>
   <div class="sidebar">
     <h1>Finance Point</h1>
     <a href="#">Dashboard</a>
@@ -185,12 +177,7 @@
     <div class="section">
       <h3 id="userName">Welcome...</h3>
       <p id="userMatric"></p>
-    </div><div class="ad-section">
-  <p>Want to promote your brand or service here?<br>
-  <a href="https://wa.me/2348142452729" target="_blank">Click to contact the PRO</a></p>
-</div>
-
-<div class="grid">
+    </div><div class="grid">
   <div class="card">
     <h4>Students</h4>
     <p id="studentsCount">...</p>
@@ -222,6 +209,11 @@
     <a href="quiz.html">CBT Quiz</a>
     <a href="birthdays.html">Birthday Wall</a>
   </div>
+</div>
+
+<div class="ad-section">
+  <p>Want to promote your brand or service here?<br>
+  <a href="https://wa.me/2348142452729" target="_blank">Click to contact the PRO</a></p>
 </div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
