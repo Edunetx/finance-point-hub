@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login | Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body, html {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
+      background-color: #0d0d0d;
       overflow: hidden;
       color: white;
     }
@@ -22,37 +27,57 @@
     }
 
     .container {
-      min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      height: 100vh;
       padding: 20px;
     }
 
     .login-box {
       background: rgba(0, 0, 0, 0.85);
-      padding: 30px;
-      border-radius: 12px;
+      padding: 40px 30px;
+      border-radius: 16px;
       width: 100%;
       max-width: 350px;
-      box-shadow: 0 0 15px rgba(255,215,0,0.15);
       text-align: center;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
     }
 
-    h2 {
+    .login-box h2 {
       color: gold;
-      margin-bottom: 20px;
+      font-size: 26px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .login-box h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 2px;
+      background: gold;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin: 15px 0;
       border: none;
-      border-radius: 5px;
-      background: #1f1f1f;
+      border-radius: 6px;
+      background: #1a1a1a;
       color: white;
       font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border: 1px solid gold;
+      background: #111;
     }
 
     .btn {
@@ -60,11 +85,15 @@
       color: black;
       padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       width: 100%;
       font-weight: bold;
-      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffd700d0;
     }
 
     .error-message {
@@ -94,21 +123,21 @@
 
   <div class="container">
     <div class="login-box">
-      <h2>Login to Finance Point</h2>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
+      <h2>Sign In</h2>
+      <input type="email" id="email" placeholder="Enter your email" />
+      <input type="password" id="password" placeholder="Enter your password" />
       <button class="btn" onclick="login()">Login</button>
       <div class="error-message" id="errorMsg"></div>
 
       <div class="signup-link">
-        Don’t have an account? <a href="signup.html">Sign up</a>
+        Don't have an account? <a href="signup.html">Create one</a>
       </div>
     </div>
   </div>
 
-  <!-- Firebase Scripts (Normal JS Version for Better Compatibility) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <!-- Firebase (Non-module Version to Ensure Compatibility) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
@@ -116,13 +145,19 @@
       projectId: "YOUR_PROJECT_ID",
       appId: "YOUR_APP_ID"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
       const errorMsg = document.getElementById("errorMsg");
+
+      if (!email || !password) {
+        errorMsg.textContent = "Please enter both email and password.";
+        return;
+      }
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
@@ -132,27 +167,27 @@
           let message = "Login failed.";
           if (error.code === "auth/user-not-found") message = "Email not found.";
           else if (error.code === "auth/wrong-password") message = "Incorrect password.";
-          else if (error.code === "auth/invalid-email") message = "Invalid email format.";
+          else if (error.code === "auth/invalid-email") message = "Invalid email.";
           errorMsg.textContent = message;
         });
     }
   </script>
 
-  <!-- Particles.js Background -->
+  <!-- Particles Background -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS("particles-js", {
       "particles": {
-        "number": { "value": 60 },
+        "number": { "value": 70 },
         "color": { "value": "#ffffff" },
         "shape": { "type": "circle" },
-        "opacity": { "value": 0.4 },
+        "opacity": { "value": 0.5 },
         "size": { "value": 2 },
         "line_linked": {
           "enable": true,
           "distance": 120,
           "color": "#ffffff",
-          "opacity": 0.3,
+          "opacity": 0.4,
           "width": 1
         },
         "move": { "enable": true, "speed": 1 }
