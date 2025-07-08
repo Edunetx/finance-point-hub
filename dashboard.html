@@ -10,9 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: #0d0d0d;
       color: #fff;
-      display: flex;
       min-height: 100vh;
-      overflow-x: hidden;
     }
     .sidebar {
       width: 220px;
@@ -43,7 +41,6 @@
     .main {
       margin-left: 220px;
       padding: 30px 20px;
-      flex: 1;
     }
     .topbar {
       display: none;
@@ -76,6 +73,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+      width: 100%;
     }
     .card {
       background: #1a1a1a;
@@ -114,13 +112,18 @@
       border: 1px solid gold;
       border-radius: 6px;
     }
-    .quick-links a:hover { background: gold; color: black; }
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding-top: 60px; }
-      .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
-      .mobile-nav { display: block; }
-    }
+    .quick-links a:hover { background: gold; color: black; }@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main {
+    margin-left: 0;
+    padding-top: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+  .mobile-nav { display: block; }
+}
+
   </style>
 </head>
 <body>
