@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Finance Point Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #0d0d0d;
@@ -16,7 +14,6 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-
     .sidebar {
       width: 220px;
       background: #111;
@@ -25,15 +22,12 @@
       height: 100%;
       border-right: 1px solid gold;
     }
-
     .sidebar h1 {
       color: gold;
       font-size: 20px;
       margin-bottom: 40px;
       text-align: center;
-      letter-spacing: 1px;
     }
-
     .sidebar a {
       display: block;
       color: white;
@@ -41,52 +35,35 @@
       padding: 12px;
       margin-bottom: 10px;
       border-left: 3px solid transparent;
-      transition: 0.3s;
     }
-
     .sidebar a:hover {
       background: #1c1c1c;
       border-left: 3px solid gold;
     }
-
     .main {
       margin-left: 220px;
       padding: 30px 20px;
       flex: 1;
     }
-
     .topbar {
       display: none;
       background: #111;
       padding: 15px 20px;
       border-bottom: 1px solid gold;
     }
-
-    .topbar h2 {
-      color: gold;
-      font-size: 18px;
-    }
-
+    .topbar h2 { color: gold; font-size: 18px; }
     .section {
       background: #1a1a1a;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 25px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.05);
     }
-
-    .section h3 {
-      color: gold;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-
+    .section h3 { color: gold; margin-bottom: 15px; font-size: 18px; }
     .stats {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .stat-box {
       flex: 1;
       background: #0d0d0d;
@@ -96,24 +73,13 @@
       text-align: center;
       min-width: 120px;
     }
-
-    .stat-box h4 {
-      color: gold;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .stat-box p {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
+    .stat-box h4 { color: gold; font-size: 16px; margin-bottom: 5px; }
+    .stat-box p { font-size: 20px; font-weight: bold; }
     .quick-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-
     .quick-links a {
       flex: 1 1 45%;
       background: #0d0d0d;
@@ -123,38 +89,16 @@
       color: white;
       border: 1px solid gold;
       border-radius: 6px;
-      transition: 0.3s;
     }
-
-    .quick-links a:hover {
-      background: gold;
-      color: black;
-    }
-
+    .quick-links a:hover { background: gold; color: black; }
     @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        padding-top: 60px;
-      }
-
-      .topbar {
-        display: block;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-      }
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding-top: 60px; }
+      .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Sidebar Navigation -->
   <div class="sidebar">
     <h1>Finance Point</h1>
     <a href="#">Dashboard</a>
@@ -167,51 +111,43 @@
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
   </div>
-
-  <!-- Mobile Topbar -->
   <div class="topbar">
     <h2>Finance Point</h2>
   </div>
-
-  <!-- Main Dashboard -->
   <div class="main">
     <div class="section">
-      <h3>Welcome, OBA Ayuba (300 Level)</h3>
-      <p>You're logged in as a student of the Department of Banking & Finance.</p>
+      <h3 id="userName">Welcome...</h3>
+      <p id="userMatric"></p>
     </div>
-
     <div class="section stats">
       <div class="stat-box">
         <h4>Students</h4>
-        <p>532</p>
+        <p id="studentsCount">...</p>
       </div>
       <div class="stat-box">
         <h4>Announcements</h4>
-        <p>12</p>
+        <p id="announcementsCount">...</p>
       </div>
       <div class="stat-box">
         <h4>Events</h4>
-        <p>5</p>
+        <p id="eventsCount">...</p>
       </div>
       <div class="stat-box">
         <h4>Downloads</h4>
-        <p>38</p>
+        <p id="downloadsCount">...</p>
       </div>
     </div>
-
     <div class="section">
       <h3>Latest Announcements</h3>
       <ul>
-        <li>⚠️ Departmental CBT test holds Friday by 10am</li>
-        <li>📝 Seminar registration deadline extended to July 10th</li>
+        <li>CBT test holds Friday by 10am</li>
+        <li>Seminar registration deadline extended</li>
       </ul>
     </div>
-
     <div class="section">
       <h3>Finance Tip of the Day</h3>
       <p>"Financial literacy is not a luxury — it's a necessity."</p>
     </div>
-
     <div class="section">
       <h3>Quick Access</h3>
       <div class="quick-links">
@@ -222,6 +158,55 @@
       </div>
     </div>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();auth.onAuthStateChanged(user => {
+  if (user) {
+    const uid = user.uid;
+    db.collection("users").doc(uid).get().then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+        const fullName = data.fullName || "User";
+        const matric = data.matricNumber || "Not Provided";
+        const email = user.email;
+        const isAdmin = email === "ayubaboluwatife246@gmail.com";
 
+        document.getElementById("userName").textContent =
+          isAdmin ? `Welcome, ADMIN ${fullName}` : `Welcome, ${fullName}`;
+        document.getElementById("userMatric").textContent = `Matric Number: ${matric}`;
+      }
+    });
+
+    // Fetch real stats
+    db.collection("users").get().then(snapshot => {
+      document.getElementById("studentsCount").textContent = snapshot.size;
+    });
+    db.collection("announcements").get().then(snapshot => {
+      document.getElementById("announcementsCount").textContent = snapshot.size;
+    });
+    db.collection("events").get().then(snapshot => {
+      document.getElementById("eventsCount").textContent = snapshot.size;
+    });
+    db.collection("downloads").get().then(snapshot => {
+      document.getElementById("downloadsCount").textContent = snapshot.size;
+    });
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+  </script>
 </body>
 </html>
