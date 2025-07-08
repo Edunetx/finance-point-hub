@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Finance Point Dashboard</title>
@@ -110,15 +111,19 @@
     <a href="quiz.html">Quiz of the Week</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
+    <a href="#" id="logoutBtn" style="margin-top: 40px; color: red; border-left: 3px solid red;">Sign Out</a>
   </div>
+
   <div class="topbar">
     <h2>Finance Point</h2>
   </div>
+
   <div class="main">
     <div class="section">
       <h3 id="userName">Welcome...</h3>
       <p id="userMatric"></p>
     </div>
+
     <div class="section stats">
       <div class="stat-box">
         <h4>Students</h4>
@@ -137,6 +142,7 @@
         <p id="downloadsCount">...</p>
       </div>
     </div>
+
     <div class="section">
       <h3>Latest Announcements</h3>
       <ul>
@@ -144,10 +150,12 @@
         <li>Seminar registration deadline extended</li>
       </ul>
     </div>
+
     <div class="section">
       <h3>Finance Tip of the Day</h3>
       <p>"Financial literacy is not a luxury — it's a necessity."</p>
     </div>
+
     <div class="section">
       <h3>Quick Access</h3>
       <div class="quick-links">
@@ -158,9 +166,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config + Logic -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -172,41 +184,48 @@
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore();auth.onAuthStateChanged(user => {
-  if (user) {
-    const uid = user.uid;
-    db.collection("users").doc(uid).get().then(doc => {
-      if (doc.exists) {
-        const data = doc.data();
-        const fullName = data.fullName || "User";
-        const matric = data.matricNumber || "Not Provided";
-        const email = user.email;
-        const isAdmin = email === "ayubaboluwatife246@gmail.com";
+    const db = firebase.firestore();
 
-        document.getElementById("userName").textContent =
-          isAdmin ? `Welcome, ADMIN ${fullName}` : `Welcome, ${fullName}`;
-        document.getElementById("userMatric").textContent = `Matric Number: ${matric}`;
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const uid = user.uid;
+        db.collection("users").doc(uid).get().then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            const fullName = data.fullName || "User";
+            const matric = data.matricNumber || "Not Provided";
+            const email = user.email;
+            const isAdmin = email === "ayubaboluwatife246@gmail.com";
+
+            document.getElementById("userName").textContent =
+              isAdmin ? `Welcome, ADMIN ${fullName}` : `Welcome, ${fullName}`;
+            document.getElementById("userMatric").textContent = `Matric Number: ${matric}`;
+          }
+        });
+
+        db.collection("users").get().then(snapshot => {
+          document.getElementById("studentsCount").textContent = snapshot.size;
+        });
+        db.collection("announcements").get().then(snapshot => {
+          document.getElementById("announcementsCount").textContent = snapshot.size;
+        });
+        db.collection("events").get().then(snapshot => {
+          document.getElementById("eventsCount").textContent = snapshot.size;
+        });
+        db.collection("downloads").get().then(snapshot => {
+          document.getElementById("downloadsCount").textContent = snapshot.size;
+        });
+      } else {
+        window.location.href = "login.html";
       }
     });
 
-    // Fetch real stats
-    db.collection("users").get().then(snapshot => {
-      document.getElementById("studentsCount").textContent = snapshot.size;
+    // Sign out button
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
     });
-    db.collection("announcements").get().then(snapshot => {
-      document.getElementById("announcementsCount").textContent = snapshot.size;
-    });
-    db.collection("events").get().then(snapshot => {
-      document.getElementById("eventsCount").textContent = snapshot.size;
-    });
-    db.collection("downloads").get().then(snapshot => {
-      document.getElementById("downloadsCount").textContent = snapshot.size;
-    });
-  } else {
-    window.location.href = "login.html";
-  }
-});
-
   </script>
 </body>
 </html>
