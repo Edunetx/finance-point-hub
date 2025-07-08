@@ -4,6 +4,7 @@
   <title>Finance Point Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * { box-sizing: border-box; padding: 0; margin: 0; }
     body {
@@ -25,6 +26,15 @@
       font-size: 20px;
       margin-bottom: 40px;
       text-align: center;
+      position: relative;
+    }
+    .logout-icon {
+      position: absolute;
+      top: 0;
+      right: -30px;
+      font-size: 18px;
+      color: gold;
+      cursor: pointer;
     }
     .sidebar a {
       display: block;
@@ -128,7 +138,7 @@
 </head>
 <body>
   <div class="sidebar">
-    <h1>Finance Point</h1>
+    <h1>Finance Point <i class="fas fa-sign-out-alt logout-icon" title="Sign out" onclick="logout()"></i></h1>
     <a href="#">Dashboard</a>
     <a href="announcements.html">Announcements</a>
     <a href="events.html">Events</a>
@@ -203,6 +213,12 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
 
     auth.onAuthStateChanged(user => {
       if (user) {
