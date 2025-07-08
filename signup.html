@@ -2,141 +2,212 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finance Point - Sign Up</title>
+  <title>Sign Up | Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
       color: white;
+      height: 100%;
+      overflow: hidden;
     }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
     .container {
-      background: rgba(0,0,0,0.75);
-      padding: 2rem;
-      border-radius: 10px;
-      width: 320px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    h2 {
-      margin-bottom: 1rem;
+
+    .signup-box {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 30px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
       text-align: center;
     }
+
+    h2 {
+      color: gold;
+      margin-bottom: 15px;
+      font-size: 24px;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 2px;
+      background: gold;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     input {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
-      font-size: 1rem;
+      border-radius: 6px;
+      background: #1a1a1a;
+      color: white;
+      font-size: 14px;
     }
-    button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      background-color: #ffb700;
+
+    input:focus {
+      border: 1px solid gold;
+      background: #111;
+    }
+
+    .btn {
+      background: gold;
+      color: black;
+      padding: 12px;
       border: none;
-      border-radius: 5px;
-      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      color: #000;
-      font-size: 1.1rem;
-    }
-    button:hover {
-      background-color: #ffa500;
-    }
-    .link {
+      width: 100%;
+      font-weight: bold;
       margin-top: 10px;
-      text-align: center;
-      font-size: 0.9rem;
     }
-    .link a {
-      color: #ffb700;
+
+    .btn:hover {
+      background: #ffd700d0;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: gold;
       text-decoration: none;
     }
-    .error {
-      margin-top: 10px;
-      color: #ff4d4d;
-      font-weight: bold;
-      text-align: center;
+
+    .login-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
+  <div id="particles-js"></div>
 
-<div class="container">
-  <h2>Create Account</h2>
-  <input type="text" id="fullName" placeholder="Full Name" required />
-  <input type="text" id="matricNumber" placeholder="Matric Number" required />
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password" required />
-  <button id="signupBtn">Sign Up</button>
-  <div class="link">
-    Already have an account? <a href="login.html">Login</a>
+  <div class="container">
+    <div class="signup-box">
+      <h2>Join Finance Point</h2>
+      <input type="text" id="name" placeholder="Full Name" />
+      <input type="text" id="matric" placeholder="Matric Number" />
+      <input type="email" id="email" placeholder="Email Address" />
+      <input type="password" id="password" placeholder="Create Password" />
+      <button class="btn" onclick="signup()">Sign Up</button>
+      <div class="error-message" id="errorMsg"></div>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
   </div>
-  <div class="error" id="error"></div>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.firebasestorage.app",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    function signup() {
+      const name = document.getElementById("name").value.trim();
+      const matric = document.getElementById("matric").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
 
-  const fullName = document.getElementById("fullName");
-  const matricNumber = document.getElementById("matricNumber");
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const signupBtn = document.getElementById("signupBtn");
-  const errorDiv = document.getElementById("error");
+      if (!name || !matric || !email || !password) {
+        errorMsg.textContent = "Please fill in all fields.";
+        return;
+      }
 
-  signupBtn.addEventListener("click", async () => {
-    const name = fullName.value.trim();
-    const matric = matricNumber.value.trim();
-    const userEmail = email.value.trim();
-    const userPassword = password.value.trim();
-
-    if (!name || !matric || !userEmail || !userPassword) {
-      errorDiv.textContent = "Please fill in all fields.";
-      return;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const uid = userCredential.user.uid;
+          return db.collection("users").doc(uid).set({
+            name: name,
+            matric: matric,
+            email: email
+          });
+        })
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          let message = "Signup failed.";
+          if (error.code === "auth/email-already-in-use") message = "Email is already registered.";
+          else if (error.code === "auth/invalid-email") message = "Invalid email format.";
+          else if (error.code === "auth/weak-password") message = "Password must be at least 6 characters.";
+          errorMsg.textContent = message;
+        });
     }
+  </script>
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, userEmail, userPassword);
-      const user = userCredential.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        fullName: name,
-        matricNumber: matric,
-        email: userEmail,
-        admin: false,
-        createdAt: serverTimestamp()
-      });
-
-      // Redirect to dashboard
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      errorDiv.textContent = err.message;
-    }
-  });
-</script>
-
+  <!-- Particles Background -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 60 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 2 },
+        line_linked: {
+          enable: true,
+          distance: 120,
+          color: "#ffffff",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 1 }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
