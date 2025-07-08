@@ -1,89 +1,72 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manage Ads – Finance Point Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Ads – Finance Point</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d0d0d;
+      background: #0d0d0d;
       color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
       padding: 20px;
     }
     h1 {
-      color: gold;
       text-align: center;
-    }
-    .ad-form, .ad-list {
-      max-width: 800px;
-      margin: 20px auto;
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid gold;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
       color: gold;
+      margin-bottom: 30px;
     }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      background: #0d0d0d;
+    .ads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .ad-card {
+      background: #1a1a1a;
       border: 1px solid gold;
-      color: white;
-      border-radius: 5px;
+      border-radius: 10px;
+      padding: 15px;
+      position: relative;
     }
-    button {
+    .ad-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .ad-card h3 {
+      color: gold;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .ad-card p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .ad-card a {
+      display: inline-block;
       background: gold;
       color: black;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 15px;
-      cursor: pointer;
+      text-decoration: none;
+      padding: 6px 12px;
       border-radius: 5px;
+      font-weight: 600;
     }
-    .ad-item {
-      margin-top: 20px;
-      border-top: 1px solid #555;
-      padding-top: 15px;
-    }
-    .ad-item img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-    .ad-actions button {
-      margin-right: 10px;
-      margin-top: 10px;
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: red;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Ad Manager – Admin Panel</h1>  <div class="ad-form">
-    <h2>Add / Edit Ad</h2>
-    <form id="adForm">
-      <label>Title:</label>
-      <input type="text" id="title" required />
-      <label>Image URL:</label>
-      <input type="text" id="imageUrl" />
-      <label>Description:</label>
-      <textarea id="description" rows="3" required></textarea>
-      <label>Link:</label>
-      <input type="url" id="link" required />
-      <label>Priority (1 = top):</label>
-      <input type="number" id="priority" required />
-      <input type="hidden" id="adId" />
-      <button type="submit">Save Ad</button>
-    </form>
-  </div>  <div class="ad-list">
-    <h2>All Ads</h2>
-    <div id="adsContainer"></div>
-  </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
+  <h1>All Ads</h1>
+  <div class="ads-grid" id="adsList"></div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
@@ -93,76 +76,62 @@
       appId: "1:126845965255:web:c82539297a8464873d7fe2"
     };
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
     const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    const form = document.getElementById('adForm');
-    const container = document.getElementById('adsContainer');
-
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      const ad = {
-        title: form.title.value,
-        imageUrl: form.imageUrl.value,
-        description: form.description.value,
-        link: form.link.value,
-        priority: parseInt(form.priority.value)
-      };
-      const id = form.adId.value;
-      if (id) {
-        await db.collection('ads').doc(id).update(ad);
-      } else {
-        await db.collection('ads').add(ad);
-      }
-      form.reset();
-      loadAds();
-    };
-
-    function loadAds() {
-      container.innerHTML = '';
-      db.collection('ads').orderBy('priority').get().then(snapshot => {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const adDiv = document.createElement('div');
-          adDiv.className = 'ad-item';
-          adDiv.innerHTML = `
-            ${data.imageUrl ? `<img src="${data.imageUrl}" alt="Ad image">` : ''}
-            <h3>${data.title}</h3>
-            <p>${data.description}</p>
-            <p><a href="${data.link}" target="_blank">Visit</a></p>
-            <p>Priority: ${data.priority}</p>
-            <div class="ad-actions">
-              <button onclick="editAd('${doc.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Edit</button>
-              <button onclick="deleteAd('${doc.id}')">Delete</button>
-            </div>
-          `;
-          container.appendChild(adDiv);
-        });
-      });
-    }
-
-    function editAd(id, data) {
-      form.adId.value = id;
-      form.title.value = data.title;
-      form.imageUrl.value = data.imageUrl || '';
-      form.description.value = data.description;
-      form.link.value = data.link;
-      form.priority.value = data.priority;
-    }
-
-    function deleteAd(id) {
-      if (confirm('Are you sure you want to delete this ad?')) {
-        db.collection('ads').doc(id).delete().then(loadAds);
-      }
-    }
+    const adsList = document.getElementById('adsList');
 
     auth.onAuthStateChanged(user => {
-      if (!user || user.email !== 'ayubaboluwatife246@gmail.com') {
-        alert("Unauthorized access");
+      if (!user) {
         window.location.href = 'login.html';
-      } else {
-        loadAds();
+        return;
       }
+
+      const isAdmin = user.email === "ayubaboluwatife246@gmail.com";
+
+      db.collection("ads").orderBy("priority").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const ad = doc.data();
+          const card = document.createElement('div');
+          card.className = 'ad-card';
+
+          if (isAdmin) {
+            const del = document.createElement('i');
+            del.className = 'fas fa-trash delete-btn';
+            del.title = 'Delete Ad';
+            del.onclick = () => {
+              if (confirm('Delete this ad?')) {
+                db.collection("ads").doc(doc.id).delete().then(() => {
+                  card.remove();
+                });
+              }
+            }
+            card.appendChild(del);
+          }
+
+          if (ad.imageUrl) {
+            const img = document.createElement('img');
+            img.src = ad.imageUrl;
+            card.appendChild(img);
+          }
+
+          const title = document.createElement('h3');
+          title.textContent = ad.title;
+          card.appendChild(title);
+
+          const desc = document.createElement('p');
+          desc.textContent = ad.description;
+          card.appendChild(desc);
+
+          const link = document.createElement('a');
+          link.href = ad.link;
+          link.target = '_blank';
+          link.textContent = 'Visit';
+          card.appendChild(link);
+
+          adsList.appendChild(card);
+        });
+      });
     });
   </script></body>
 </html>
