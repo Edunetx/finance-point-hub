@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Finance Point - Sign In</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -66,7 +66,7 @@
     }
     .toast {
       position: fixed;
-      bottom: 30px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: #222;
@@ -83,9 +83,9 @@
 </head>
 <body>
   <div class="container">
-    <h2>Sign In to Finance Point</h2>
-    <input type="email" id="email" placeholder="Email address">
-    <input type="password" id="password" placeholder="Password">
+    <h2>Sign In</h2>
+    <input type="email" id="email" placeholder="Email address" />
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Sign In</button>
     <div class="link">
       <a href="#" onclick="forgotPassword()">Forgot Password?</a> |
@@ -125,9 +125,9 @@
         case "auth/user-not-found": return "Email not found.";
         case "auth/wrong-password": return "Incorrect password.";
         case "auth/invalid-email": return "Invalid email address.";
-        case "auth/network-request-failed": return "Check your internet connection.";
-        case "auth/too-many-requests": return "Too many failed attempts. Try again later.";
-        default: return "An error occurred. Please try again.";
+        case "auth/network-request-failed": return "No internet connection.";
+        case "auth/too-many-requests": return "Too many attempts. Try again later.";
+        default: return "An error occurred. Try again.";
       }
     }
 
@@ -147,7 +147,7 @@
             window.location.href = "dashboard.html";
           }, 3000);
         })
-        .catch((error) => {
+        .catch(error => {
           const msg = getFriendlyErrorMessage(error.code);
           showToast(msg, "error");
         });
@@ -159,8 +159,9 @@
         showToast("Enter your email first.", "error");
         return;
       }
+
       auth.sendPasswordResetEmail(email)
-        .then(() => showToast("Reset email sent!", "success"))
+        .then(() => showToast("Reset link sent to your email.", "success"))
         .catch(error => {
           const msg = getFriendlyErrorMessage(error.code);
           showToast(msg, "error");
