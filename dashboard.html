@@ -28,23 +28,6 @@
       text-align: center;
       position: relative;
     }
-    .logout-icon {
-      position: absolute;
-      top: 0;
-      right: -30px;
-      font-size: 18px;
-      color: gold;
-      cursor: pointer;
-    }
-    .logout-fixed-icon {
-      position: fixed;
-      top: 10px;
-      right: 20px;
-      font-size: 20px;
-      color: gold;
-      cursor: pointer;
-      z-index: 999;
-    }
     .sidebar a {
       display: block;
       color: white;
@@ -122,7 +105,7 @@
       gap: 10px;
     }
     .quick-links a {
-      flex: 1 1 45%;
+      flex: 1 1 40%;
       background: #0d0d0d;
       padding: 12px;
       text-align: center;
@@ -130,48 +113,49 @@
       color: white;
       border: 1px solid gold;
       border-radius: 6px;
+      position: relative;
+    }
+    .quick-links a i {
+      margin-right: 8px;
     }
     .quick-links a:hover { background: gold; color: black; }
-    .top-ad {
-      background: #1a1a1a;
+    .sponsor-banner {
+      margin: 20px 0;
+      background: #222;
       border: 1px dashed gold;
       padding: 15px;
-      margin-top: 30px;
-      border-radius: 10px;
       text-align: center;
-    }
-    .top-ad img {
-      max-width: 100%;
+      color: gold;
       border-radius: 10px;
-      margin-bottom: 10px;
     }
-    .top-ad h4 { color: gold; margin-bottom: 8px; }
-    .top-ad p { margin-bottom: 10px; }
-    .top-ad a {
-      background: gold;
-      color: black;
-      padding: 8px 14px;
-      border-radius: 5px;
-      text-decoration: none;
+    .logout-link {
+      flex: 1 1 100%;
+      background: #330000;
+      color: gold;
+      text-align: center;
+      padding: 12px;
+      border: 1px solid red;
+      border-radius: 6px;
+      cursor: pointer;
     }
-    .top-ad a:hover {
-      background: white;
-    }
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main {
-        margin-left: 0;
-        padding-top: 60px;
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-      .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
-      .mobile-nav { display: block; }
-    }
+    .logout-link:hover {
+      background: red;
+      color: white;
+    }@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main {
+    margin-left: 0;
+    padding-top: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+  .mobile-nav { display: block; }
+}
+
   </style>
 </head>
 <body>
-  <i class="fas fa-right-from-bracket logout-fixed-icon" title="Sign out" onclick="logout()"></i>
   <div class="sidebar">
     <h1>Finance Point</h1>
     <a href="#">Dashboard</a>
@@ -181,6 +165,7 @@
     <a href="lostfound.html">Lost & Found</a>
     <a href="birthdays.html">Birthday Wall</a>
     <a href="quiz.html">Quiz of the Week</a>
+    <a href="ads.html">Adverts</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
   </div>  <div class="topbar">
@@ -188,7 +173,12 @@
   </div>  <div class="mobile-nav">
     <a href="dashboard.html">Dashboard</a>
     <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
     <a href="downloads.html">Study Materials</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <a href="birthdays.html">Birthday Wall</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="ads.html">Adverts</a>
     <a href="admin.html">Admin Panel</a>
   </div>  <div class="main">
     <div class="section">
@@ -221,14 +211,17 @@
 <div class="section">
   <h3>Quick Access</h3>
   <div class="quick-links">
-    <a href="downloads.html">Study Materials</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <a href="quiz.html">CBT Quiz</a>
-    <a href="birthdays.html">Birthday Wall</a>
+    <a href="downloads.html"><i class="fas fa-book"></i> Study Materials</a>
+    <a href="lostfound.html"><i class="fas fa-box-open"></i> Lost & Found</a>
+    <a href="quiz.html"><i class="fas fa-question-circle"></i> CBT Quiz</a>
+    <a href="birthdays.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
+    <a href="ads.html"><i class="fas fa-bullhorn"></i> Adverts</a>
+    <a href="admin.html"><i class="fas fa-tools"></i> Admin Panel</a>
+    <div class="logout-link" onclick="logout()">
+      <i class="fas fa-right-from-bracket"></i> Sign Out
+    </div>
   </div>
 </div>
-
-<div id="topAdBlock" class="top-ad" style="display: none;"></div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
@@ -277,21 +270,6 @@
         });
         db.collection("downloads").get().then(snapshot => {
           document.getElementById("downloadsCount").textContent = snapshot.size;
-        });
-
-        // Load top ad
-        db.collection("ads").orderBy("priority").limit(1).get().then(snapshot => {
-          if (!snapshot.empty) {
-            const ad = snapshot.docs[0].data();
-            const block = document.getElementById("topAdBlock");
-            block.style.display = "block";
-            block.innerHTML = `
-              ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Ad Image">` : ''}
-              <h4>${ad.title}</h4>
-              <p>${ad.description}</p>
-              <a href="${ad.link}" target="_blank">Visit</a>
-            `;
-          }
         });
       } else {
         window.location.href = "login.html";
