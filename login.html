@@ -1,73 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finance Point - Sign In</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
-      overflow: hidden;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    .background-animation {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, #2c2c2c 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: moveBg 10s linear infinite;
-      z-index: 0;
-      opacity: 0.2;
-    }
-
-    @keyframes moveBg {
-      0% { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 35px;
-      max-width: 400px;
-      width: 90%;
-      margin: 100px auto;
-      border-radius: 12px;
-      border: 2px solid gold;
-      box-shadow: 0 0 15px gold;
-      text-align: center;
+      background: radial-gradient(circle at top left, #1a1a2e, #000);
       color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
     }
-
+    .container {
+      background: #111;
+      border: 1px solid gold;
+      padding: 40px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 20px gold;
+    }
     h2 {
       color: gold;
       margin-bottom: 25px;
+      text-align: center;
     }
-
     input {
       width: 100%;
-      padding: 14px;
-      margin: 12px 0;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
       border-radius: 6px;
-      background: #2c2c2c;
+      background: #222;
       color: white;
-      font-size: 15px;
     }
-
-    input:focus {
-      outline: 2px solid gold;
-    }
-
     button {
       width: 100%;
       padding: 12px;
@@ -77,68 +50,52 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
+      margin-top: 15px;
     }
-
     button:hover {
-      background: #ffdc55;
+      background: #ffcc00;
     }
-
+    .link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .link a {
+      color: gold;
+      text-decoration: none;
+    }
     .toast {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       background: #222;
-      border-left: 5px solid;
       color: white;
-      font-size: 14px;
-      border-radius: 5px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #000;
       display: none;
       z-index: 999;
     }
-
-    .toast.success { border-color: limegreen; }
-    .toast.error { border-color: tomato; }
-
-    .link, .forgot {
-      margin-top: 15px;
-      font-size: 14px;
-      color: gold;
-    }
-
-    .link a, .forgot a {
-      color: #ffd700;
-      text-decoration: none;
-    }
-
-    .link a:hover, .forgot a:hover {
-      text-decoration: underline;
-    }
+    .toast.success { border-left: 5px solid limegreen; }
+    .toast.error { border-left: 5px solid crimson; }
   </style>
 </head>
 <body>
-
-  <div class="background-animation"></div>
-
   <div class="container">
-    <h2>Sign In</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
+    <h2>Sign In to Finance Point</h2>
+    <input type="email" id="email" placeholder="Email address">
+    <input type="password" id="password" placeholder="Password">
     <button onclick="login()">Sign In</button>
-
-    <div class="forgot">
-      <a href="#" onclick="forgotPassword()">Forgot Password?</a>
-    </div>
-
     <div class="link">
-      Don't have an account? <a href="signup.html">Create one</a>
+      <a href="#" onclick="forgotPassword()">Forgot Password?</a> |
+      <a href="signup.html">Create Account</a>
     </div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div class="toast" id="toast"></div>
 
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script>
@@ -146,14 +103,14 @@
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
       projectId: "finsa-connect",
-      storageBucket: "finsa-connect.firebasestorage.app",
+      storageBucket: "finsa-connect.firebaseapp.com",
       messagingSenderId: "126845965255",
       appId: "1:126845965255:web:c82539297a8464873d7fe2"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function showToast(message, type = "success") {
+    function showToast(message, type) {
       const toast = document.getElementById("toast");
       toast.textContent = message;
       toast.className = `toast ${type}`;
@@ -161,6 +118,17 @@
       setTimeout(() => {
         toast.style.display = "none";
       }, 4000);
+    }
+
+    function getFriendlyErrorMessage(code) {
+      switch (code) {
+        case "auth/user-not-found": return "Email not found.";
+        case "auth/wrong-password": return "Incorrect password.";
+        case "auth/invalid-email": return "Invalid email address.";
+        case "auth/network-request-failed": return "Check your internet connection.";
+        case "auth/too-many-requests": return "Too many failed attempts. Try again later.";
+        default: return "An error occurred. Please try again.";
+      }
     }
 
     function login() {
@@ -177,26 +145,25 @@
           showToast("Login successful!", "success");
           setTimeout(() => {
             window.location.href = "dashboard.html";
-          }, 4000);
+          }, 3000);
         })
         .catch((error) => {
-          showToast(error.message, "error");
+          const msg = getFriendlyErrorMessage(error.code);
+          showToast(msg, "error");
         });
     }
 
     function forgotPassword() {
       const email = document.getElementById("email").value.trim();
       if (!email) {
-        showToast("Enter your email to reset password.", "error");
+        showToast("Enter your email first.", "error");
         return;
       }
-
       auth.sendPasswordResetEmail(email)
-        .then(() => {
-          showToast("Password reset link sent to email.", "success");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
+        .then(() => showToast("Reset email sent!", "success"))
+        .catch(error => {
+          const msg = getFriendlyErrorMessage(error.code);
+          showToast(msg, "error");
         });
     }
   </script>
