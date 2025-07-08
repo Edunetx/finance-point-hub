@@ -18,6 +18,20 @@
       color: gold;
       margin-bottom: 30px;
     }
+    .nav-bar {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .nav-bar a {
+      display: inline-block;
+      margin: 0 10px;
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-bar a:hover {
+      text-decoration: underline;
+    }
     .ads-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -66,7 +80,17 @@
 </head>
 <body>
   <h1>All Ads</h1>
-  <div class="ads-grid" id="adsList"></div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
+  <div class="nav-bar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Study Materials</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="birthdays.html">Birthday Wall</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <a href="ads.html">Adverts</a>
+    <a href="admin.html">Admin Panel</a>
+  </div>  <div class="ads-grid" id="adsList"></div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
