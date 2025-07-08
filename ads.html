@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Ads – Finance Point Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      padding: 20px;
+    }
+    h1 {
+      color: gold;
+      text-align: center;
+    }
+    .ad-form, .ad-list {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid gold;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      color: gold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      background: #0d0d0d;
+      border: 1px solid gold;
+      color: white;
+      border-radius: 5px;
+    }
+    button {
+      background: gold;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 15px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .ad-item {
+      margin-top: 20px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+    }
+    .ad-item img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .ad-actions button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ad Manager – Admin Panel</h1>  <div class="ad-form">
+    <h2>Add / Edit Ad</h2>
+    <form id="adForm">
+      <label>Title:</label>
+      <input type="text" id="title" required />
+      <label>Image URL:</label>
+      <input type="text" id="imageUrl" required />
+      <label>Description:</label>
+      <textarea id="description" rows="3" required></textarea>
+      <label>Link:</label>
+      <input type="url" id="link" required />
+      <label>Priority (1 = top):</label>
+      <input type="number" id="priority" required />
+      <input type="hidden" id="adId" />
+      <button type="submit">Save Ad</button>
+    </form>
+  </div>  <div class="ad-list">
+    <h2>All Ads</h2>
+    <div id="adsContainer"></div>
+  </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.firebasestorage.app",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const form = document.getElementById('adForm');
+    const container = document.getElementById('adsContainer');
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const ad = {
+        title: form.title.value,
+        imageUrl: form.imageUrl.value,
+        description: form.description.value,
+        link: form.link.value,
+        priority: parseInt(form.priority.value)
+      };
+      const id = form.adId.value;
+      if (id) {
+        await db.collection('ads').doc(id).update(ad);
+      } else {
+        await db.collection('ads').add(ad);
+      }
+      form.reset();
+      loadAds();
+    };
+
+    function loadAds() {
+      container.innerHTML = '';
+      db.collection('ads').orderBy('priority').get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const adDiv = document.createElement('div');
+          adDiv.className = 'ad-item';
+          adDiv.innerHTML = `
+            <img src="${data.imageUrl}" alt="Ad image">
+            <h3>${data.title}</h3>
+            <p>${data.description}</p>
+            <p><a href="${data.link}" target="_blank">Visit</a></p>
+            <p>Priority: ${data.priority}</p>
+            <div class="ad-actions">
+              <button onclick="editAd('${doc.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Edit</button>
+              <button onclick="deleteAd('${doc.id}')">Delete</button>
+            </div>
+          `;
+          container.appendChild(adDiv);
+        });
+      });
+    }
+
+    function editAd(id, data) {
+      form.adId.value = id;
+      form.title.value = data.title;
+      form.image
