@@ -4,6 +4,7 @@
   <title>Finance Point Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papf9I8+XqTwDCe3J4qAa3m6oOe4T8w+Q2UyQZqgkmWZlj4SYXGJf5E3zXJ+vEq5w2bE8VgOZ1OroO4z4IuYFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     * { box-sizing: border-box; padding: 0; margin: 0; }
     body {
@@ -116,20 +117,20 @@
     }
     .quick-links a:hover { background: gold; color: black; }
     .logout-btn {
-      display: inline-block;
-      background: linear-gradient(145deg, #d40000, #ff4d4d);
-      color: white;
+      background: none;
       border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      font-size: 16px;
+      color: gold;
+      font-size: 24px;
       cursor: pointer;
-      margin-top: 20px;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease;
     }
     .logout-btn:hover {
-      background: linear-gradient(145deg, #ff4d4d, #d40000);
-      transform: scale(1.05);
+      color: red;
+      transform: scale(1.2);
+    }
+    .logout-container {
+      text-align: center;
+      margin-top: 20px;
     }
     @media (max-width: 768px) {
       .sidebar { display: none; }
@@ -151,7 +152,7 @@
     <a href="quiz.html">Quiz of the Week</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
-    <a href="#" id="logoutBtn" style="margin-top: 40px; color: red; border-left: 3px solid red;">Sign Out</a>
+    <a href="#" id="logoutBtn">Sign Out</a>
   </div>  <div class="topbar">
     <h2>Finance Point</h2>
   </div>  <div class="mobile-nav">
@@ -206,8 +207,11 @@
   </div>
 </div>
 
-<div class="section" style="text-align: center;">
-  <button class="logout-btn" id="logoutBtn2">Sign Out of Finance Point</button>
+<!-- Stylish Logout Button -->
+<div class="logout-container">
+  <button class="logout-btn" id="logoutBtn2" title="Sign Out">
+    <i class="fas fa-sign-out-alt"></i>
+  </button>
 </div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
