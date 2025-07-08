@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Finance Point Dashboard</title>
@@ -53,6 +52,26 @@
       border-bottom: 1px solid gold;
     }
     .topbar h2 { color: gold; font-size: 18px; }
+    .mobile-nav {
+      display: none;
+      background: #0d0d0d;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px 0;
+      border-bottom: 2px solid gold;
+    }
+    .mobile-nav a {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-bottom: 2px solid transparent;
+    }
+    .mobile-nav a:hover {
+      color: gold;
+      border-bottom: 2px solid gold;
+    }
     .section {
       background: #1a1a1a;
       padding: 20px;
@@ -96,6 +115,7 @@
       .sidebar { display: none; }
       .main { margin-left: 0; padding-top: 60px; }
       .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+      .mobile-nav { display: block; }
     }
   </style>
 </head>
@@ -112,68 +132,61 @@
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
     <a href="#" id="logoutBtn" style="margin-top: 40px; color: red; border-left: 3px solid red;">Sign Out</a>
-  </div>
-
-  <div class="topbar">
+  </div>  <div class="topbar">
     <h2>Finance Point</h2>
-  </div>
-
-  <div class="main">
+  </div>  <div class="mobile-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="downloads.html">Study Materials</a>
+    <a href="admin.html">Admin Panel</a>
+    <a href="#" id="mobileLogout">Sign Out</a>
+  </div>  <div class="main">
     <div class="section">
       <h3 id="userName">Welcome...</h3>
       <p id="userMatric"></p>
-    </div>
-
-    <div class="section stats">
-      <div class="stat-box">
-        <h4>Students</h4>
-        <p id="studentsCount">...</p>
-      </div>
-      <div class="stat-box">
-        <h4>Announcements</h4>
-        <p id="announcementsCount">...</p>
-      </div>
-      <div class="stat-box">
-        <h4>Events</h4>
-        <p id="eventsCount">...</p>
-      </div>
-      <div class="stat-box">
-        <h4>Downloads</h4>
-        <p id="downloadsCount">...</p>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>Latest Announcements</h3>
-      <ul>
-        <li>CBT test holds Friday by 10am</li>
-        <li>Seminar registration deadline extended</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h3>Finance Tip of the Day</h3>
-      <p>"Financial literacy is not a luxury — it's a necessity."</p>
-    </div>
-
-    <div class="section">
-      <h3>Quick Access</h3>
-      <div class="quick-links">
-        <a href="downloads.html">Study Materials</a>
-        <a href="lostfound.html">Lost & Found</a>
-        <a href="quiz.html">CBT Quiz</a>
-        <a href="birthdays.html">Birthday Wall</a>
-      </div>
-    </div>
+    </div><div class="section stats">
+  <div class="stat-box">
+    <h4>Students</h4>
+    <p id="studentsCount">...</p>
   </div>
+  <div class="stat-box">
+    <h4>Announcements</h4>
+    <p id="announcementsCount">...</p>
+  </div>
+  <div class="stat-box">
+    <h4>Events</h4>
+    <p id="eventsCount">...</p>
+  </div>
+  <div class="stat-box">
+    <h4>Downloads</h4>
+    <p id="downloadsCount">...</p>
+  </div>
+</div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<div class="section">
+  <h3>Latest Announcements</h3>
+  <ul>
+    <li>CBT test holds Friday by 10am</li>
+    <li>Seminar registration deadline extended</li>
+  </ul>
+</div>
 
-  <!-- Firebase Config + Logic -->
-  <script>
+<div class="section">
+  <h3>Finance Tip of the Day</h3>
+  <p>"Financial literacy is not a luxury — it's a necessity."</p>
+</div>
+
+<div class="section">
+  <h3>Quick Access</h3>
+  <div class="quick-links">
+    <a href="downloads.html">Study Materials</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <a href="quiz.html">CBT Quiz</a>
+    <a href="birthdays.html">Birthday Wall</a>
+  </div>
+</div>
+
+  </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
@@ -220,12 +233,16 @@
       }
     });
 
-    // Sign out button
     document.getElementById("logoutBtn").addEventListener("click", () => {
       auth.signOut().then(() => {
         window.location.href = "login.html";
       });
     });
-  </script>
-</body>
+
+    document.getElementById("mobileLogout").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    });
+  </script></body>
 </html>
