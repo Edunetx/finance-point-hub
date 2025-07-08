@@ -1,47 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up - Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
+      background: #0d0d0d url('https://www.transparenttextures.com/patterns/stardust.png');
       color: white;
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      justify-content: center;
+      height: 100vh;
     }
     .container {
       background: #1a1a1a;
-      padding: 30px;
       border: 2px solid gold;
-      border-radius: 12px;
+      border-radius: 10px;
+      padding: 30px 20px;
       width: 100%;
       max-width: 400px;
-      text-align: center;
+      position: relative;
     }
     h2 {
-      color: gold;
+      text-align: center;
       margin-bottom: 20px;
+      color: gold;
     }
-    input {
+    input[type="text"], input[type="email"], input[type="password"] {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border-radius: 6px;
-      border: none;
-      background: #333;
+      background: #0d0d0d;
+      border: 1px solid gold;
+      border-radius: 5px;
       color: white;
-    }
-    input:focus {
-      outline: 2px solid gold;
     }
     button {
       width: 100%;
@@ -49,50 +45,36 @@
       background: gold;
       color: black;
       border: none;
-      border-radius: 6px;
       font-weight: bold;
+      border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
     }
-    button:hover {
-      background: #ffd700;
-    }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
+    button:hover { background: #ffcc00; }
+    .message {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: gold;
+      color: black;
+      padding: 10px;
+      border-radius: 5px;
       font-size: 14px;
-    }
-    .link {
-      margin-top: 15px;
-      color: gold;
-    }
-    .link a {
-      color: #ffd700;
-      text-decoration: none;
-    }
-    .link a:hover {
-      text-decoration: underline;
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="message" id="messageBox"></div>
     <h2>Sign Up</h2>
-    <input type="text" id="fullName" placeholder="Full Name" required />
-    <input type="text" id="matricNumber" placeholder="Matric Number" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button onclick="signup()">Sign Up</button>
-    <div id="message"></div>
-    <div class="link">
-      Already have an account? <a href="login.html">Sign In</a>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
+    <input type="text" id="fullName" placeholder="Full Name">
+    <input type="text" id="matricNumber" placeholder="Matric Number">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="signUp()">Sign Up</button>
+  </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
@@ -105,42 +87,50 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    function signup() {
-      const name = document.getElementById("fullName").value.trim();
-      const matric = document.getElementById("matricNumber").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const messageEl = document.getElementById("message");
+    function showMessage(msg, color = 'black') {
+      const msgBox = document.getElementById("messageBox");
+      msgBox.innerText = msg;
+      msgBox.style.display = 'block';
+      msgBox.style.backgroundColor = color;
+      setTimeout(() => msgBox.style.display = 'none', 4000);
+    }
 
-      if (!name || !matric || !email || !password) {
-        messageEl.textContent = "Please fill in all fields.";
-        messageEl.style.color = "tomato";
+    function signUp() {
+      const fullName = document.getElementById("fullName").value;
+      const matric = document.getElementById("matricNumber").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (!fullName || !matric || !email || !password) {
+        showMessage("Please fill in all fields", "red");
         return;
       }
 
       auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          return db.collection("users").doc(user.uid).set({
-            fullName: name,
+        .then(cred => {
+          return db.collection("users").doc(cred.user.uid).set({
+            fullName,
             matricNumber: matric,
-            email: email
-          }).then(() => {
-            return user.sendEmailVerification();
+            email
           });
         })
         .then(() => {
-          messageEl.textContent = "Verification email sent! Redirecting...";
-          messageEl.style.color = "limegreen";
+          showMessage("Account created successfully!", "green");
           setTimeout(() => {
             window.location.href = "login.html";
-          }, 4000); // 4 seconds
+          }, 2000);
         })
-        .catch((error) => {
-          messageEl.textContent = error.message;
-          messageEl.style.color = "tomato";
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            showMessage("Email already registered", "red");
+          } else if (error.code === 'auth/invalid-email') {
+            showMessage("Invalid email address", "red");
+          } else if (error.code === 'auth/weak-password') {
+            showMessage("Password should be at least 6 characters", "red");
+          } else {
+            showMessage("An error occurred. Try again", "red");
+          }
         });
     }
-  </script>
-</body>
+  </script></body>
 </html>
