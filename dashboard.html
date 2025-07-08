@@ -28,14 +28,22 @@
       text-align: center;
       position: relative;
     }
+    .logout-icon {
+      position: absolute;
+      top: 0;
+      right: -30px;
+      font-size: 18px;
+      color: gold;
+      cursor: pointer;
+    }
     .logout-fixed-icon {
       position: fixed;
-      top: 15px;
-      left: 15px;
+      top: 10px;
+      right: 20px;
       font-size: 20px;
       color: gold;
       cursor: pointer;
-      z-index: 9999;
+      z-index: 999;
     }
     .sidebar a {
       display: block;
@@ -124,37 +132,43 @@
       border-radius: 6px;
     }
     .quick-links a:hover { background: gold; color: black; }
-    .ad-section {
-      background: #1a1a1a;
-      padding: 15px;
-      border: 1px dashed gold;
+    .ad-banner {
+      margin-top: 30px;
+      padding: 20px;
+      background: #222;
+      border: 1px solid gold;
       border-radius: 10px;
       text-align: center;
-      margin: 40px 0 0 0;
     }
-    .ad-section p {
-      color: #ccc;
-      font-size: 14px;
+    .ad-banner img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
-    .ad-section a {
+    .ad-banner h3 { color: gold; margin-bottom: 10px; }
+    .ad-banner p { margin-bottom: 10px; }
+    .ad-banner a {
+      display: inline-block;
+      margin-top: 10px;
       color: gold;
       text-decoration: underline;
-    }@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main {
-    margin-left: 0;
-    padding-top: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
-  .mobile-nav { display: block; }
-}
-
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main {
+        margin-left: 0;
+        padding-top: 60px;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .topbar { display: block; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+      .mobile-nav { display: block; }
+    }
   </style>
 </head>
 <body>
-  <i class="fas fa-arrow-right-from-bracket logout-fixed-icon" title="Sign out" onclick="logout()"></i>
+  <i class="fas fa-right-from-bracket logout-fixed-icon" title="Sign out" onclick="logout()"></i>
   <div class="sidebar">
     <h1>Finance Point</h1>
     <a href="#">Dashboard</a>
@@ -166,6 +180,7 @@
     <a href="quiz.html">Quiz of the Week</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
+    <a href="ads.html">Ad Listings</a>
   </div>  <div class="topbar">
     <h2>Finance Point</h2>
   </div>  <div class="mobile-nav">
@@ -198,7 +213,7 @@
 
 <div class="section">
   <h3>Finance Tip of the Day</h3>
-  <p>"Financial literacy is not a luxury — it's a necessity."</p>
+  <p id="financeTip">Loading tip...</p>
 </div>
 
 <div class="section">
@@ -211,9 +226,11 @@
   </div>
 </div>
 
-<div class="ad-section">
-  <p>Want to promote your brand or service here?<br>
-  <a href="https://wa.me/2348142452729" target="_blank">Click to contact the PRO</a></p>
+<div class="ad-banner" id="adBanner">
+  <h3>Promoted Ad</h3>
+  <img src="https://via.placeholder.com/600x200.png?text=Ad+Banner" alt="Ad image">
+  <p>This is where your top ad will appear dynamically.</p>
+  <a href="#">Learn More</a>
 </div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
@@ -263,6 +280,24 @@
         });
         db.collection("downloads").get().then(snapshot => {
           document.getElementById("downloadsCount").textContent = snapshot.size;
+        });
+        db.collection("financeTips").get().then(snapshot => {
+          const tips = snapshot.docs.map(doc => doc.data().tip);
+          if (tips.length > 0) {
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            document.getElementById("financeTip").textContent = `"${randomTip}"`;
+          }
+        });
+        db.collection("ads").orderBy("priority", "asc").limit(1).get().then(snapshot => {
+          if (!snapshot.empty) {
+            const ad = snapshot.docs[0].data();
+            document.getElementById("adBanner").innerHTML = `
+              <h3>${ad.title}</h3>
+              <img src="${ad.imageUrl}" alt="Ad image">
+              <p>${ad.description}</p>
+              <a href="${ad.link}" target="_blank">Learn More</a>
+            `;
+          }
         });
       } else {
         window.location.href = "login.html";
