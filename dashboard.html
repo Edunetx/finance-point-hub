@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Finance Point Dashboard</title>
@@ -132,61 +133,81 @@
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
     <a href="#" id="logoutBtn" style="margin-top: 40px; color: red; border-left: 3px solid red;">Sign Out</a>
-  </div>  <div class="topbar">
+  </div>
+
+  <div class="topbar">
     <h2>Finance Point</h2>
-  </div>  <div class="mobile-nav">
+  </div>
+
+  <div class="mobile-nav">
     <a href="dashboard.html">Dashboard</a>
     <a href="announcements.html">Announcements</a>
     <a href="downloads.html">Study Materials</a>
     <a href="admin.html">Admin Panel</a>
     <a href="#" id="mobileLogout">Sign Out</a>
-  </div>  <div class="main">
+  </div>
+
+  <div class="main">
     <div class="section">
       <h3 id="userName">Welcome...</h3>
       <p id="userMatric"></p>
-    </div><div class="section stats">
-  <div class="stat-box">
-    <h4>Students</h4>
-    <p id="studentsCount">...</p>
-  </div>
-  <div class="stat-box">
-    <h4>Announcements</h4>
-    <p id="announcementsCount">...</p>
-  </div>
-  <div class="stat-box">
-    <h4>Events</h4>
-    <p id="eventsCount">...</p>
-  </div>
-  <div class="stat-box">
-    <h4>Downloads</h4>
-    <p id="downloadsCount">...</p>
-  </div>
-</div>
+    </div>
 
-<div class="section">
-  <h3>Latest Announcements</h3>
-  <ul>
-    <li>CBT test holds Friday by 10am</li>
-    <li>Seminar registration deadline extended</li>
-  </ul>
-</div>
+    <div class="section stats">
+      <div class="stat-box">
+        <h4>Students</h4>
+        <p id="studentsCount">...</p>
+      </div>
+      <div class="stat-box">
+        <h4>Announcements</h4>
+        <p id="announcementsCount">...</p>
+      </div>
+      <div class="stat-box">
+        <h4>Events</h4>
+        <p id="eventsCount">...</p>
+      </div>
+      <div class="stat-box">
+        <h4>Downloads</h4>
+        <p id="downloadsCount">...</p>
+      </div>
+    </div>
 
-<div class="section">
-  <h3>Finance Tip of the Day</h3>
-  <p>"Financial literacy is not a luxury — it's a necessity."</p>
-</div>
+    <div class="section">
+      <h3>Latest Announcements</h3>
+      <ul>
+        <li>CBT test holds Friday by 10am</li>
+        <li>Seminar registration deadline extended</li>
+      </ul>
+    </div>
 
-<div class="section">
-  <h3>Quick Access</h3>
-  <div class="quick-links">
-    <a href="downloads.html">Study Materials</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <a href="quiz.html">CBT Quiz</a>
-    <a href="birthdays.html">Birthday Wall</a>
+    <div class="section">
+      <h3>Finance Tip of the Day</h3>
+      <p>"Financial literacy is not a luxury — it's a necessity."</p>
+    </div>
+
+    <div class="section">
+      <h3>Quick Access</h3>
+      <div class="quick-links">
+        <a href="downloads.html">Study Materials</a>
+        <a href="lostfound.html">Lost & Found</a>
+        <a href="quiz.html">CBT Quiz</a>
+        <a href="birthdays.html">Birthday Wall</a>
+      </div>
+    </div>
+
+    <!-- Sign Out Button (Under Stats) -->
+    <div class="section">
+      <button id="logoutBtn2" style="background: red; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; width: 100%;">Sign Out</button>
+    </div>
   </div>
-</div>
 
-  </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config + Logic -->
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
       authDomain: "finsa-connect.firebaseapp.com",
@@ -233,6 +254,7 @@
       }
     });
 
+    // Sign out buttons
     document.getElementById("logoutBtn").addEventListener("click", () => {
       auth.signOut().then(() => {
         window.location.href = "login.html";
@@ -244,5 +266,12 @@
         window.location.href = "login.html";
       });
     });
-  </script></body>
+
+    document.getElementById("logoutBtn2").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+</body>
 </html>
