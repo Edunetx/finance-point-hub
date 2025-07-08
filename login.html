@@ -1,145 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Finance Point - Login</title>
+  <title>Login | Finance Point</title>
   <style>
-    /* Basic center and background */
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    body {
+      background: #0d0d0d;
       color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
     }
-    .container {
-      background: rgba(0,0,0,0.7);
-      padding: 2rem;
+    .login-box {
+      background: #1a1a1a;
+      padding: 20px;
       border-radius: 10px;
-      width: 320px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      width: 300px;
+      margin: auto;
     }
-    input[type=email], input[type=password] {
-      width: 100%;
+    input {
+      width: 90%;
       padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-    button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      background-color: #ffb700;
+      margin: 10px 0;
       border: none;
       border-radius: 5px;
-      font-weight: bold;
+    }
+    .btn {
+      background: gold;
+      color: black;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
-      color: #000;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
     }
-    button:hover {
-      background-color: #ffa500;
-    }
-    .link {
+    .error-message {
+      color: red;
+      font-size: 14px;
       margin-top: 10px;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    .link a {
-      color: #ffb700;
-      text-decoration: none;
-    }
-    .link a:hover {
-      text-decoration: underline;
-    }
-    .error {
-      margin-top: 10px;
-      color: #ff4d4d;
-      font-weight: bold;
-      text-align: center;
     }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <h2>Finance Point Login</h2>
-  <input type="email" id="email" placeholder="Email" autocomplete="username" />
-  <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
-  <button id="loginBtn">Login</button>
-  <div class="link">
-    Don't have an account? <a href="signup.html">Sign Up</a>
+  <div class="login-box">
+    <h2>Login to Finance Point</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <div class="error-message" id="errorMsg"></div>
   </div>
-  <div class="error" id="error"></div>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  // Your Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.firebasestorage.app",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const loginBtn = document.getElementById('loginBtn');
-  const errorDiv = document.getElementById('error');
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
 
-  loginBtn.addEventListener('click', async () => {
-    errorDiv.textContent = "";
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (!email || !password) {
-      errorDiv.textContent = "Please enter email and password.";
-      return;
-    }
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Check Firestore if user is admin
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userDocRef);
-
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        if (userData.admin === true) {
-          // Redirect admin to admin.html
-          window.location.href = "admin.html";
-        } else {
-          // Redirect normal users to dashboard.html
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
           window.location.href = "dashboard.html";
-        }
-      } else {
-        errorDiv.textContent = "User data not found.";
-      }
-    } catch (error) {
-      errorDiv.textContent = error.message;
+        })
+        .catch((error) => {
+          // Clean message without showing "Firebase:"
+          let message = "Login failed. Please check your credentials.";
+          if (error.code === "auth/user-not-found") message = "Email not registered.";
+          else if (error.code === "auth/wrong-password") message = "Incorrect password.";
+          else if (error.code === "auth/invalid-email") message = "Please enter a valid email.";
+          errorMsg.textContent = message;
+        });
     }
-  });
-</script>
-
+  </script>
 </body>
 </html>
