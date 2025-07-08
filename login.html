@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Login | Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body, html {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
       background: #0d0d0d;
       overflow: hidden;
+      color: white;
     }
 
     #particles-js {
@@ -19,114 +21,141 @@
       z-index: -1;
     }
 
+    .container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
     .login-box {
-      background: rgba(0,0,0,0.8);
-      padding: 25px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 30px;
       border-radius: 12px;
-      width: 320px;
-      margin: 100px auto;
+      width: 100%;
+      max-width: 350px;
+      box-shadow: 0 0 15px rgba(255,215,0,0.15);
       text-align: center;
-      box-shadow: 0 0 15px rgba(255,215,0,0.2);
+    }
+
+    h2 {
+      color: gold;
+      margin-bottom: 20px;
     }
 
     input {
-      width: 90%;
+      width: 100%;
       padding: 10px;
       margin: 10px 0;
       border: none;
       border-radius: 5px;
-      background: #1a1a1a;
+      background: #1f1f1f;
       color: white;
+      font-size: 14px;
     }
 
     .btn {
       background: gold;
       color: black;
-      padding: 10px 20px;
+      padding: 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      margin-top: 10px;
     }
 
     .error-message {
       color: red;
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: gold;
+      text-decoration: none;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div id="particles-js"></div>
 
-  <div class="login-box">
-    <h2>Login to Finance Point</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button class="btn" onclick="login()">Login</button>
-    <div class="error-message" id="errorMsg"></div>
+  <div class="container">
+    <div class="login-box">
+      <h2>Login to Finance Point</h2>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button class="btn" onclick="login()">Login</button>
+      <div class="error-message" id="errorMsg"></div>
+
+      <div class="signup-link">
+        Don’t have an account? <a href="signup.html">Sign up</a>
+      </div>
+    </div>
   </div>
 
-  <!-- Firebase + Login Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+  <!-- Firebase Scripts (Normal JS Version for Better Compatibility) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
       projectId: "YOUR_PROJECT_ID",
       appId: "YOUR_APP_ID"
     };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
     function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const errorMsg = document.getElementById("errorMsg");
 
-      signInWithEmailAndPassword(auth, email, password)
+      auth.signInWithEmailAndPassword(email, password)
         .then(() => {
           window.location.href = "dashboard.html";
         })
         .catch((error) => {
-          let message = "Login failed. Please check your credentials.";
-          if (error.code === "auth/user-not-found") message = "Email not registered.";
+          let message = "Login failed.";
+          if (error.code === "auth/user-not-found") message = "Email not found.";
           else if (error.code === "auth/wrong-password") message = "Incorrect password.";
-          else if (error.code === "auth/invalid-email") message = "Please enter a valid email.";
+          else if (error.code === "auth/invalid-email") message = "Invalid email format.";
           errorMsg.textContent = message;
         });
     }
   </script>
 
-  <!-- Particles.js background -->
+  <!-- Particles.js Background -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS("particles-js", {
       "particles": {
-        "number": {
-          "value": 80
-        },
+        "number": { "value": 60 },
         "color": { "value": "#ffffff" },
         "shape": { "type": "circle" },
-        "opacity": {
-          "value": 0.5
-        },
-        "size": {
-          "value": 2
-        },
+        "opacity": { "value": 0.4 },
+        "size": { "value": 2 },
         "line_linked": {
           "enable": true,
           "distance": 120,
           "color": "#ffffff",
-          "opacity": 0.4,
+          "opacity": 0.3,
           "width": 1
         },
-        "move": {
-          "enable": true,
-          "speed": 1
-        }
+        "move": { "enable": true, "speed": 1 }
       },
       "interactivity": {
         "detect_on": "canvas",
