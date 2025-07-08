@@ -89,11 +89,18 @@
       background: #ffd700d0;
     }
 
-    .error-message {
-      color: red;
+    .message {
       font-size: 14px;
-      margin-top: 12px;
+      margin-top: 15px;
       min-height: 20px;
+    }
+
+    .message.success {
+      color: #00ff99;
+    }
+
+    .message.error {
+      color: red;
     }
 
     .login-link {
@@ -122,7 +129,8 @@
       <input type="email" id="email" placeholder="Email Address" />
       <input type="password" id="password" placeholder="Create Password" />
       <button class="btn" onclick="signup()">Sign Up</button>
-      <div class="error-message" id="errorMsg"></div>
+
+      <div id="messageBox" class="message"></div>
 
       <div class="login-link">
         Already have an account? <a href="login.html">Login</a>
@@ -153,36 +161,41 @@
       const matric = document.getElementById("matric").value.trim();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-      const errorMsg = document.getElementById("errorMsg");
+      const messageBox = document.getElementById("messageBox");
 
       if (!name || !matric || !email || !password) {
-        errorMsg.textContent = "Please fill in all fields.";
+        messageBox.textContent = "Please fill in all fields.";
+        messageBox.className = "message error";
         return;
       }
 
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          const uid = userCredential.user.uid;
-          return db.collection("users").doc(uid).set({
+          const user = userCredential.user;
+          return db.collection("users").doc(user.uid).set({
             name: name,
             matric: matric,
             email: email
+          }).then(() => {
+            return user.sendEmailVerification();
           });
         })
         .then(() => {
-          window.location.href = "dashboard.html";
+          messageBox.textContent = "🎉 Signup successful! A verification email has been sent to your inbox.";
+          messageBox.className = "message success";
         })
         .catch((error) => {
-          let message = "Signup failed.";
-          if (error.code === "auth/email-already-in-use") message = "Email is already registered.";
-          else if (error.code === "auth/invalid-email") message = "Invalid email format.";
-          else if (error.code === "auth/weak-password") message = "Password must be at least 6 characters.";
-          errorMsg.textContent = message;
+          let msg = "Signup failed.";
+          if (error.code === "auth/email-already-in-use") msg = "Email is already registered.";
+          else if (error.code === "auth/invalid-email") msg = "Invalid email address.";
+          else if (error.code === "auth/weak-password") msg = "Password must be at least 6 characters.";
+          messageBox.textContent = msg;
+          messageBox.className = "message error";
         });
     }
   </script>
 
-  <!-- Particles Background -->
+  <!-- Particles.js Background -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS("particles-js", {
