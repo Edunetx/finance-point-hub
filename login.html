@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login | Finance Point</title>
+  <title>Sign In</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,18 +89,15 @@
       background: #ffd700d0;
     }
 
-    .message {
-      font-size: 14px;
-      margin-top: 15px;
-      min-height: 20px;
-    }
-
-    .message.success {
-      color: #00ff99;
-    }
-
-    .message.error {
-      color: red;
+    .resend-btn {
+      margin-top: 10px;
+      font-size: 13px;
+      background: transparent;
+      border: none;
+      color: gold;
+      cursor: pointer;
+      text-decoration: underline;
+      display: none;
     }
 
     .signup-link {
@@ -116,6 +113,30 @@
     .signup-link a:hover {
       text-decoration: underline;
     }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      color: gold;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid gold;
+      font-size: 14px;
+      z-index: 9999;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      animation: fadeInOut 3s ease-in-out forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+      10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
   </style>
 </head>
 <body>
@@ -123,12 +144,11 @@
 
   <div class="container">
     <div class="login-box">
-      <h2>Login to Finance Point</h2>
+      <h2>Sign In</h2>
       <input type="email" id="email" placeholder="Email Address" />
       <input type="password" id="password" placeholder="Password" />
-      <button class="btn" onclick="login()">Login</button>
-
-      <div id="messageBox" class="message"></div>
+      <button class="btn" onclick="signIn()">Sign In</button>
+      <button class="resend-btn" id="resendBtn" onclick="resendVerification()">Resend Verification Email</button>
 
       <div class="signup-link">
         Don't have an account? <a href="signup.html">Sign Up</a>
@@ -152,40 +172,70 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function login() {
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3000);
+    }
+
+    function signIn() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-      const messageBox = document.getElementById("messageBox");
+      const resendBtn = document.getElementById("resendBtn");
 
       if (!email || !password) {
-        messageBox.textContent = "Please fill in both fields.";
-        messageBox.className = "message error";
+        showToast("Please fill in both fields.");
+        resendBtn.style.display = "none";
         return;
       }
 
       auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-
           if (!user.emailVerified) {
-            auth.signOut(); // prevent access
-            messageBox.textContent = "Please verify your email before logging in.";
-            messageBox.className = "message error";
+            auth.signOut();
+            showToast("Your email is not verified.");
+            resendBtn.style.display = "inline-block";
           } else {
-            messageBox.textContent = "Login successful!";
-            messageBox.className = "message success";
+            showToast("Sign in successful.");
+            resendBtn.style.display = "none";
             setTimeout(() => {
               window.location.href = "dashboard.html";
             }, 1000);
           }
         })
         .catch((error) => {
-          let msg = "Login failed.";
+          let msg = "Sign in failed.";
           if (error.code === "auth/wrong-password") msg = "Incorrect password.";
           else if (error.code === "auth/user-not-found") msg = "No account found with this email.";
           else if (error.code === "auth/invalid-email") msg = "Invalid email format.";
-          messageBox.textContent = msg;
-          messageBox.className = "message error";
+          showToast(msg);
+          resendBtn.style.display = "none";
+        });
+    }
+
+    function resendVerification() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (!user.emailVerified) {
+            user.sendEmailVerification()
+              .then(() => {
+                showToast("Verification email sent.");
+                auth.signOut();
+              })
+              .catch(() => {
+                showToast("Failed to send verification email.");
+              });
+          }
+        })
+        .catch(() => {
+          showToast("Could not verify credentials.");
         });
     }
   </script>
