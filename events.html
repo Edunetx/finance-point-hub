@@ -1,183 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Events | Finance Point</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      display: flex;
-      min-height: 100vh;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-    }
-
-    .sidebar {
-      width: 220px;
-      background: rgba(0, 0, 0, 0.85);
-      padding: 20px 10px;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
-
-    .sidebar h2 {
-      font-family: 'Merriweather', serif;
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
-      color: #ffd700;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ccc;
-      text-decoration: none;
-      padding: 12px 20px;
-      margin: 8px 0;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover, .sidebar a.active {
-      background: #ffd700;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .main {
-      margin-left: 220px;
-      flex: 1;
-      padding: 20px;
-    }
-
-    .topbar {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .topbar h1 {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .event-section {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      margin-bottom: 25px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .event-section h2 {
-      font-size: 20px;
-      color: #ffd700;
-      margin-bottom: 10px;
-    }
-
-    .event-item {
-      margin-bottom: 20px;
-    }
-
-    .event-item i {
-      color: #ffd700;
-      margin-right: 10px;
-    }
-
-    .event-item p {
-      font-size: 15px;
-      color: #eee;
-      margin-top: 5px;
-      margin-left: 25px;
-    }
-
-    footer {
-      margin-top: 30px;
-      font-size: 13px;
-      color: #ccc;
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 15px;
-      }
-
-      .topbar h1 {
-        font-size: 18px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINHUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html" class="active"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="admin.html"><i class="fas fa-lock"></i> Admin</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
-  </div>
+  <header style="background:#220033;padding:10px;text-align:center;">
+    <h1 style="color:#b37cd5;">FINHUB</h1>
+  </header>
 
-  <div class="main">
-    <div class="topbar">
-      <h1>Upcoming Events</h1>
-    </div>
+  <nav style="background:#1a0033;display:flex;justify-content:space-around;padding:10px 0;">
+    <a href="index.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="ads.html">Ads</a>
+  </nav>
 
-    <div class="event-section">
-      <h2><i class="fas fa-moon"></i> Dinner Night</h2>
-      <div class="event-item">
-        <p>A night to celebrate unity and excellence among finance students. Dress code: Formal. Date and venue will be announced soon.</p>
-      </div>
-    </div>
+  <main style="padding:20px;">
+    <h2>Events Page</h2>
+    <p>Your portal to Finance Department updates, materials, and opportunities.</p>
+  </main>
 
-    <div class="event-section">
-      <h2><i class="fas fa-vote-yea"></i> Upcoming Departmental Elections</h2>
-      <div class="event-item">
-        <p>All positions including PRO, President, and Vice will be contested. Voting guidelines and nominee info will be released shortly.</p>
-      </div>
-    </div>
+  <footer style="background:#220033;text-align:center;padding:10px;margin-top:40px;color:#aaa;">
+    Contact PRO for Ads: 08142452729 | AAUA Finance Dept. © 2025
+  </footer>
 
-    <div class="event-section">
-      <h2><i class="fas fa-futbol"></i> Finance Sports Day</h2>
-      <div class="event-item">
-        <p>Join us for football, volleyball, and more! Teams can register through class reps. Medals and prizes to be won.</p>
-      </div>
-    </div>
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
 
-    <footer>
-      &copy; 2025 Finance Point • AAUA Finance Dept • Created by OBA
-    </footer>
-  </div>
 </body>
 </html>

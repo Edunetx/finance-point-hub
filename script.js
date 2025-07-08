@@ -1,0 +1,1 @@
+// Firebase and interactivity script

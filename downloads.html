@@ -1,164 +1,52 @@
-<!DOCTYPE html><html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Downloads | Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }body {
-  min-height: 100vh;
-  background: #0e0e0e url('https://assets-global.website-files.com/63ed27b9dd47f05e61a1c8cf/63f61d234024d2680f167048_particles.gif') no-repeat center center fixed;
-  background-size: cover;
-  color: #fff;
-  display: flex;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px 10px;
-  z-index: 10;
-}
-
-.sidebar h2 {
-  color: #ffd700;
-  text-align: center;
-  font-size: 22px;
-  margin-bottom: 30px;
-}
-
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ccc;
-  text-decoration: none;
-  padding: 12px 20px;
-  margin: 8px 0;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
-
-.sidebar a:hover, .sidebar a.active {
-  background: #ffd700;
-  color: #000;
-  font-weight: bold;
-}
-
-.main {
-  margin-left: 220px;
-  padding: 2rem;
-  flex: 1;
-}
-
-.main h1 {
-  color: #ffd700;
-  font-size: 28px;
-  margin-bottom: 1.5rem;
-}
-
-.search-bar {
-  margin-bottom: 20px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-}
-
-.materials {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.material {
-  background: rgba(255,255,255,0.08);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  transition: 0.3s;
-}
-
-.material:hover {
-  background: #ffd700;
-  color: #000;
-}
-
-.material a {
-  color: inherit;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-  .main {
-    margin-left: 0;
-    padding: 1rem;
-  }
-}
-
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINHUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Finance Point</h2>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="downloads.html" class="active"><i class="fas fa-file-download"></i> Downloads</a>
-    <a href="events.html"><i class="fas fa-calendar"></i> Events</a>
-    <a href="news.html"><i class="fas fa-bullhorn"></i> News</a>
-    <a href="executives.html"><i class="fas fa-users"></i> Executives</a>
-    <a href="lostandfound.html"><i class="fas fa-search"></i> Lost & Found</a>
-    <a href="birthday.html"><i class="fas fa-birthday-cake"></i> Birthday Wall</a>
-    <a href="study.html"><i class="fas fa-book"></i> Study Resources</a>
-    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
-  </div>  <div class="main">
-    <h1>📥 Downloadable Finance Materials</h1>
-    <div class="search-bar">
-      <input type="text" placeholder="Search materials..." oninput="searchMaterials(this.value)" />
-    </div><div class="materials" id="materialList">
-  <div class="material">
-    <a href="https://filesamples.com/samples/document/pdf/sample1.pdf" download>Fundamentals of Banking (PDF)</a>
-  </div>
-  <div class="material">
-    <a href="https://filesamples.com/samples/document/txt/sample1.txt" download>Top 10 Financial Ratios Explained (TXT)</a>
-  </div>
-  <div class="material">
-    <a href="https://filesamples.com/samples/document/pdf/sample2.pdf" download>Basic Investment Theories (PDF)</a>
-  </div>
-  <div class="material">
-    <a href="https://filesamples.com/samples/document/pdf/sample3.pdf" download>Risk Management Techniques (PDF)</a>
-  </div>
-  <div class="material">
-    <a href="https://filesamples.com/samples/document/txt/sample2.txt" download>Introduction to Capital Markets (TXT)</a>
-  </div>
-</div>
+  <header style="background:#220033;padding:10px;text-align:center;">
+    <h1 style="color:#b37cd5;">FINHUB</h1>
+  </header>
 
-  </div>  <script>
-    function searchMaterials(keyword) {
-      keyword = keyword.toLowerCase();
-      const items = document.querySelectorAll('.material');
-      items.forEach(item => {
-        const text = item.innerText.toLowerCase();
-        item.style.display = text.includes(keyword) ? 'block' : 'none';
-      });
-    }
-  </script></body>
+  <nav style="background:#1a0033;display:flex;justify-content:space-around;padding:10px 0;">
+    <a href="index.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="ads.html">Ads</a>
+  </nav>
+
+  <main style="padding:20px;">
+    <h2>Downloads Page</h2>
+    <p>Your portal to Finance Department updates, materials, and opportunities.</p>
+  </main>
+
+  <footer style="background:#220033;text-align:center;padding:10px;margin-top:40px;color:#aaa;">
+    Contact PRO for Ads: 08142452729 | AAUA Finance Dept. © 2025
+  </footer>
+
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
+</body>
 </html>

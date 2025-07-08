@@ -1,226 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sign Up | Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
-      color: white;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .signup-box {
-      background: rgba(0, 0, 0, 0.85);
-      padding: 30px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-      text-align: center;
-    }
-
-    h2 {
-      color: gold;
-      margin-bottom: 15px;
-      font-size: 24px;
-      position: relative;
-    }
-
-    h2::after {
-      content: '';
-      position: absolute;
-      width: 60px;
-      height: 2px;
-      background: gold;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 6px;
-      background: #1a1a1a;
-      color: white;
-      font-size: 14px;
-    }
-
-    input:focus {
-      border: 1px solid gold;
-      background: #111;
-    }
-
-    .btn {
-      background: gold;
-      color: black;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background: #ffd700d0;
-    }
-
-    .message {
-      font-size: 14px;
-      margin-top: 15px;
-      min-height: 20px;
-    }
-
-    .message.success {
-      color: #00ff99;
-    }
-
-    .message.error {
-      color: red;
-    }
-
-    .login-link {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .login-link a {
-      color: gold;
-      text-decoration: none;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINHUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="particles-js"></div>
+  <header style="background:#220033;padding:10px;text-align:center;">
+    <h1 style="color:#b37cd5;">FINHUB</h1>
+  </header>
 
-  <div class="container">
-    <div class="signup-box">
-      <h2>Join Finance Point</h2>
-      <input type="text" id="name" placeholder="Full Name" />
-      <input type="text" id="matric" placeholder="Matric Number" />
-      <input type="email" id="email" placeholder="Email Address" />
-      <input type="password" id="password" placeholder="Create Password" />
-      <button class="btn" onclick="signup()">Sign Up</button>
+  <nav style="background:#1a0033;display:flex;justify-content:space-around;padding:10px 0;">
+    <a href="index.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="ads.html">Ads</a>
+  </nav>
 
-      <div id="messageBox" class="message"></div>
+  <main style="padding:20px;">
+    <h2>Signup Page</h2>
+    <p>Your portal to Finance Department updates, materials, and opportunities.</p>
+  </main>
 
-      <div class="login-link">
-        Already have an account? <a href="login.html">Login</a>
-      </div>
-    </div>
-  </div>
+  <footer style="background:#220033;text-align:center;padding:10px;margin-top:40px;color:#aaa;">
+    Contact PRO for Ads: 08142452729 | AAUA Finance Dept. © 2025
+  </footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.firebasestorage.app",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    function signup() {
-      const name = document.getElementById("name").value.trim();
-      const matric = document.getElementById("matric").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const messageBox = document.getElementById("messageBox");
-
-      if (!name || !matric || !email || !password) {
-        messageBox.textContent = "Please fill in all fields.";
-        messageBox.className = "message error";
-        return;
-      }
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          return db.collection("users").doc(user.uid).set({
-            name: name,
-            matric: matric,
-            email: email
-          }).then(() => {
-            return user.sendEmailVerification();
-          });
-        })
-        .then(() => {
-          messageBox.textContent = "🎉 Signup successful! A verification email has been sent to your inbox.";
-          messageBox.className = "message success";
-        })
-        .catch((error) => {
-          let msg = "Signup failed.";
-          if (error.code === "auth/email-already-in-use") msg = "Email is already registered.";
-          else if (error.code === "auth/invalid-email") msg = "Invalid email address.";
-          else if (error.code === "auth/weak-password") msg = "Password must be at least 6 characters.";
-          messageBox.textContent = msg;
-          messageBox.className = "message error";
-        });
-    }
-  </script>
-
-  <!-- Particles.js Background -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script>
-    particlesJS("particles-js", {
-      particles: {
-        number: { value: 60 },
-        color: { value: "#ffffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: 2 },
-        line_linked: {
-          enable: true,
-          distance: 120,
-          color: "#ffffff",
-          opacity: 0.4,
-          width: 1
-        },
-        move: { enable: true, speed: 1 }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" }
-        }
-      }
-    });
-  </script>
 </body>
 </html>

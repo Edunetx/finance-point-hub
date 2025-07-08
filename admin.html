@@ -1,94 +1,52 @@
-<!DOCTYPE html><html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Control Panel - Finance Point</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-  authDomain: "finsa-connect.firebaseapp.com",
-  projectId: "finsa-connect",
-  storageBucket: "finsa-connect.firebasestorage.app",
-  messagingSenderId: "126845965255",
-  appId: "1:126845965255:web:c82539297a8464873d7fe2"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.submitAnnouncement = async function () {
-  const title = document.getElementById("announceTitle").value.trim();
-  const body = document.getElementById("announceBody").value.trim();
-  if (!title || !body) return alert("Please fill all fields");
-  await addDoc(collection(db, "announcements"), {
-    title,
-    body,
-    createdAt: new Date()
-  });
-  alert("Announcement posted!");
-  document.getElementById("announceTitle").value = "";
-  document.getElementById("announceBody").value = "";
-};
-
-window.submitEvent = async function () {
-  const title = document.getElementById("eventTitle").value.trim();
-  const body = document.getElementById("eventBody").value.trim();
-  if (!title || !body) return alert("Please fill all fields");
-  await addDoc(collection(db, "events"), {
-    title,
-    body,
-    createdAt: new Date()
-  });
-  alert("Event added!");
-  document.getElementById("eventTitle").value = "";
-  document.getElementById("eventBody").value = "";
-};
-
-window.submitResource = async function () {
-  const title = document.getElementById("resourceTitle").value.trim();
-  const link = document.getElementById("resourceLink").value.trim();
-  if (!title || !link) return alert("Please fill all fields");
-  await addDoc(collection(db, "resources"), {
-    title,
-    link,
-    createdAt: new Date()
-  });
-  alert("Resource uploaded!");
-  document.getElementById("resourceTitle").value = "";
-  document.getElementById("resourceLink").value = "";
-};
-
-window.submitBirthday = async function () {
-  const name = document.getElementById("bdayName").value.trim();
-  const date = document.getElementById("bdayDate").value.trim();
-  if (!name || !date) return alert("Please fill all fields");
-  await addDoc(collection(db, "birthdays"), {
-    name,
-    date
-  });
-  alert("Birthday added!");
-  document.getElementById("bdayName").value = "";
-  document.getElementById("bdayDate").value = "";
-};
-
-window.submitLostItem = async function () {
-  const name = document.getElementById("itemName").value.trim();
-  const desc = document.getElementById("itemDesc").value.trim();
-  if (!name || !desc) return alert("Please fill all fields");
-  await addDoc(collection(db, "lostFound"), {
-    name,
-    desc,
-    createdAt: new Date()
-  });
-  alert("Item posted to Lost & Found!");
-  document.getElementById("itemName").value = "";
-  document.getElementById("itemDesc").value = "";
-};
-
-  </script>
+  <title>FINHUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Body content remains unchanged from previous version -->
+  <header style="background:#220033;padding:10px;text-align:center;">
+    <h1 style="color:#b37cd5;">FINHUB</h1>
+  </header>
+
+  <nav style="background:#1a0033;display:flex;justify-content:space-around;padding:10px 0;">
+    <a href="index.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="ads.html">Ads</a>
+  </nav>
+
+  <main style="padding:20px;">
+    <h2>Admin Page</h2>
+    <p>Your portal to Finance Department updates, materials, and opportunities.</p>
+  </main>
+
+  <footer style="background:#220033;text-align:center;padding:10px;margin-top:40px;color:#aaa;">
+    Contact PRO for Ads: 08142452729 | AAUA Finance Dept. © 2025
+  </footer>
+
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.firebasestorage.app",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
 </body>
 </html>
