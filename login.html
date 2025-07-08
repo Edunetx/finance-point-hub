@@ -10,39 +10,64 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
+      overflow: hidden;
       min-height: 100vh;
-      padding: 20px;
+      position: relative;
     }
-    .container {
-      background: #1a1a1a;
-      padding: 30px;
-      border: 2px solid gold;
-      border-radius: 12px;
+
+    .background-animation {
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
-      max-width: 400px;
-      text-align: center;
+      height: 100%;
+      background: radial-gradient(circle, #2c2c2c 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: moveBg 10s linear infinite;
+      z-index: 0;
+      opacity: 0.2;
     }
+
+    @keyframes moveBg {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 35px;
+      max-width: 400px;
+      width: 90%;
+      margin: 100px auto;
+      border-radius: 12px;
+      border: 2px solid gold;
+      box-shadow: 0 0 15px gold;
+      text-align: center;
+      color: white;
+    }
+
     h2 {
       color: gold;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
+
     input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
+      padding: 14px;
+      margin: 12px 0;
       border: none;
-      background: #333;
+      border-radius: 6px;
+      background: #2c2c2c;
       color: white;
+      font-size: 15px;
     }
+
     input:focus {
       outline: 2px solid gold;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -52,40 +77,67 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 16px;
+      transition: 0.3s;
     }
+
     button:hover {
-      background: #ffd700;
+      background: #ffdc55;
     }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: #222;
+      border-left: 5px solid;
+      color: white;
       font-size: 14px;
+      border-radius: 5px;
+      display: none;
+      z-index: 999;
     }
-    .link {
+
+    .toast.success { border-color: limegreen; }
+    .toast.error { border-color: tomato; }
+
+    .link, .forgot {
       margin-top: 15px;
+      font-size: 14px;
       color: gold;
     }
-    .link a {
+
+    .link a, .forgot a {
       color: #ffd700;
       text-decoration: none;
     }
-    .link a:hover {
+
+    .link a:hover, .forgot a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
+
+  <div class="background-animation"></div>
+
   <div class="container">
     <h2>Sign In</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Sign In</button>
-    <div id="message"></div>
+
+    <div class="forgot">
+      <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+    </div>
+
     <div class="link">
       Don't have an account? <a href="signup.html">Create one</a>
     </div>
   </div>
+
+  <div id="toast" class="toast"></div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -101,28 +153,50 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 4000);
+    }
+
     function login() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
-      const messageEl = document.getElementById("message");
 
       if (!email || !password) {
-        messageEl.textContent = "Please enter both email and password.";
-        messageEl.style.color = "tomato";
+        showToast("Please enter both email and password.", "error");
         return;
       }
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-          messageEl.textContent = "Login successful! Redirecting...";
-          messageEl.style.color = "limegreen";
+          showToast("Login successful!", "success");
           setTimeout(() => {
             window.location.href = "dashboard.html";
-          }, 4000); // 4 seconds
+          }, 4000);
         })
         .catch((error) => {
-          messageEl.textContent = error.message;
-          messageEl.style.color = "tomato";
+          showToast(error.message, "error");
+        });
+    }
+
+    function forgotPassword() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        showToast("Enter your email to reset password.", "error");
+        return;
+      }
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          showToast("Password reset link sent to email.", "success");
+        })
+        .catch((error) => {
+          showToast(error.message, "error");
         });
     }
   </script>
