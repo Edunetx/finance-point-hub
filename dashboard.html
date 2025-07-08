@@ -132,27 +132,30 @@
       border-radius: 6px;
     }
     .quick-links a:hover { background: gold; color: black; }
-    .ad-banner {
+    .top-ad {
+      background: #1a1a1a;
+      border: 1px dashed gold;
+      padding: 15px;
       margin-top: 30px;
-      padding: 20px;
-      background: #222;
-      border: 1px solid gold;
       border-radius: 10px;
       text-align: center;
     }
-    .ad-banner img {
+    .top-ad img {
       max-width: 100%;
-      height: auto;
-      border-radius: 8px;
+      border-radius: 10px;
       margin-bottom: 10px;
     }
-    .ad-banner h3 { color: gold; margin-bottom: 10px; }
-    .ad-banner p { margin-bottom: 10px; }
-    .ad-banner a {
-      display: inline-block;
-      margin-top: 10px;
-      color: gold;
-      text-decoration: underline;
+    .top-ad h4 { color: gold; margin-bottom: 8px; }
+    .top-ad p { margin-bottom: 10px; }
+    .top-ad a {
+      background: gold;
+      color: black;
+      padding: 8px 14px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .top-ad a:hover {
+      background: white;
     }
     @media (max-width: 768px) {
       .sidebar { display: none; }
@@ -180,7 +183,6 @@
     <a href="quiz.html">Quiz of the Week</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
-    <a href="ads.html">Ad Listings</a>
   </div>  <div class="topbar">
     <h2>Finance Point</h2>
   </div>  <div class="mobile-nav">
@@ -213,7 +215,7 @@
 
 <div class="section">
   <h3>Finance Tip of the Day</h3>
-  <p id="financeTip">Loading tip...</p>
+  <p>"Financial literacy is not a luxury — it's a necessity."</p>
 </div>
 
 <div class="section">
@@ -226,12 +228,7 @@
   </div>
 </div>
 
-<div class="ad-banner" id="adBanner">
-  <h3>Promoted Ad</h3>
-  <img src="https://via.placeholder.com/600x200.png?text=Ad+Banner" alt="Ad image">
-  <p>This is where your top ad will appear dynamically.</p>
-  <a href="#">Learn More</a>
-</div>
+<div id="topAdBlock" class="top-ad" style="display: none;"></div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
     const firebaseConfig = {
@@ -281,21 +278,18 @@
         db.collection("downloads").get().then(snapshot => {
           document.getElementById("downloadsCount").textContent = snapshot.size;
         });
-        db.collection("financeTips").get().then(snapshot => {
-          const tips = snapshot.docs.map(doc => doc.data().tip);
-          if (tips.length > 0) {
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-            document.getElementById("financeTip").textContent = `"${randomTip}"`;
-          }
-        });
-        db.collection("ads").orderBy("priority", "asc").limit(1).get().then(snapshot => {
+
+        // Load top ad
+        db.collection("ads").orderBy("priority").limit(1).get().then(snapshot => {
           if (!snapshot.empty) {
             const ad = snapshot.docs[0].data();
-            document.getElementById("adBanner").innerHTML = `
-              <h3>${ad.title}</h3>
-              <img src="${ad.imageUrl}" alt="Ad image">
+            const block = document.getElementById("topAdBlock");
+            block.style.display = "block";
+            block.innerHTML = `
+              ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Ad Image">` : ''}
+              <h4>${ad.title}</h4>
               <p>${ad.description}</p>
-              <a href="${ad.link}" target="_blank">Learn More</a>
+              <a href="${ad.link}" target="_blank">Visit</a>
             `;
           }
         });
