@@ -4,7 +4,6 @@
   <title>Finance Point Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papf9I8+XqTwDCe3J4qAa3m6oOe4T8w+Q2UyQZqgkmWZlj4SYXGJf5E3zXJ+vEq5w2bE8VgOZ1OroO4z4IuYFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     * { box-sizing: border-box; padding: 0; margin: 0; }
     body {
@@ -116,22 +115,6 @@
       border-radius: 6px;
     }
     .quick-links a:hover { background: gold; color: black; }
-    .logout-btn {
-      background: none;
-      border: none;
-      color: gold;
-      font-size: 24px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .logout-btn:hover {
-      color: red;
-      transform: scale(1.2);
-    }
-    .logout-container {
-      text-align: center;
-      margin-top: 20px;
-    }
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .main { margin-left: 0; padding-top: 60px; }
@@ -152,7 +135,6 @@
     <a href="quiz.html">Quiz of the Week</a>
     <a href="feedback.html">Feedback</a>
     <a href="admin.html">Admin Panel</a>
-    <a href="#" id="logoutBtn">Sign Out</a>
   </div>  <div class="topbar">
     <h2>Finance Point</h2>
   </div>  <div class="mobile-nav">
@@ -160,7 +142,6 @@
     <a href="announcements.html">Announcements</a>
     <a href="downloads.html">Study Materials</a>
     <a href="admin.html">Admin Panel</a>
-    <a href="#" id="mobileLogout">Sign Out</a>
   </div>  <div class="main">
     <div class="section">
       <h3 id="userName">Welcome...</h3>
@@ -205,13 +186,6 @@
     <a href="quiz.html">CBT Quiz</a>
     <a href="birthdays.html">Birthday Wall</a>
   </div>
-</div>
-
-<!-- Stylish Logout Button -->
-<div class="logout-container">
-  <button class="logout-btn" id="logoutBtn2" title="Sign Out">
-    <i class="fas fa-sign-out-alt"></i>
-  </button>
 </div>
 
   </div>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>  <script>
@@ -259,24 +233,6 @@
       } else {
         window.location.href = "login.html";
       }
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
-    });
-
-    document.getElementById("mobileLogout").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
-    });
-
-    document.getElementById("logoutBtn2").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
     });
   </script></body>
 </html>
