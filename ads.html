@@ -70,7 +70,7 @@
       <label>Title:</label>
       <input type="text" id="title" required />
       <label>Image URL:</label>
-      <input type="text" id="imageUrl" required />
+      <input type="text" id="imageUrl" />
       <label>Description:</label>
       <textarea id="description" rows="3" required></textarea>
       <label>Link:</label>
@@ -126,7 +126,7 @@
           const adDiv = document.createElement('div');
           adDiv.className = 'ad-item';
           adDiv.innerHTML = `
-            <img src="${data.imageUrl}" alt="Ad image">
+            ${data.imageUrl ? `<img src="${data.imageUrl}" alt="Ad image">` : ''}
             <h3>${data.title}</h3>
             <p>${data.description}</p>
             <p><a href="${data.link}" target="_blank">Visit</a></p>
@@ -144,4 +144,25 @@
     function editAd(id, data) {
       form.adId.value = id;
       form.title.value = data.title;
-      form.image
+      form.imageUrl.value = data.imageUrl || '';
+      form.description.value = data.description;
+      form.link.value = data.link;
+      form.priority.value = data.priority;
+    }
+
+    function deleteAd(id) {
+      if (confirm('Are you sure you want to delete this ad?')) {
+        db.collection('ads').doc(id).delete().then(loadAds);
+      }
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== 'ayubaboluwatife246@gmail.com') {
+        alert("Unauthorized access");
+        window.location.href = 'login.html';
+      } else {
+        loadAds();
+      }
+    });
+  </script></body>
+</html>
