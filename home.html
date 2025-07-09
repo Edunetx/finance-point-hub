@@ -1,0 +1,109 @@
+<!-- HOME.HTML (Dashboard) --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      background: #0a0a0a url('https://www.transparenttextures.com/patterns/stardust.png');
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      background-blend-mode: overlay;
+      background-repeat: repeat;
+    }
+    .header {
+      background-color: #111;
+      color: gold;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    }
+    .greeting {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .section-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .card {
+      background: #111;
+      border: 1px solid gold;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      transition: 0.3s ease;
+    }
+    .card:hover {
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+    }
+    .card a {
+      text-decoration: none;
+      color: gold;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .greeting {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Finance Point Dashboard</h1>
+  </div>
+  <div class="greeting" id="welcomeText">Welcome, Student</div>  <div class="section-container">
+    <div class="card"><a href="executives.html">Meet the Executives</a></div>
+    <div class="card"><a href="announcements.html">Announcements</a></div>
+    <div class="card"><a href="events.html">Events</a></div>
+    <div class="card"><a href="downloads.html">Study Materials</a></div>
+    <div class="card"><a href="cbt.html">CBT Challenge</a></div>
+    <div class="card"><a href="leaderboard.html">Leaderboard</a></div>
+    <div class="card"><a href="feedback.html">Feedback Box</a></div>
+    <div class="card"><a href="birthday.html">Birthday Wall</a></div>
+    <div class="card"><a href="lostfound.html">Lost & Found</a></div>
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const welcomeText = document.getElementById("welcomeText");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const displayName = data.fullName ? data.fullName.split(" ")[0] : "Student";
+          const maskedMatric = data.matricNumber
+            ? data.matricNumber.substring(0, 3) + "*****" + data.matricNumber.slice(-1)
+            : "*********";
+          welcomeText.textContent = `Welcome, ${displayName.toUpperCase()} (${maskedMatric})`;
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+  </script></body>
+</html>
