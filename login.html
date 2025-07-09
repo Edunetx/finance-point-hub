@@ -1,1 +1,166 @@
-<!DOCTYPE html><html><head><title>Login</title></head><body><h1>Login Page</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .login-box {
+      background: #111;
+      border: 1px solid gold;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 30px gold;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: gold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: gold;
+      color: black;
+      border: none;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .links a {
+      color: gold;
+      text-decoration: none;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .popup {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #222;
+      color: gold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px gold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>Login</h2>
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <div class="links">
+    <a href="#" onclick="resetPassword()">Forgot Password?</a>
+  </div>
+  <button onclick="login()">Sign In</button>
+  <div class="links">
+    <a href="signup.html">New here? Create account</a>
+  </div>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  // Import the functions from Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const popup = document.getElementById('popup');
+
+  function showPopup(message) {
+    popup.textContent = message;
+    popup.style.display = 'block';
+    setTimeout(() => popup.style.display = 'none', 4000);
+  }
+
+  window.login = function () {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+      showPopup("Please enter email and password.");
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        showPopup("Login successful!");
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1500);
+      })
+      .catch((error) => {
+        showPopup("Error: " + error.message);
+      });
+  };
+
+  window.resetPassword = function () {
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+      showPopup("Enter your email to reset password.");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => showPopup("Password reset email sent."))
+      .catch((error) => showPopup("Error: " + error.message));
+  };
+</script>
+
+</body>
+</html>
