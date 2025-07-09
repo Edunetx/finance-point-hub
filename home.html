@@ -2,8 +2,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-rQkG0w9kAxgqa6PMImcyRwJL8M1WS0XOkSrBL7aKqeD9yB8NMPMZHEdFxk+q7hHVxP5AJedqT+lvAMJEm+guvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
@@ -14,136 +14,142 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      min-height: 100vh;
-      color: gold;
-      overflow-x: hidden;
-    }
-    header {
-      background-color: rgba(20, 20, 20, 0.9);
-      padding: 20px;
+      height: 100vh;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      box-shadow: 0 0 10px gold;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      justify-content: center;
     }
-    .logout-icon {
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: gold;
-    }
-    .logout-icon:hover {
-      color: #ffd700;
-    }
-    .welcome-box {
-      background-color: rgba(255, 215, 0, 0.1);
-      padding: 15px;
-      margin: 20px auto 10px auto;
-      text-align: center;
-      border-radius: 10px;
-      max-width: 90%;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-    }
-    main {
-      padding: 10px 20px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    section.card {
-      background-color: rgba(255, 255, 255, 0.05);
-      margin: 20px 0;
-      padding: 20px;
+    .login-container {
+      background-color: rgba(20, 20, 20, 0.88);
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.6s ease-out;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      max-width: 400px;
       width: 90%;
-      max-width: 800px;
       text-align: center;
-    }
-    section.card.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
     h2 {
       color: gold;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
-    p {
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: gold;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #ffd700;
+    }
+    .bottom-link {
       color: #ccc;
-      font-size: 0.95rem;
+      margin-top: 15px;
+      font-size: 0.9rem;
     }
-    .media-box {
+    .bottom-link a {
+      color: gold;
+      text-decoration: none;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      color: gold;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      display: none;
+      z-index: 999;
+    }
+    /* Responsive Navigation */
+    .bottom-nav, .side-nav {
+      position: fixed;
+      background-color: #111;
+      z-index: 999;
+    }
+    .bottom-nav {
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      display: none;
+    }
+    .bottom-nav a, .side-nav a {
+      color: gold;
+      text-decoration: none;
+      font-size: 0.85rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
     }
-    .media-box img {
-      width: 120px;
-      height: 120px;
-      border-radius: 8px;
-      object-fit: cover;
+    .bottom-nav a i, .side-nav a i {
+      font-size: 1.3rem;
     }
-    .media-box a {
-      color: #ffd700;
-      text-decoration: underline;
-      margin-top: 5px;
+    .side-nav {
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      display: none;
     }
-    .media-box strong {
-      font-size: 1rem;
-      margin-top: 5px;
+    .side-nav a {
+      margin: 20px 0;
+    }
+    @media (max-width: 768px) {
+      .bottom-nav { display: flex; }
+    }
+    @media (min-width: 769px) {
+      .side-nav { display: flex; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div>Finance Point</div>
-    <button id="logoutBtn" class="logout-icon" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
-  </header>  <div class="welcome-box" id="welcome">Welcome</div>  <main>
-    <section class="card">
-      <h2>Finance Tip of the Day</h2>
-      <p>Invest in assets that grow in value over time. Don't just save—grow your money smartly!</p>
-    </section>
-    <section class="card">
-      <h2>Latest Finance News</h2>
-      <p>AAUA Finance Department launches new budgeting app to assist students in managing expenses. Stay tuned!</p>
-    </section>
-    <section class="card">
-      <h2>Did You Know?</h2>
-      <p>The concept of compound interest was described by Einstein as the 8th wonder of the world.</p>
-    </section>
-    <section class="card">
-      <h2><i class="fas fa-birthday-cake"></i> Birthday Wall</h2>
-      <div class="media-box">
-        <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e" alt="Celebrant">
-        <strong>Bolu Oluwaseun</strong>
-        <p>Happy Birthday! Wishing you a year full of success and blessings.</p>
-      </div>
-    </section>
-    <section class="card">
-      <h2><i class="fas fa-bullhorn"></i> Advert Placement</h2>
-      <div class="media-box">
-        <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490" alt="Ad">
-        <strong>Finance Wears Hub</strong>
-        <p>Custom branded wears and souvenirs for AAUA Finance students. Fast delivery and great quality!</p>
-        <a href="#">Visit Store</a>
-      </div>
-    </section>
-  </main>  <script type="module">
+  <div class="login-container">
+    <h2>Sign In</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <div class="bottom-link" style="text-align: right; margin-top: -5px;">
+      <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+    </div>
+    <button onclick="loginUser()">Sign In</button>
+    <div class="bottom-link">New here? <a href="signup.html">Create account</a></div>
+  </div>
+  <div class="toast" id="toast"></div>  <!-- Bottom Navigation -->  <div class="bottom-nav">
+    <a href="home.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="executives.html"><i class="fas fa-user-tie"></i><span>Executives</span></a>
+    <a href="announcements.html"><i class="fas fa-bullhorn"></i><span>News</span></a>
+    <a href="events.html"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+    <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
+  </div>  <!-- Sidebar Navigation -->  <div class="side-nav">
+    <a href="home.html" title="Home"><i class="fas fa-home"></i></a>
+    <a href="executives.html" title="Executives"><i class="fas fa-user-tie"></i></a>
+    <a href="announcements.html" title="News"><i class="fas fa-bullhorn"></i></a>
+    <a href="events.html" title="Events"><i class="fas fa-calendar-alt"></i></a>
+    <a href="downloads.html" title="Downloads"><i class="fas fa-download"></i></a>
+    <a href="logout.html" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+  </div>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    import { getFirestore, getDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -156,32 +162,60 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    document.getElementById("logoutBtn").onclick = function () {
-      signOut(auth).then(() => {
-        sessionStorage.clear();
-        window.location.href = "login.html";
-      }).catch((error) => {
-        alert("Logout failed: " + error.message);
-      });
-    };
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.display = "block";
+      setTimeout(() => toast.style.display = "none", 4000);
+    }
 
-    const name = sessionStorage.getItem("userFullName") || "Student";
-    const matric = sessionStorage.getItem("userMatric") || "*********";
-    const shortMatric = matric.slice(0, 3) + "*****" + matric.slice(-1);
-    const shortName = name.split(" ")[0] || "Student";
-    document.getElementById("welcome").textContent = `Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
+    window.loginUser = async function () {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+      if (!email || !password) return showToast("Please fill in all fields");
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+          showToast("Please verify your email before signing in");
+          return;
         }
-      });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll(".card").forEach(card => {
-      observer.observe(card);
-    });
+        const userDoc = await getDoc(doc(db, "Users", user.uid));
+        if (userDoc.exists()) {
+          sessionStorage.setItem("userFullName", userDoc.data().fullName);
+          sessionStorage.setItem("userMatric", userDoc.data().matricNumber);
+        }
+
+        showToast("Sign in successful");
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 3000);
+      } catch (error) {
+        let message = "Login failed";
+        if (error.code === "auth/wrong-password") message = "Incorrect password";
+        else if (error.code === "auth/user-not-found") message = "Email not found";
+        else if (error.code === "auth/invalid-email") message = "Invalid email format";
+        else message = error.message;
+        showToast(message);
+      }
+    }
+
+    window.forgotPassword = async function () {
+      const email = prompt("Enter your registered email to reset password:");
+      if (!email) return;
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast("Password reset link sent to your email");
+      } catch (error) {
+        showToast("Error: " + error.message);
+      }
+    }
   </script></body>
 </html>
