@@ -1,8 +1,1 @@
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #1a002b, #260041);
-  background-attachment: fixed;
-  background-size: cover;
-  color: white;
-}
+body { background: #111; color: white; font-family: sans-serif; }

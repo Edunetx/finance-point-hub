@@ -1,1 +1,1 @@
-// Firebase and interactivity script
+console.log('Finance Point Loaded');
