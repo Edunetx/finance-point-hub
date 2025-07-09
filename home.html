@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,48 +143,57 @@
   <header>
     <h1>FINANCE POINT</h1>
     <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
-  </header>  <div class="container">
+  </header>
+
+  <div class="container">
     <div class="welcome-box">
       <h2 id="welcome">Welcome, Student</h2>
       <p id="matricDisplay"></p>
-    </div><div class="section">
-  <h2>Finance Tips</h2>
-  <div class="item">• Save 20% of all earnings monthly.</div>
-  <div class="item">• Track your expenses weekly.</div>
-</div>
+    </div>
 
-<div class="section">
-  <h2>Latest News</h2>
-  <div class="item">• Finance Department summit holds August 2nd.</div>
-  <div class="item">• Course registration ends July 18th.</div>
-</div>
+    <div class="section">
+      <h2>Finance Tips</h2>
+      <div class="item">• Save 20% of all earnings monthly.</div>
+      <div class="item">• Track your expenses weekly.</div>
+    </div>
 
-<div class="section">
-  <h2>Birthday Wall</h2>
-  <div class="item center">
-    <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
-    <p><strong>AYUBA RACHAEL</strong></p>
-    <p>🎉 Happy Birthday! May your year be prosperous!</p>
+    <div class="section">
+      <h2>Latest News</h2>
+      <div class="item">• Finance Department summit holds August 2nd.</div>
+      <div class="item">• Course registration ends July 18th.</div>
+    </div>
+
+    <div class="section">
+      <h2>Birthday Wall</h2>
+      <div class="item center">
+        <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
+        <p><strong>AYUBA RACHAEL</strong></p>
+        <p>🎉 Happy Birthday! May your year be prosperous!</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Adverts Placement</h2>
+      <div class="item center">
+        <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
+        <p><strong>OBA PRINTING SERVICES</strong></p>
+        <p>We print handouts, assignments and more. Affordable and fast!</p>
+        <a href="#">Visit Page</a>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Adverts Placement</h2>
-  <div class="item center">
-    <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
-    <p><strong>OBA PRINTING SERVICES</strong></p>
-    <p>We print handouts, assignments and more. Affordable and fast!</p>
-    <a href="#">Visit Page</a>
-  </div>
-</div>
-
-  </div>  <div class="bottom-nav">
+  <div class="bottom-nav">
     <a href="#" class="active"><i class="fas fa-home"></i></a>
-    <a href="events.html"><i class="fas fa-calendar"></i></a>
+    <a href="announcement-events.html"><i class="fas fa-calendar"></i></a>
     <a href="downloads.html"><i class="fas fa-download"></i></a>
     <a href="cbt.html"><i class="fas fa-question"></i></a>
     <a href="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>  <div class="toast" id="toast"></div>  <script type="module">
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -222,5 +232,6 @@
           setTimeout(() => document.getElementById("toast").style.display = "none", 4000);
         });
     }
-  </script></body>
+  </script>
+</body>
 </html>
