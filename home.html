@@ -23,14 +23,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 10;
     }
     .logout-icon {
-      font-size: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
       border: none;
       background: none;
@@ -42,15 +43,16 @@
     .welcome-box {
       background-color: rgba(255, 215, 0, 0.1);
       padding: 15px;
-      margin: 20px auto;
+      margin: 20px auto 10px auto;
       text-align: center;
       border-radius: 10px;
       max-width: 90%;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
     main {
-      padding: 20px;
+      padding: 10px 20px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -66,6 +68,7 @@
       transition: all 0.6s ease-out;
       width: 90%;
       max-width: 800px;
+      text-align: center;
     }
     section.card.visible {
       opacity: 1;
@@ -74,6 +77,7 @@
     h2 {
       color: gold;
       font-size: 1.2rem;
+      margin-bottom: 10px;
     }
     p {
       color: #ccc;
@@ -81,26 +85,31 @@
     }
     .media-box {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
     }
     .media-box img {
-      width: 60px;
-      height: 60px;
+      width: 120px;
+      height: 120px;
       border-radius: 8px;
       object-fit: cover;
     }
-    .media-box div {
-      flex: 1;
+    .media-box a {
+      color: #ffd700;
+      text-decoration: underline;
+      margin-top: 5px;
+    }
+    .media-box strong {
+      font-size: 1rem;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
   <header>
     <div>Finance Point</div>
-    <button id="logoutBtn" class="logout-icon" title="Logout">
-      <span>&#128274;</span>
-    </button>
+    <button id="logoutBtn" class="logout-icon" title="Logout">🔒</button>
   </header>  <div class="welcome-box" id="welcome">Welcome</div>  <main>
     <section class="card">
       <h2>Finance Tip of the Day</h2>
@@ -118,20 +127,17 @@
       <h2>🎉 Birthday Wall</h2>
       <div class="media-box">
         <img src="https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/birthday-sample.jpg" alt="Celebrant">
-        <div>
-          <strong>Happy Birthday Bolu!</strong>
-          <p>Wishing you success in all you do!</p>
-        </div>
+        <strong>Bolu Oluwaseun</strong>
+        <p>Happy Birthday! Wishing you a year full of success and blessings.</p>
       </div>
     </section>
     <section class="card">
       <h2>📢 Advert Placement</h2>
       <div class="media-box">
         <img src="https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/sample-ad.png" alt="Ad">
-        <div>
-          <strong>Get 20% off AAUA Merch!</strong>
-          <p>Contact PRO to advertise here. AAUA Finance wears, now available!</p>
-        </div>
+        <strong>Finance Wears Hub</strong>
+        <p>Custom branded wears and souvenirs for AAUA Finance students. Fast delivery and great quality!</p>
+        <a href="#">Visit Store</a>
       </div>
     </section>
   </main>  <script type="module">
