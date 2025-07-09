@@ -1,8 +1,9 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finance Point - Home</title>
+  <title>FINANCE POINT</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
@@ -28,14 +29,16 @@
       text-decoration: none;
       font-size: 16px;
     }
-    .sidebar a:hover {
-      background: rgba(255, 215, 0, 0.1);
+    .sidebar a.active {
+      background: rgba(255, 215, 0, 0.2);
+      color: #aaa;
+      pointer-events: none;
     }
     .top-bar {
       background: rgba(20, 20, 20, 0.9);
       padding: 15px;
       text-align: center;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
       color: gold;
       position: sticky;
@@ -75,6 +78,12 @@
       border-bottom: 1px solid gold;
       padding-bottom: 5px;
     }
+    .section ul {
+      padding-left: 20px;
+    }
+    .section li {
+      margin-bottom: 10px;
+    }
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -89,6 +98,11 @@
       font-size: 18px;
       text-decoration: none;
       text-align: center;
+      padding: 10px;
+    }
+    .bottom-nav a.active {
+      color: #aaa;
+      pointer-events: none;
     }
     .card {
       background: #111;
@@ -128,33 +142,48 @@
 </head>
 <body>
   <div class="top-bar">
-    Finance Point
+    FINANCE POINT
     <span class="logout" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i></span>
   </div>
+
   <div class="sidebar">
-    <a href="home.html"><i class="fas fa-home"></i> Home</a>
+    <a href="home.html" class="active"><i class="fas fa-home"></i> Home</a>
     <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
     <a href="cbt.html"><i class="fas fa-pen"></i> CBT</a>
     <a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a>
     <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
-  </div>  <div class="welcome-box">
+  </div>
+
+  <div class="welcome-box">
     <h2 id="welcomeText">Welcome, Student</h2>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h3>Finance Tips</h3>
-    <div class="card">Track your expenses daily to avoid overspending.</div>
-    <div class="card">Create a simple budget and stick to it.</div>
-  </div>  <div class="section">
+    <ul>
+      <li>Track your expenses daily to avoid overspending.</li>
+      <li>Create a simple budget and stick to it.</li>
+    </ul>
+  </div>
+
+  <div class="section">
     <h3>Latest News</h3>
-    <div class="card">AAUA Finance Department's new academic calendar released.</div>
-    <div class="card">Upcoming seminar on Financial Literacy this Friday.</div>
-  </div>  <div class="section">
+    <ul>
+      <li>AAUA Finance Department's new academic calendar released.</li>
+      <li>Upcoming seminar on Financial Literacy this Friday.</li>
+    </ul>
+  </div>
+
+  <div class="section">
     <h3>Birthday Wall</h3>
     <div class="birthday-card">
       <img src="https://i.imgur.com/7k12EPD.png" alt="celebrant" />
       <h4>BOLUWATIFE AYUBA</h4>
-      <p>Happy Birthday! 🎉</p>
+      <p>Happy Birthday!</p>
     </div>
-  </div>  <div class="section">
+  </div>
+
+  <div class="section">
     <h3>Advert Placement</h3>
     <div class="ad-card">
       <img src="https://i.imgur.com/SZQ7KkN.jpg" alt="ad" />
@@ -162,13 +191,17 @@
       <p>Delicious meals at affordable prices.</p>
       <a href="#">Visit Us</a>
     </div>
-  </div>  <div class="bottom-nav">
-    <a href="home.html"><i class="fas fa-home"></i></a>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html" class="active"><i class="fas fa-home"></i></a>
     <a href="downloads.html"><i class="fas fa-download"></i></a>
     <a href="cbt.html"><i class="fas fa-pen"></i></a>
     <a href="leaderboard.html"><i class="fas fa-trophy"></i></a>
     <a href="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>  <script type="module">
+  </div>
+
+  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
     import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -204,5 +237,6 @@
         window.location.href = "login.html";
       }
     });
-  </script></body>
+  </script>
+</body>
 </html>
