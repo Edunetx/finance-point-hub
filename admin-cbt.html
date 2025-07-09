@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,15 +10,14 @@
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
       padding: 20px;
     }
-    h1 {
+    h2 {
       text-align: center;
       margin-bottom: 20px;
     }
     form {
-      background-color: rgba(20, 20, 20, 0.9);
+      background: rgba(20, 20, 20, 0.9);
       padding: 20px;
       border-radius: 10px;
       max-width: 600px;
@@ -26,99 +26,104 @@
     }
     label {
       display: block;
-      margin: 10px 0 5px;
+      margin-top: 10px;
     }
-    select, input[type="text"], textarea, button {
+    input, select, textarea {
       width: 100%;
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 6px;
+      margin-top: 5px;
       border: none;
-      font-size: 1rem;
+      border-radius: 6px;
     }
-    textarea {
-      resize: vertical;
+    button {
+      background-color: gold;
+      color: black;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
     }
-    .preview-img {
-      max-width: 100%;
-      margin: 10px 0;
-      border-radius: 8px;
-    }
-    .question-list {
-      margin-top: 40px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .question-card {
-      background-color: rgba(30, 30, 30, 0.9);
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-    }
-    .question-card button {
-      width: auto;
-      background: red;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      margin-top: 10px;
+    .preview {
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(30,30,30,0.85);
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>CBT Admin Panel</h1>
+  <h2>CBT Admin Panel</h2>
   <form id="cbtForm">
-    <label for="level">Select Level:</label>
+    <label for="level">Level</label>
     <select id="level" required>
-      <option value="">-- Choose Level --</option>
+      <option value="">-- Select Level --</option>
       <option value="100">100 Level</option>
       <option value="200">200 Level</option>
       <option value="300">300 Level</option>
       <option value="400">400 Level</option>
-    </select><label for="type">Question Type:</label>
-<select id="type" required>
-  <option value="">-- Choose Type --</option>
-  <option value="mcq">Multiple Choice</option>
-  <option value="truefalse">True / False</option>
-</select>
+    </select>
 
-<label for="question">Question Text:</label>
-<textarea id="question" rows="3" required></textarea>
+    <label for="type">Question Type</label>
+    <select id="type" required onchange="toggleQuestionType()">
+      <option value="">-- Select Type --</option>
+      <option value="mcq">Multiple Choice (A-D)</option>
+      <option value="tf">True or False</option>
+    </select>
 
-<label for="image">Optional Image:</label>
-<input type="file" id="image" accept="image/*" />
-<img id="preview" class="preview-img" style="display:none" />
+    <label for="question">Question</label>
+    <textarea id="question" rows="4" required></textarea>
 
-<div id="mcq-section" style="display:none">
-  <label for="optionA">Option A:</label>
-  <input type="text" id="optionA" />
-  <label for="optionB">Option B:</label>
-  <input type="text" id="optionB" />
-  <label for="optionC">Option C:</label>
-  <input type="text" id="optionC" />
-  <label for="optionD">Option D:</label>
-  <input type="text" id="optionD" />
-  <label for="correct">Correct Option (A-D):</label>
-  <input type="text" id="correct" maxlength="1" />
-</div>
+    <div id="mcqFields" style="display: none;">
+      <label>Option A</label>
+      <input type="text" id="optionA" />
+      <label>Option B</label>
+      <input type="text" id="optionB" />
+      <label>Option C</label>
+      <input type="text" id="optionC" />
+      <label>Option D</label>
+      <input type="text" id="optionD" />
+      <label>Correct Option</label>
+      <select id="correctOption">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
 
-<div id="tf-section" style="display:none">
-  <label for="truefalse">Correct Answer:</label>
-  <select id="truefalse">
-    <option value="">-- Choose --</option>
-    <option value="True">True</option>
-    <option value="False">False</option>
-  </select>
-</div>
+    <div id="tfFields" style="display: none;">
+      <label>Correct Answer</label>
+      <select id="correctTF">
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+    </div>
 
-<button type="submit">Save Question</button>
+    <label>Attach Image (Optional)</label>
+    <input type="file" id="image" accept="image/*" />
 
-  </form>  <div class="question-list" id="questionList"></div>  <script type="module">
+    <button type="submit">Save Question</button>
+  </form>
+
+  <div class="preview" id="preview"></div>
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -133,88 +138,53 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    const cbtForm = document.getElementById("cbtForm");
-    const preview = document.getElementById("preview");
-    const typeSelect = document.getElementById("type");
-    const mcqSection = document.getElementById("mcq-section");
-    const tfSection = document.getElementById("tf-section");
+    window.toggleQuestionType = function () {
+      const type = document.getElementById("type").value;
+      document.getElementById("mcqFields").style.display = type === "mcq" ? "block" : "none";
+      document.getElementById("tfFields").style.display = type === "tf" ? "block" : "none";
+    }
 
-    typeSelect.addEventListener("change", () => {
-      mcqSection.style.display = typeSelect.value === "mcq" ? "block" : "none";
-      tfSection.style.display = typeSelect.value === "truefalse" ? "block" : "none";
-    });
-
-    document.getElementById("image").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-      } else {
-        preview.style.display = "none";
-      }
-    });
-
-    cbtForm.addEventListener("submit", async (e) => {
+    document.getElementById("cbtForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const level = document.getElementById("level").value;
-      const type = typeSelect.value;
-      const question = document.getElementById("question").value;
-      const file = document.getElementById("image").files[0];
 
+      const level = document.getElementById("level").value;
+      const type = document.getElementById("type").value;
+      const question = document.getElementById("question").value;
+      const imageFile = document.getElementById("image").files[0];
       let imageURL = "";
-      if (file) {
-        const storageRef = ref(storage, `cbt_images/${Date.now()}_${file.name}`);
-        await uploadBytes(storageRef, file);
-        imageURL = await getDownloadURL(storageRef);
+
+      if (imageFile) {
+        const imageRef = ref(storage, `cbt_images/${Date.now()}_${imageFile.name}`);
+        const snapshot = await uploadBytes(imageRef, imageFile);
+        imageURL = await getDownloadURL(snapshot.ref);
       }
 
-      let data = { level, type, question, imageURL, createdAt: serverTimestamp() };
+      const data = {
+        level,
+        type,
+        question,
+        imageURL,
+        timestamp: serverTimestamp()
+      };
 
       if (type === "mcq") {
         data.options = {
           A: document.getElementById("optionA").value,
           B: document.getElementById("optionB").value,
           C: document.getElementById("optionC").value,
-          D: document.getElementById("optionD").value,
+          D: document.getElementById("optionD").value
         };
-        data.correct = document.getElementById("correct").value.toUpperCase();
-      } else if (type === "truefalse") {
-        data.correct = document.getElementById("truefalse").value;
+        data.answer = document.getElementById("correctOption").value;
+      } else if (type === "tf") {
+        data.answer = document.getElementById("correctTF").value;
       }
 
       await addDoc(collection(db, "CBT_Questions"), data);
       alert("Question saved successfully!");
-      cbtForm.reset();
-      preview.style.display = "none";
-      fetchQuestions();
+      document.getElementById("cbtForm").reset();
+      document.getElementById("mcqFields").style.display = "none";
+      document.getElementById("tfFields").style.display = "none";
     });
-
-    async function fetchQuestions() {
-      const querySnapshot = await getDocs(collection(db, "CBT_Questions"));
-      const list = document.getElementById("questionList");
-      list.innerHTML = "";
-      querySnapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const div = document.createElement("div");
-        div.className = "question-card";
-        div.innerHTML = `
-          <strong>${data.level} Level - ${data.type.toUpperCase()}</strong><br>
-          <p>${data.question}</p>
-          ${data.imageURL ? `<img src="${data.imageURL}" class="preview-img" />` : ""}
-          <p><strong>Answer:</strong> ${data.correct}</p>
-          <button onclick="deleteQuestion('${docSnap.id}')">Delete</button>
-        `;
-        list.prepend(div);
-      });
-    }
-
-    window.deleteQuestion = async function(id) {
-      if (confirm("Delete this question?")) {
-        await deleteDoc(doc(db, "CBT_Questions", id));
-        fetchQuestions();
-      }
-    }
-
-    fetchQuestions();
-  </script></body>
+  </script>
+</body>
 </html>
