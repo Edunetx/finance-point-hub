@@ -4,16 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FINANCE POINT</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      background-color: #000;
+      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
+      background-size: cover;
+      background-position: center;
       color: gold;
     }
     header {
@@ -185,7 +184,7 @@
     <a href="announcement-events.html" class="nav-link" data-page="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
     <a href="downloads.html" class="nav-link" data-page="downloads.html"><i class="fas fa-download"></i></a>
     <a href="cbt.html" class="nav-link" data-page="cbt.html"><i class="fas fa-question"></i></a>
-    <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html"><i class="fas fa-trophy"></i></a>
+    <a href="feedback.html" class="nav-link" data-page="feedback.html"><i class="fas fa-comment"></i></a>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -211,7 +210,8 @@
     const fullName = sessionStorage.getItem("userFullName");
     const matricNumber = sessionStorage.getItem("userMatric");
     if (fullName) {
-      welcome.textContent = `Welcome, ${fullName}`;
+      const firstName = fullName.split(" ")[0];
+      welcome.textContent = `Welcome, ${firstName}`;
     }
     if (matricNumber) {
       matric.textContent = `Matric Number: ${matricNumber}`;
@@ -223,18 +223,16 @@
           window.location.href = "login.html?status=logout";
         })
         .catch((error) => {
-          const toast = document.getElementById("toast");
-          toast.textContent = "Logout failed: " + error.message;
-          toast.style.display = "block";
-          setTimeout(() => toast.style.display = "none", 4000);
+          document.getElementById("toast").textContent = "Logout failed: " + error.message;
+          document.getElementById("toast").style.display = "block";
+          setTimeout(() => document.getElementById("toast").style.display = "none", 4000);
         });
-    };
-  </script>
+    }
 
-  <script>
-    // Activate current nav link
-    const currentPage = location.pathname.split("/").pop();
-    document.querySelectorAll(".bottom-nav .nav-link").forEach(link => {
+    // Highlight current page in nav
+    const links = document.querySelectorAll(".nav-link");
+    const currentPage = window.location.pathname.split("/").pop();
+    links.forEach(link => {
       if (link.dataset.page === currentPage) {
         link.classList.add("active");
       }
