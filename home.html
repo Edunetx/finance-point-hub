@@ -20,29 +20,40 @@
     header {
       background-color: rgba(20, 20, 20, 0.9);
       padding: 20px;
-      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 1.5rem;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
-    #logoutBtn {
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      color: gold;
+    .logout-icon {
+      font-size: 1rem;
       cursor: pointer;
-      padding: 5px 10px;
+      border: none;
+      background: none;
+      color: gold;
     }
-    #logoutBtn:hover {
+    .logout-icon:hover {
       color: #ffd700;
+    }
+    .welcome-box {
+      background-color: rgba(255, 215, 0, 0.1);
+      padding: 15px;
+      margin: 20px auto;
+      text-align: center;
+      border-radius: 10px;
+      max-width: 90%;
+      font-size: 1.1rem;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
     main {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     section.card {
       background-color: rgba(255, 255, 255, 0.05);
@@ -53,6 +64,8 @@
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.6s ease-out;
+      width: 90%;
+      max-width: 800px;
     }
     section.card.visible {
       opacity: 1;
@@ -66,14 +79,29 @@
       color: #ccc;
       font-size: 0.95rem;
     }
+    .media-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .media-box img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .media-box div {
+      flex: 1;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div id="welcome">Finance Point</div>
-    <button id="logoutBtn" title="Logout" onclick="logout()">🚪</button>
-  </header>
-  <main>
+    <div>Finance Point</div>
+    <button id="logoutBtn" class="logout-icon" title="Logout">
+      <span>&#128274;</span>
+    </button>
+  </header>  <div class="welcome-box" id="welcome">Welcome</div>  <main>
     <section class="card">
       <h2>Finance Tip of the Day</h2>
       <p>Invest in assets that grow in value over time. Don't just save—grow your money smartly!</p>
@@ -88,11 +116,23 @@
     </section>
     <section class="card">
       <h2>🎉 Birthday Wall</h2>
-      <p>Shoutout to all celebrants today! View and celebrate your classmates!</p>
+      <div class="media-box">
+        <img src="https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/birthday-sample.jpg" alt="Celebrant">
+        <div>
+          <strong>Happy Birthday Bolu!</strong>
+          <p>Wishing you success in all you do!</p>
+        </div>
+      </div>
     </section>
     <section class="card">
-      <h2>📢 Ad Placement</h2>
-      <p>Want to promote a product, service, or event to AAUA Finance students? Contact the PRO to place your ad here.</p>
+      <h2>📢 Advert Placement</h2>
+      <div class="media-box">
+        <img src="https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/sample-ad.png" alt="Ad">
+        <div>
+          <strong>Get 20% off AAUA Merch!</strong>
+          <p>Contact PRO to advertise here. AAUA Finance wears, now available!</p>
+        </div>
+      </div>
     </section>
   </main>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -110,20 +150,20 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    function logout() {
+    document.getElementById("logoutBtn").onclick = function () {
       signOut(auth).then(() => {
         sessionStorage.clear();
         window.location.href = "login.html";
       }).catch((error) => {
         alert("Logout failed: " + error.message);
       });
-    }
+    };
 
     const name = sessionStorage.getItem("userFullName") || "Student";
     const matric = sessionStorage.getItem("userMatric") || "*********";
     const shortMatric = matric.slice(0, 3) + "*****" + matric.slice(-1);
     const shortName = name.split(" ")[0] || "Student";
-    document.getElementById("welcome").textContent = `Finance Point — Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
+    document.getElementById("welcome").textContent = `Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
