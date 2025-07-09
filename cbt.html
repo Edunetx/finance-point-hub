@@ -1,119 +1,209 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CBT Practice</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
-      background-size: cover;
-      background-position: center;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
-    h1, h2 {
+    .container {
+      max-width: 700px;
+      margin: 80px auto;
+      background: rgba(20,20,20,0.95);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px gold;
+    }
+    h2 {
       text-align: center;
+      margin-bottom: 20px;
+      color: gold;
     }
     select, button {
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
       font-size: 1rem;
-      margin: 10px auto;
-      display: block;
-      border-radius: 6px;
       border: none;
+      border-radius: 8px;
+      background-color: gold;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
     }
     .question-box {
-      background-color: rgba(25, 25, 25, 0.9);
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 0 8px gold;
+      margin-top: 30px;
     }
-    .option {
-      margin: 10px 0;
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
-    .option input {
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid gold;
+      border-radius: 6px;
+      background: rgba(255, 215, 0, 0.1);
+      cursor: pointer;
+    }
+    .options input {
       margin-right: 10px;
     }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(20, 20, 20, 0.95);
+    .nav-buttons {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      z-index: 100;
+      justify-content: space-between;
+      margin-top: 20px;
     }
-    .bottom-nav a {
-      color: gold;
-      font-size: 1.4rem;
-      text-decoration: none;
+    .result {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.2rem;
     }
-    .bottom-nav a.active {
-      opacity: 0.4;
-      pointer-events: none;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>CBT Practice</h1>
-  <select id="levelSelect">
-    <option value="">Select Your Level</option>
-    <option value="100">100 Level</option>
-    <option value="200">200 Level</option>
-    <option value="300">300 Level</option>
-    <option value="400">400 Level</option>
-  </select>
-  <button id="startPracticeBtn">Start Practice</button>  <div id="quizContainer"></div>  <div class="bottom-nav">
-    <a href="home.html"><i class="fas fa-home"></i></a>
-    <a href="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
-    <a href="downloads.html"><i class="fas fa-download"></i></a>
-    <a href="cbt.html" class="active"><i class="fas fa-question"></i></a>
-    <a href="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <div class="container">
+    <h2>CBT Practice</h2>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    <div id="setup">
+      <label for="level">Select Your Level:</label>
+      <select id="level">
+        <option value="">-- Choose Level --</option>
+        <option value="100">100 Level</option>
+        <option value="200">200 Level</option>
+        <option value="300">300 Level</option>
+        <option value="400">400 Level</option>
+      </select>
+      <button onclick="startCBT()">Start Practice</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div class="question-box">
+        <div id="qText" class="question"></div>
+        <div class="options" id="options"></div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+      <button onclick="submitQuiz()" style="margin-top: 20px;">Submit</button>
+    </div>
+
+    <div id="result" class="result hidden"></div>
+  </div>
+
+  <script>
+    const allQuestions = {
+      100: Array.from({ length: 30 }, (_, i) => ({
+        question: `100 Level Question ${i + 1}`,
+        options: {
+          a: "Option A",
+          b: "Option B",
+          c: "Option C",
+          d: "Option D"
+        },
+        answer: "a"
+      })),
+      200: Array.from({ length: 30 }, (_, i) => ({
+        question: `200 Level Question ${i + 1}`,
+        options: {
+          a: "Option A",
+          b: "Option B",
+          c: "Option C",
+          d: "Option D"
+        },
+        answer: "b"
+      })),
+      300: Array.from({ length: 30 }, (_, i) => ({
+        question: `300 Level Question ${i + 1}`,
+        options: {
+          a: "Option A",
+          b: "Option B",
+          c: "Option C",
+          d: "Option D"
+        },
+        answer: "c"
+      })),
+      400: Array.from({ length: 30 }, (_, i) => ({
+        question: `400 Level Question ${i + 1}`,
+        options: {
+          a: "Option A",
+          b: "Option B",
+          c: "Option C",
+          d: "Option D"
+        },
+        answer: "d"
+      })),
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    let currentQuestionIndex = 0;
+    let selectedLevel = '';
+    let selectedQuestions = [];
+    let userAnswers = [];
 
-    document.getElementById("startPracticeBtn").addEventListener("click", async () => {
-      const level = document.getElementById("levelSelect").value;
-      if (!level) return alert("Please select your level");
-      const q = query(collection(db, "CBT_Questions"), where("level", "==", level));
-      const snapshot = await getDocs(q);
+    function startCBT() {
+      const level = document.getElementById("level").value;
+      if (!level) return alert("Please select a level");
 
-      const quizContainer = document.getElementById("quizContainer");
-      quizContainer.innerHTML = "";
+      selectedLevel = level;
+      selectedQuestions = allQuestions[level];
+      userAnswers = Array(selectedQuestions.length).fill(null);
+      document.getElementById("setup").classList.add("hidden");
+      document.getElementById("quiz").classList.remove("hidden");
+      showQuestion();
+    }
 
-      snapshot.forEach((doc, index) => {
-        const data = doc.data();
-        const questionBox = document.createElement("div");
-        questionBox.className = "question-box";
-        questionBox.innerHTML = `
-          <h3>Q${index + 1}: ${data.question}</h3>
-          <div class="option"><input type="radio" name="q${index}" value="a"> A. ${data.options.a}</div>
-          <div class="option"><input type="radio" name="q${index}" value="b"> B. ${data.options.b}</div>
-          <div class="option"><input type="radio" name="q${index}" value="c"> C. ${data.options.c}</div>
-          <div class="option"><input type="radio" name="q${index}" value="d"> D. ${data.options.d}</div>
-        `;
-        quizContainer.appendChild(questionBox);
+    function showQuestion() {
+      const q = selectedQuestions[currentQuestionIndex];
+      document.getElementById("qText").textContent = `${currentQuestionIndex + 1}. ${q.question}`;
+      const optionsHTML = Object.entries(q.options).map(([key, val]) => {
+        const checked = userAnswers[currentQuestionIndex] === key ? 'checked' : '';
+        return `<label><input type="radio" name="option" value="${key}" ${checked} onchange="saveAnswer(this.value)" /> ${val}</label>`;
+      }).join('');
+      document.getElementById("options").innerHTML = optionsHTML;
+    }
+
+    function saveAnswer(val) {
+      userAnswers[currentQuestionIndex] = val;
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < selectedQuestions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion();
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      selectedQuestions.forEach((q, i) => {
+        if (userAnswers[i] === q.answer) score++;
       });
-    });
-  </script></body>
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").innerHTML = `
+        You scored <strong>${score} out of ${selectedQuestions.length}</strong>.<br/>
+        ${score >= 15 ? '🎉 Great job!' : '📘 Keep practicing!'}
+      `;
+    }
+  </script>
+</body>
 </html>
