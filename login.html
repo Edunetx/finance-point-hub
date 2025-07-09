@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       background: #0a0a0a;
@@ -14,7 +14,6 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      overflow: hidden;
     }
 
     .login-box {
@@ -42,7 +41,6 @@
       background: #222;
       color: #fff;
       font-size: 1rem;
-      outline: none;
     }
 
     button {
@@ -50,24 +48,11 @@
       padding: 12px;
       background: gold;
       color: black;
-      border: none;
       font-weight: bold;
       font-size: 1rem;
-      cursor: pointer;
+      border: none;
       border-radius: 6px;
-      margin-top: 10px;
-    }
-
-    .links {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .links a {
-      color: gold;
-      text-decoration: none;
-      display: block;
-      margin-top: 5px;
+      cursor: pointer;
     }
 
     .forgot {
@@ -78,6 +63,16 @@
 
     .forgot a {
       font-size: 0.85rem;
+      color: gold;
+      text-decoration: none;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .links a {
       color: gold;
       text-decoration: none;
     }
@@ -96,83 +91,95 @@
   </style>
 </head>
 <body>
-
-<div class="login-box">
-  <h2>Login</h2>
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password" required />
-  
-  <div class="forgot">
-    <a href="#" onclick="resetPassword()">Forgot Password?</a>
+  <div class="login-box">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <div class="forgot">
+      <a href="#" onclick="resetPassword()">Forgot Password?</a>
+    </div>
+    <button onclick="login()">Sign In</button>
+    <div class="links">
+      <a href="signup.html">New here? Create account</a>
+    </div>
   </div>
-  
-  <button onclick="login()">Sign In</button>
 
-  <div class="links">
-    <a href="signup.html">New here? Create account</a>
-  </div>
-</div>
+  <div id="popup" class="popup"></div>
 
-<div id="popup" class="popup"></div>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<!-- Firebase SDKs -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.appspot.com",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const popup = document.getElementById('popup');
 
-  const popup = document.getElementById('popup');
-
-  function showPopup(message) {
-    popup.textContent = message;
-    popup.style.display = 'block';
-    setTimeout(() => popup.style.display = 'none', 4000);
-  }
-
-  window.login = function () {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    if (!email || !password) {
-      showPopup("Please enter email and password.");
-      return;
+    function showPopup(message) {
+      popup.textContent = message;
+      popup.style.display = 'block';
+      setTimeout(() => popup.style.display = 'none', 4000);
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        showPopup("Login successful!");
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 1500);
-      })
-      .catch((error) => {
-        showPopup("Error: " + error.message);
-      });
-  };
+    window.login = function () {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
-  window.resetPassword = function () {
-    const email = document.getElementById('email').value.trim();
-    if (!email) {
-      showPopup("Enter your email to reset password.");
-      return;
-    }
+      if (!email || !password) {
+        showPopup("Please enter email and password.");
+        return;
+      }
 
-    sendPasswordResetEmail(auth, email)
-      .then(() => showPopup("Password reset email sent."))
-      .catch((error) => showPopup("Error: " + error.message));
-  };
-</script>
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          showPopup("Login successful!");
+          setTimeout(() => {
+            window.location.href = "home.html";
+          }, 1500);
+        })
+        .catch((error) => {
+          let msg = "";
+          switch (error.code) {
+            case "auth/user-not-found":
+              msg = "No user found with that email.";
+              break;
+            case "auth/wrong-password":
+              msg = "Incorrect password.";
+              break;
+            case "auth/invalid-email":
+              msg = "Enter a valid email address.";
+              break;
+            case "auth/missing-password":
+              msg = "Password field is empty.";
+              break;
+            default:
+              msg = "Login failed. Try again.";
+          }
+          showPopup(msg);
+        });
+    };
 
+    window.resetPassword = function () {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        showPopup("Enter your email to reset password.");
+        return;
+      }
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => showPopup("Password reset email sent."))
+        .catch((error) => showPopup("Error: " + error.message));
+    };
+  </script>
 </body>
 </html>
