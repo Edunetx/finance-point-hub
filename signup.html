@@ -1,1 +1,151 @@
-<!DOCTYPE html><html><head><title>Sign Up</title></head><body><h1>Sign Up Page</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .signup-box {
+      background: #111;
+      border: 1px solid gold;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 30px gold;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: gold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .links a {
+      color: gold;
+      text-decoration: none;
+    }
+
+    .popup {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #222;
+      color: gold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px gold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-box">
+    <h2>Sign Up</h2>
+    <input type="text" id="fullName" placeholder="Full Name (Optional)" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signup()">Create Account</button>
+    <div class="links">
+      <a href="login.html">Already have an account? Sign in</a>
+    </div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const popup = document.getElementById('popup');
+
+    function showPopup(message) {
+      popup.textContent = message;
+      popup.style.display = 'block';
+      setTimeout(() => popup.style.display = 'none', 4000);
+    }
+
+    window.signup = function () {
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showPopup("Email and password are required.");
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          await setDoc(doc(db, "Users", user.uid), {
+            fullName: fullName || "",
+            email: email,
+            role: "user"
+          });
+          showPopup("Signup successful!");
+          setTimeout(() => {
+            window.location.href = "home.html";
+          }, 1500);
+        })
+        .catch((error) => {
+          showPopup("Signup error: " + error.message);
+        });
+    };
+  </script>
+</body>
+</html>
