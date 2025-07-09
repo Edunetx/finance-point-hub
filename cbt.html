@@ -1,1 +1,198 @@
-<!DOCTYPE html><html><head><title>CBT</title></head><body><h1>CBT Page</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CBT | Finance Point</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+      padding-bottom: 80px;
+    }
+    header {
+      background: rgba(20, 20, 20, 0.95);
+      padding: 15px 20px;
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    .select-box {
+      margin-bottom: 20px;
+      background: rgba(30, 30, 30, 0.85);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+    }
+    .question-card {
+      background: rgba(30, 30, 30, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    .question-card h4 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .option {
+      display: block;
+      margin: 8px 0;
+      padding: 8px 12px;
+      background: rgba(255, 215, 0, 0.1);
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid gold;
+    }
+    .option:hover {
+      background: rgba(255, 215, 0, 0.2);
+    }
+    .submit-btn {
+      background: gold;
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.95);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: gold;
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+    .bottom-nav a.active {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>CBT Section</header>
+  <div class="container">
+    <div class="select-box" id="levelBox">
+      <p>Select your Level (Only once):</p>
+      <select id="levelSelect">
+        <option value="">-- Choose Level --</option>
+        <option value="100">100 Level</option>
+        <option value="200">200 Level</option>
+        <option value="300">300 Level</option>
+        <option value="400">400 Level</option>
+      </select>
+    </div>
+
+    <div id="questionsContainer"></div>
+    <button id="submitBtn" class="submit-btn" style="display:none;">Submit Answers</button>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html"><i class="fas fa-home"></i></a>
+    <a href="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
+    <a href="downloads.html"><i class="fas fa-download"></i></a>
+    <a href="#" class="active"><i class="fas fa-question"></i></a>
+    <a href="feedback.html"><i class="fas fa-comment"></i></a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const levelSelect = document.getElementById("levelSelect");
+    const levelBox = document.getElementById("levelBox");
+    const questionsContainer = document.getElementById("questionsContainer");
+    const submitBtn = document.getElementById("submitBtn");
+
+    const savedLevel = localStorage.getItem("cbtLevel");
+
+    if (savedLevel) {
+      levelBox.style.display = "none";
+      loadQuestions(savedLevel);
+    } else {
+      levelSelect.addEventListener("change", () => {
+        const level = levelSelect.value;
+        if (level) {
+          localStorage.setItem("cbtLevel", level);
+          levelBox.style.display = "none";
+          loadQuestions(level);
+        }
+      });
+    }
+
+    async function loadQuestions(level) {
+      questionsContainer.innerHTML = "<p>Loading questions...</p>";
+      const q = query(collection(db, "cbt_questions"), where("level", "==", level));
+      const querySnapshot = await getDocs(q);
+      questionsContainer.innerHTML = "";
+      let index = 1;
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.innerHTML = `
+          <h4>${index}. ${data.question}</h4>
+          <label class="option"><input type="radio" name="q${index}" value="A" /> A. ${data.optionA}</label>
+          <label class="option"><input type="radio" name="q${index}" value="B" /> B. ${data.optionB}</label>
+          <label class="option"><input type="radio" name="q${index}" value="C" /> C. ${data.optionC}</label>
+          <label class="option"><input type="radio" name="q${index}" value="D" /> D. ${data.optionD}</label>
+        `;
+        questionsContainer.appendChild(card);
+        index++;
+      });
+
+      if (index > 1) {
+        submitBtn.style.display = "inline-block";
+      } else {
+        questionsContainer.innerHTML = "<p>No questions available for this level yet.</p>";
+      }
+    }
+
+    submitBtn.addEventListener("click", () => {
+      alert("Submission successful! (You can now implement scoring and result saving.)");
+      // Logic to score, save result to Firestore (optional) can be added here
+    });
+  </script>
+</body>
+</html>
