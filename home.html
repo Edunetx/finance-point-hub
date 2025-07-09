@@ -62,6 +62,7 @@
       border-bottom: 1px solid gold;
       margin-bottom: 15px;
       padding-bottom: 5px;
+      text-align: center;
     }
     .item {
       margin-bottom: 15px;
@@ -77,9 +78,27 @@
       border-radius: 6px;
       margin-bottom: 10px;
     }
-    .item a {
-      color: gold;
-      text-decoration: underline;
+    .item.center {
+      text-align: center;
+    }
+    .item.center p {
+      margin: 5px 0;
+    }
+    .item.center strong {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .item.center a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: gold;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
     }
     .bottom-nav {
       position: fixed;
@@ -141,18 +160,18 @@
 
 <div class="section">
   <h2>Birthday Wall</h2>
-  <div class="item">
+  <div class="item center">
     <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
-    <p><strong>Ayuba Rachael</strong></p>
+    <p><strong>AYUBA RACHAEL</strong></p>
     <p>🎉 Happy Birthday! May your year be prosperous!</p>
   </div>
 </div>
 
 <div class="section">
   <h2>Adverts Placement</h2>
-  <div class="item">
+  <div class="item center">
     <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
-    <p><strong>Oba Printing Services</strong></p>
+    <p><strong>OBA PRINTING SERVICES</strong></p>
     <p>We print handouts, assignments and more. Affordable and fast!</p>
     <a href="#">Visit Page</a>
   </div>
