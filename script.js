@@ -1,1 +1,0 @@
-console.log('Finance Point Loaded');
