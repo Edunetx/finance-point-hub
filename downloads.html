@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Downloads | Finance Point</title>
+  <title>Study Resources | Finance Point</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
@@ -28,52 +28,31 @@
       margin: auto;
       padding: 20px;
     }
-    .search-filter {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .search-filter input {
-      width: 70%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1rem;
-    }
-    .section {
-      margin-top: 30px;
-    }
-    .section h2 {
-      border-bottom: 1px solid gold;
-      padding-bottom: 5px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .file-card {
+    .download-card {
       background-color: rgba(30, 30, 30, 0.9);
       padding: 15px;
       border-radius: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
-    .file-card h4 {
+    .download-card h4 {
       margin: 0 0 5px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: gold;
     }
-    .file-card p {
-      color: #ddd;
+    .download-card p {
+      color: #ccc;
       margin: 0 0 10px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
-    .file-card a {
-      background: gold;
-      color: #000;
-      padding: 8px 15px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
+    .download-card a {
       display: inline-block;
+      padding: 8px 16px;
+      background-color: gold;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
     }
     .bottom-nav {
       position: fixed;
@@ -102,55 +81,44 @@
   </style>
 </head>
 <body>
-  <header>Downloads</header>
-  <div class="container">
-    <div class="search-filter">
-      <input type="text" id="searchInput" placeholder="Search by course title or level..." onkeyup="filterFiles()">
-    </div><div class="section" id="downloadsSection">
-  <h2>100 Level</h2>
-  <div class="file-card">
-    <h4>BUS 101 - Introduction to Business</h4>
-    <p>Basic principles of business operations and structures</p>
-    <a href="https://example.com/BUS101.pdf" target="_blank">Download</a>
-  </div>
+  <header>Study Resources & Materials</header>
+  <div class="container"><div class="download-card">
+  <h4>FIN 201: Corporate Finance I</h4>
+  <p>2nd Semester | 200 Level | Handout + Slides</p>
+  <a href="#">Download</a>
+</div>
 
-  <h2>200 Level</h2>
-  <div class="file-card">
-    <h4>FIN 206 - Strategic Cost Management</h4>
-    <p>Handout covering advanced cost planning and control mechanisms</p>
-    <a href="https://example.com/FIN206.pdf" target="_blank">Download</a>
-  </div>
+<div class="download-card">
+  <h4>FIN 206: Finance Theory</h4>
+  <p>1st Semester | 200 Level | Past Questions & Notes</p>
+  <a href="#">Download</a>
+</div>
 
-  <h2>300 Level</h2>
-  <div class="file-card">
-    <h4>FIN 307 - Corporate Finance</h4>
-    <p>Comprehensive notes on funding sources, dividend policy, capital structure</p>
-    <a href="https://example.com/FIN307.pdf" target="_blank">Download</a>
-  </div>
+<div class="download-card">
+  <h4>FIN 217: Law of Banking</h4>
+  <p>Important case studies + Lecture Notes</p>
+  <a href="#">Download</a>
+</div>
 
-  <h2>400 Level</h2>
-  <div class="file-card">
-    <h4>FIN 401 - Financial Statement Analysis</h4>
-    <p>Insights into interpreting and analyzing company financials</p>
-    <a href="https://example.com/FIN401.pdf" target="_blank">Download</a>
-  </div>
+<div class="download-card">
+  <h4>ENT 204: Entrepreneurial Studies</h4>
+  <p>Business plan sample + Class workbook</p>
+  <a href="#">Download</a>
 </div>
 
   </div>  <div class="bottom-nav">
-    <a href="home.html"><i class="fas fa-home"></i></a>
-    <a href="events.html"><i class="fas fa-calendar"></i></a>
-    <a href="#" class="active"><i class="fas fa-download"></i></a>
-    <a href="cbt.html"><i class="fas fa-question"></i></a>
-    <a href="feedback.html"><i class="fas fa-comment"></i></a>
+    <a href="home.html" class="nav-link" data-page="home.html"><i class="fas fa-home"></i></a>
+    <a href="announcement-events.html" class="nav-link" data-page="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
+    <a href="#" class="nav-link active" data-page="downloads.html"><i class="fas fa-download"></i></a>
+    <a href="cbt.html" class="nav-link" data-page="cbt.html"><i class="fas fa-question"></i></a>
+    <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html"><i class="fas fa-trophy"></i></a>
   </div>  <script>
-    function filterFiles() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const section = document.getElementById('downloadsSection');
-      const cards = section.getElementsByClassName('file-card');
-      for (let card of cards) {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(input) ? 'block' : 'none';
+    const links = document.querySelectorAll(".nav-link");
+    const currentPage = window.location.pathname.split("/").pop();
+    links.forEach(link => {
+      if (link.dataset.page === currentPage) {
+        link.classList.add("active");
       }
-    }
+    });
   </script></body>
 </html>
