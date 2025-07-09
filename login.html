@@ -48,7 +48,19 @@
       background: rgba(20, 20, 20, 0.5);
       backdrop-filter: blur(10px);
       border-radius: 14px;
-      box-shadow: 0 0 12px gold; /* Reduced glow */
+      box-shadow: 0 0 12px gold;
+      animation: slideDown 0.7s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h2 {
