@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign In</title>
   <style>
     body {
@@ -88,6 +88,7 @@
     <button onclick="loginUser()">Sign In</button>
     <div class="bottom-link">New here? <a href="signup.html">Create account</a></div>
   </div>
+
   <div class="toast" id="toast"></div>
 
   <script type="module">
@@ -115,6 +116,15 @@
       setTimeout(() => toast.style.display = "none", 4000);
     }
 
+    // Handle logout message if redirected
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("status") === "logout") {
+        showToast("Signed out successfully!");
+        history.replaceState(null, "", "login.html"); // Clean up URL
+      }
+    });
+
     window.loginUser = async function () {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
@@ -130,18 +140,16 @@
           return;
         }
 
-        // Fetch user's data from Firestore
         const userDoc = await getDoc(doc(db, "Users", user.uid));
         if (userDoc.exists()) {
-          const data = userDoc.data();
-          sessionStorage.setItem("userFullName", data.fullName);
-          sessionStorage.setItem("userMatric", data.matricNumber);
+          sessionStorage.setItem("userFullName", userDoc.data().fullName);
+          sessionStorage.setItem("userMatric", userDoc.data().matricNumber);
         }
 
         showToast("Sign in successful");
         setTimeout(() => {
           window.location.href = "home.html";
-        }, 3000);
+        }, 2000);
       } catch (error) {
         let message = "Login failed";
         if (error.code === "auth/wrong-password") message = "Incorrect password";
