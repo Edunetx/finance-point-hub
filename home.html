@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Finance Point</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -22,30 +25,23 @@
       background: rgba(20, 20, 20, 0.95);
       padding: 15px 25px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 99;
     }
     header h1 {
       font-size: 1.8rem;
       font-weight: bold;
     }
-    #logoutBtn {
-      cursor: pointer;
-      background: none;
-      border: none;
+    .logout-icon {
+      font-size: 1.4rem;
       color: gold;
-      font-size: 1.3rem;
-    }
-    .welcome-box {
-      margin: 40px auto 20px;
-      background: rgba(30, 30, 30, 0.85);
-      width: fit-content;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px gold;
-      text-align: center;
+      cursor: pointer;
     }
     .toast {
       position: fixed;
-      top: 20px;
+      top: 80px;
       right: 20px;
       background-color: #222;
       color: gold;
@@ -55,24 +51,126 @@
       display: none;
       z-index: 999;
     }
+    main {
+      padding-top: 100px;
+      padding-bottom: 100px;
+    }
+    .welcome-box {
+      margin: 40px auto 20px;
+      background: rgba(30, 30, 30, 0.85);
+      width: fit-content;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px gold;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .section {
+      margin: 30px auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      background: rgba(20, 20, 20, 0.85);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    .section h2 {
+      margin-top: 0;
+      border-bottom: 1px solid gold;
+      padding-bottom: 5px;
+    }
+    .tip-item, .news-item, .birthday-item, .advert-item {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px dashed gold;
+      border-radius: 8px;
+    }
+    .birthday-item img, .advert-item img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .advert-item a {
+      display: inline-block;
+      margin-top: 5px;
+      color: #ffd700;
+      text-decoration: underline;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.95);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: gold;
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+    .bottom-nav a.active {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    @media(min-width: 768px) {
+      .bottom-nav { display: none; }
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>FINANCE POINT</h1>
-    <button id="logoutBtn" onclick="logoutUser()" title="Logout">🚪</button>
-  </header>
+    <i class="fas fa-right-from-bracket logout-icon" onclick="logoutUser()" title="Logout"></i>
+  </header>  <main>
+    <div class="welcome-box">
+      <h2 id="welcome">Welcome, Student</h2>
+    </div><div class="section">
+  <h2>Finance Tips</h2>
+  <div class="tip-item">• Start saving at least 20% of every income.</div>
+  <div class="tip-item">• Avoid taking unnecessary loans.</div>
+</div>
 
-  <div class="welcome-box">
-    <h2 id="welcome">Welcome, Student</h2>
+<div class="section">
+  <h2>Latest News</h2>
+  <div class="news-item">• Finance Week starts on July 15th. Don’t miss out!</div>
+  <div class="news-item">• Scholarship applications close on August 5th.</div>
+</div>
+
+<div class="section">
+  <h2>Birthday Wall</h2>
+  <div class="birthday-item">
+    <img src="https://source.unsplash.com/400x200/?birthday,student" alt="Birthday">
+    <p><strong>Adedayo Michael</strong></p>
+    <p>🎉 Wishing you a prosperous year ahead!</p>
   </div>
+</div>
 
-  <div class="toast" id="toast"></div>
+<div class="section">
+  <h2>Adverts Placement</h2>
+  <div class="advert-item">
+    <img src="https://source.unsplash.com/400x200/?finance,business" alt="Ad">
+    <p><strong>Elite Fin Tutors</strong></p>
+    <p>Premium tutorials for finance students. Learn from experts today.</p>
+    <a href="#">Visit Page</a>
+  </div>
+</div>
 
-  <script type="module">
+  </main>  <div class="bottom-nav">
+    <a href="#" class="active"><i class="fas fa-home"></i></a>
+    <a href="events.html"><i class="fas fa-calendar"></i></a>
+    <a href="downloads.html"><i class="fas fa-download"></i></a>
+    <a href="cbt.html"><i class="fas fa-question"></i></a>
+    <a href="feedback.html"><i class="fas fa-comment"></i></a>
+  </div>  <div class="toast" id="toast"></div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -87,7 +185,6 @@
     const auth = getAuth(app);
 
     const welcome = document.getElementById("welcome");
-
     const fullName = sessionStorage.getItem("userFullName");
     if (fullName) {
       welcome.textContent = `Welcome, ${fullName}`;
@@ -111,6 +208,5 @@
         toast.style.display = "none";
       }, 4000);
     }
-  </script>
-</body>
+  </script></body>
 </html>
