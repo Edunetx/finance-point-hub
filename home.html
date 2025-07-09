@@ -1,4 +1,4 @@
-<!-- HOME.HTML (Home) --><!DOCTYPE html><html lang="en">
+<!-- HOME.HTML (Dashboard) --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Home</title>
@@ -18,9 +18,37 @@
       padding: 20px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav {
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-bottom: 1px solid gold;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: gold;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .logout {
+      background-color: #222;
+      color: red;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
     .greeting {
-      margin-top: 30px;
+      margin: 30px 0;
       text-align: center;
       font-size: 1.5rem;
       font-weight: bold;
@@ -48,30 +76,92 @@
       color: gold;
       font-weight: bold;
     }
+    .extra-section {
+      padding: 20px 30px;
+    }
+    .extra-section h3 {
+      color: gold;
+    }
+    .extra-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .extra-section li {
+      background: #1a1a1a;
+      border-left: 3px solid gold;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
     @media (max-width: 600px) {
       .greeting {
         font-size: 1.2rem;
+      }
+      nav {
+        flex-direction: column;
+        align-items: center;
       }
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>Finance Point Dashboard</h1>
-  </div>
-  <div class="greeting" id="welcomeText">Welcome, Student</div>  <div class="section-container">
+    <h1>Finance Point</h1>
+  </div>  <nav>
+    <a href="home.html">Home</a>
+    <a href="executives.html">Executives</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="downloads.html">Materials</a>
+    <a href="cbt.html">CBT</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="birthday.html">Birthday Wall</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <button class="logout" onclick="logout()">Logout</button>
+  </nav>  <div class="greeting" id="welcomeText">Welcome, Student</div>  <div class="section-container">
     <div class="card"><a href="executives.html">Meet the Executives</a></div>
-    <div class="card"><a href="announcements.html">Announcements</a></div>
-    <div class="card"><a href="events.html">Events</a></div>
+    <div class="card"><a href="announcements.html">Read Announcements</a></div>
+    <div class="card"><a href="events.html">Explore Events</a></div>
     <div class="card"><a href="downloads.html">Study Materials</a></div>
-    <div class="card"><a href="cbt.html">CBT Challenge</a></div>
+    <div class="card"><a href="cbt.html">Daily Quiz CBT</a></div>
     <div class="card"><a href="leaderboard.html">Leaderboard</a></div>
     <div class="card"><a href="feedback.html">Feedback Box</a></div>
     <div class="card"><a href="birthday.html">Birthday Wall</a></div>
     <div class="card"><a href="lostfound.html">Lost & Found</a></div>
+  </div>  <div class="extra-section">
+    <h3>Finance Tips</h3>
+    <ul>
+      <li>Always track your spending. Little drops make an ocean.</li>
+      <li>Save before you spend — not the other way round.</li>
+      <li>Invest in knowledge. It pays the best interest.</li>
+      <li>Take advantage of student discounts and financial aid opportunities.</li>
+      <li>Create a weekly or monthly budget and stick to it.</li>
+    </ul><h3>Latest News</h3>
+<ul>
+  <li>🗓️ Departmental dinner coming up this August. Get your tickets soon!</li>
+  <li>🧾 Finance 301 past questions uploaded in Downloads.</li>
+  <li>🏆 Last week's CBT champion: BOLU*****E (400L)</li>
+</ul>
+
+<h3>Trending Finance Facts</h3>
+<ul>
+  <li>The word “finance” comes from the Latin word *finis*, meaning end or conclusion.</li>
+  <li>Compound interest was referred to as the “eighth wonder of the world” by Einstein.</li>
+  <li>Over 60% of students globally take out loans to support their education.</li>
+  <li>Cryptocurrency is now recognized as legal tender in multiple countries.</li>
+</ul>
+
+<h3>Student Money Moves</h3>
+<ul>
+  <li>💼 Start a savings account today with a fintech app.</li>
+  <li>📱 Use budget tracking apps like PiggyVest or Cowrywise.</li>
+  <li>📝 Track your expenses daily with digital planners or Google Sheets.</li>
+  <li>👩‍💼 Join student investment clubs and learn real strategies.</li>
+</ul>
+
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -91,19 +181,35 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (user && user.emailVerified) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const displayName = data.fullName ? data.fullName.split(" ")[0] : "Student";
-          const maskedMatric = data.matricNumber
-            ? data.matricNumber.substring(0, 3) + "*****" + data.matricNumber.slice(-1)
-            : "*********";
-          welcomeText.textContent = `Welcome, ${displayName.toUpperCase()} (${maskedMatric})`;
+        try {
+          const docRef = doc(db, "Users", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            const nameParts = data.fullName?.trim().split(" ") || [];
+            const displayName = nameParts.length >= 1 ? nameParts[0] : "Student";
+            const maskedMatric = data.matricNumber?.length === 9
+              ? data.matricNumber.substring(0, 3) + "*****" + data.matricNumber.slice(-1)
+              : "*********";
+            welcomeText.textContent = `Welcome, ${displayName.toUpperCase()} (${maskedMatric})`;
+          } else {
+            welcomeText.textContent = "Welcome, Student";
+            console.warn("No user document found in Firestore.");
+          }
+        } catch (error) {
+          console.error("Error loading user document:", error);
+          welcomeText.textContent = "Welcome, Student";
         }
       } else {
         window.location.href = "login.html";
       }
     });
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    };
   </script></body>
 </html>
