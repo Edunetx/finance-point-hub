@@ -10,60 +10,76 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
+  <!-- Particles JS -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
   <style>
-    /* Gold-themed animated background */
-    body {
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(circle, #fff9e6 0%, #f5c518 100%);
-      animation: glow 10s ease-in-out infinite;
+      height: 100vh;
+      background-color: #0d0d0d;
+      color: white;
     }
 
-    @keyframes glow {
-      0% { background: radial-gradient(circle, #fff9e6 0%, #f5c518 100%); }
-      50% { background: radial-gradient(circle, #fff3c0 0%, #ffd700 100%); }
-      100% { background: radial-gradient(circle, #fff9e6 0%, #f5c518 100%); }
+    #tsparticles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
 
     .form-container {
-      max-width: 95%;
-      width: 400px;
-      margin: 80px auto;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 25px;
+      max-width: 420px;
+      width: 90%;
+      margin: 60px auto;
+      padding: 30px;
+      background: rgba(20, 20, 20, 0.9);
       border-radius: 16px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
     }
 
     h2 {
       text-align: center;
-      color: #a97400;
+      color: gold;
       margin-bottom: 20px;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin: 10px 0;
-      border: 2px solid #b57f00;
+      background: #111;
+      color: white;
+      border: 2px solid gold;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #ccc;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      background: #b57f00;
-      color: white;
+      padding: 14px;
+      margin-top: 10px;
+      background: gold;
+      color: #111;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
+      font-size: 17px;
+      font-weight: bold;
       cursor: pointer;
     }
 
     button:hover {
-      background: #a66f00;
+      background: #e6c200;
     }
 
     .popup {
@@ -71,13 +87,12 @@
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 14px 25px;
-      color: white;
+      padding: 12px 20px;
       border-radius: 8px;
       font-weight: bold;
+      z-index: 999;
       display: none;
-      z-index: 9999;
-      animation: fade 0.4s ease-in-out;
+      color: white;
     }
 
     .popup.success {
@@ -88,24 +103,33 @@
       background-color: #dc3545;
     }
 
-    @keyframes fade {
-      from { opacity: 0; top: 0; }
-      to { opacity: 1; top: 20px; }
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
     }
 
-    @media (max-width: 500px) {
+    .login-link a {
+      color: gold;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
       .form-container {
-        margin: 50px 10px;
+        margin: 30px auto;
         padding: 20px;
       }
 
       input, button {
-        font-size: 14px;
+        font-size: 15px;
       }
     }
   </style>
 </head>
 <body>
+
+<!-- Particle Background -->
+<div id="tsparticles"></div>
 
 <div class="form-container">
   <h2>Sign Up</h2>
@@ -114,6 +138,11 @@
   <input type="email" id="email" placeholder="Email Address" required>
   <input type="password" id="password" placeholder="Password" required>
   <button onclick="signUp()">Create Account</button>
+
+  <div class="login-link">
+    <span>Already have an account?</span>
+    <a href="login.html">Login here</a>
+  </div>
 </div>
 
 <div id="popup" class="popup"></div>
@@ -134,8 +163,8 @@
 
   function showPopup(message, type = 'success') {
     const popup = document.getElementById('popup');
-    popup.className = `popup ${type}`;
     popup.textContent = message;
+    popup.className = `popup ${type}`;
     popup.style.display = 'block';
     setTimeout(() => {
       popup.style.display = 'none';
@@ -164,7 +193,7 @@
         });
       })
       .then(() => {
-        showPopup(`Sign up successful!`, "success");
+        showPopup("Sign up successful!", "success");
         setTimeout(() => {
           window.location.href = "dashboard.html";
         }, 4000);
@@ -173,6 +202,51 @@
         showPopup(error.message, "error");
       });
   }
+
+  // Gold particle background
+  tsParticles.load("tsparticles", {
+    background: {
+      color: { value: "#0d0d0d" }
+    },
+    fpsLimit: 60,
+    interactivity: {
+      events: {
+        onHover: { enable: true, mode: "repulse" },
+        resize: true
+      },
+      modes: {
+        repulse: {
+          distance: 60,
+          duration: 0.4
+        }
+      }
+    },
+    particles: {
+      color: { value: "#FFD700" },
+      links: {
+        color: "#FFD700",
+        distance: 120,
+        enable: true,
+        opacity: 0.3,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 0.6,
+        direction: "none",
+        random: true,
+        outModes: "bounce"
+      },
+      number: {
+        density: { enable: true, area: 700 },
+        value: 45
+      },
+      opacity: { value: 0.4 },
+      shape: { type: "circle" },
+      size: { value: { min: 1, max: 3 } }
+    },
+    detectRetina: true
+  });
 </script>
 
 </body>
