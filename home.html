@@ -1,168 +1,96 @@
-<!-- HOME.HTML (Dashboard) --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
   <style>
     body {
       margin: 0;
-      background: #0a0a0a url('https://www.transparenttextures.com/patterns/stardust.png');
-      color: #fff;
+      padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-blend-mode: overlay;
-      background-repeat: repeat;
-    }
-    .header {
-      background-color: #111;
+      background: #000;
+      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: 100vh;
       color: gold;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.9);
       padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav {
-      background-color: #1a1a1a;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-bottom: 1px solid gold;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: gold;
-      text-decoration: none;
-      padding: 10px 15px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .logout {
-      background-color: #222;
-      color: red;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .greeting {
-      margin: 30px 0;
       text-align: center;
       font-size: 1.5rem;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    #logoutBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      background-color: gold;
+      color: black;
+      border: none;
+      border-radius: 6px;
       font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
     }
-    .section-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 30px;
+    #logoutBtn:hover {
+      background-color: #ffd700;
     }
-    .card {
-      background: #111;
-      border: 1px solid gold;
-      border-radius: 12px;
+    main {
       padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-      transition: 0.3s ease;
     }
-    .card:hover {
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+    section.card {
+      background-color: rgba(255, 255, 255, 0.05);
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
     }
-    .card a {
-      text-decoration: none;
+    section.card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 {
       color: gold;
-      font-weight: bold;
+      font-size: 1.2rem;
     }
-    .extra-section {
-      padding: 20px 30px;
-    }
-    .extra-section h3 {
-      color: gold;
-    }
-    .extra-section ul {
-      list-style: none;
-      padding: 0;
-    }
-    .extra-section li {
-      background: #1a1a1a;
-      border-left: 3px solid gold;
-      margin-bottom: 10px;
-      padding: 10px;
-    }
-    @media (max-width: 600px) {
-      .greeting {
-        font-size: 1.2rem;
-      }
-      nav {
-        flex-direction: column;
-        align-items: center;
-      }
+    p {
+      color: #ccc;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Finance Point</h1>
-  </div>  <nav>
-    <a href="home.html">Home</a>
-    <a href="executives.html">Executives</a>
-    <a href="announcements.html">Announcements</a>
-    <a href="events.html">Events</a>
-    <a href="downloads.html">Materials</a>
-    <a href="cbt.html">CBT</a>
-    <a href="leaderboard.html">Leaderboard</a>
-    <a href="feedback.html">Feedback</a>
-    <a href="birthday.html">Birthday Wall</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <button class="logout" onclick="logout()">Logout</button>
-  </nav>  <div class="greeting" id="welcomeText">Welcome, Student</div>  <div class="section-container">
-    <div class="card"><a href="executives.html">Meet the Executives</a></div>
-    <div class="card"><a href="announcements.html">Read Announcements</a></div>
-    <div class="card"><a href="events.html">Explore Events</a></div>
-    <div class="card"><a href="downloads.html">Study Materials</a></div>
-    <div class="card"><a href="cbt.html">Daily Quiz CBT</a></div>
-    <div class="card"><a href="leaderboard.html">Leaderboard</a></div>
-    <div class="card"><a href="feedback.html">Feedback Box</a></div>
-    <div class="card"><a href="birthday.html">Birthday Wall</a></div>
-    <div class="card"><a href="lostfound.html">Lost & Found</a></div>
-  </div>  <div class="extra-section">
-    <h3>Finance Tips</h3>
-    <ul>
-      <li>Always track your spending. Little drops make an ocean.</li>
-      <li>Save before you spend — not the other way round.</li>
-      <li>Invest in knowledge. It pays the best interest.</li>
-      <li>Take advantage of student discounts and financial aid opportunities.</li>
-      <li>Create a weekly or monthly budget and stick to it.</li>
-    </ul><h3>Latest News</h3>
-<ul>
-  <li>🗓️ Departmental dinner coming up this August. Get your tickets soon!</li>
-  <li>🧾 Finance 301 past questions uploaded in Downloads.</li>
-  <li>🏆 Last week's CBT champion: BOLU*****E (400L)</li>
-</ul>
-
-<h3>Trending Finance Facts</h3>
-<ul>
-  <li>The word “finance” comes from the Latin word *finis*, meaning end or conclusion.</li>
-  <li>Compound interest was referred to as the “eighth wonder of the world” by Einstein.</li>
-  <li>Over 60% of students globally take out loans to support their education.</li>
-  <li>Cryptocurrency is now recognized as legal tender in multiple countries.</li>
-</ul>
-
-<h3>Student Money Moves</h3>
-<ul>
-  <li>💼 Start a savings account today with a fintech app.</li>
-  <li>📱 Use budget tracking apps like PiggyVest or Cowrywise.</li>
-  <li>📝 Track your expenses daily with digital planners or Google Sheets.</li>
-  <li>👩‍💼 Join student investment clubs and learn real strategies.</li>
-</ul>
-
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <header>
+    <div id="welcome">Welcome, Student</div>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Finance Tip of the Day</h2>
+      <p>Invest in assets that grow in value over time. Don't just save—grow your money smartly!</p>
+    </section>
+    <section class="card">
+      <h2>Latest Finance News</h2>
+      <p>AAUA Finance Department launches new budgeting app to assist students in managing expenses. Stay tuned!</p>
+    </section>
+    <section class="card">
+      <h2>Did You Know?</h2>
+      <p>The concept of compound interest was described by Einstein as the 8th wonder of the world.</p>
+    </section>
+  </main>  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -175,41 +103,33 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
-    const welcomeText = document.getElementById("welcomeText");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user && user.emailVerified) {
-        try {
-          const docRef = doc(db, "Users", user.uid);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            const nameParts = data.fullName?.trim().split(" ") || [];
-            const displayName = nameParts.length >= 1 ? nameParts[0] : "Student";
-            const maskedMatric = data.matricNumber?.length === 9
-              ? data.matricNumber.substring(0, 3) + "*****" + data.matricNumber.slice(-1)
-              : "*********";
-            welcomeText.textContent = `Welcome, ${displayName.toUpperCase()} (${maskedMatric})`;
-          } else {
-            welcomeText.textContent = "Welcome, Student";
-            console.warn("No user document found in Firestore.");
-          }
-        } catch (error) {
-          console.error("Error loading user document:", error);
-          welcomeText.textContent = "Welcome, Student";
-        }
-      } else {
-        window.location.href = "login.html";
-      }
-    });
-
-    window.logout = function () {
+    function logout() {
       signOut(auth).then(() => {
+        sessionStorage.clear();
         window.location.href = "login.html";
+      }).catch((error) => {
+        alert("Logout failed: " + error.message);
       });
-    };
+    }
+
+    const name = sessionStorage.getItem("userFullName") || "Student";
+    const matric = sessionStorage.getItem("userMatric") || "*********";
+    const shortMatric = matric.slice(0, 3) + "*****" + matric.slice(-1);
+    const shortName = name.split(" ")[0] || "Student";
+    document.getElementById("welcome").textContent = `Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
+
+    // Reveal animations on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll(".card").forEach(card => {
+      observer.observe(card);
+    });
   </script></body>
 </html>
