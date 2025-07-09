@@ -37,11 +37,18 @@
     .form-container {
       max-width: 420px;
       width: 90%;
-      margin: 60px auto;
+      margin: 40px auto 0 auto;
       padding: 30px;
-      background: rgba(20, 20, 20, 0.9);
+      background: rgba(20, 20, 20, 0.65);
       border-radius: 16px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 25px gold, 0 0 10px rgba(255, 215, 0, 0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
@@ -116,7 +123,7 @@
 
     @media (max-width: 480px) {
       .form-container {
-        margin: 30px auto;
+        margin: 30px auto 0 auto;
         padding: 20px;
       }
 
