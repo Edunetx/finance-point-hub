@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Events & Announcements | Finance Point</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+      padding-bottom: 80px;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.95);
+      text-align: center;
+      padding: 15px;
+      font-size: 1.6rem;
+      font-weight: bold;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .container {
+      max-width: 950px;
+      margin: auto;
+      padding: 20px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .section h2 {
+      border-bottom: 2px solid gold;
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .card {
+      background-color: rgba(30, 30, 30, 0.9);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+      text-align: center;
+    }
+    .card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: gold;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .card span {
+      display: block;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+    .card img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.95);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: gold;
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+    .bottom-nav a.active {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      .bottom-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>Events & Announcements</header>
+  <div class="container">
+    <div class="section" id="announcements">
+      <h2>Latest Announcements</h2>
+      <!-- Firestore announcements will appear here -->
+    </div>
+    <div class="section" id="upcoming-events">
+      <h2>Upcoming Events</h2>
+      <!-- Firestore upcoming events will appear here -->
+    </div>
+    <div class="section" id="past-events">
+      <h2>Past Events</h2>
+      <!-- Firestore past events will appear here -->
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <a href="home.html"><i class="fas fa-home"></i></a>
+    <a href="#" class="active"><i class="fas fa-bullhorn"></i></a>
+    <a href="downloads.html"><i class="fas fa-download"></i></a>
+    <a href="cbt.html"><i class="fas fa-question"></i></a>
+    <a href="leaderboard.html"><i class="fas fa-trophy"></i></a>
+  </div>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();function renderCard(title, desc, date, img, isEvent = false) {
+  return `
+    <div class="card">
+      ${img ? `<img src="${img}" alt="${title}" />` : ''}
+      <h4>${title}</h4>
+      <p>${desc}</p>
+      <span>${isEvent ? 'Date & Time: ' : 'Posted: '} ${date}</span>
+    </div>
+  `;
+}
+
+db.collection("announcements").orderBy("timestamp", "desc").get().then(snapshot => {
+  const container = document.getElementById("announcements");
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    container.innerHTML += renderCard(data.title, data.description, data.date || '', '');
+  });
+});
+
+db.collection("events").orderBy("date", "desc").get().then(snapshot => {
+  const upcoming = document.getElementById("upcoming-events");
+  const past = document.getElementById("past-events");
+  const now = new Date();
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const eventDate = new Date(data.date);
+    const card = renderCard(data.title, data.description, `${data.date} | ${data.time}`, data.image, true);
+    if (eventDate >= now) {
+      upcoming.innerHTML += card;
+    } else {
+      past.innerHTML += card;
+    }
+  });
+});
+
+  </script>
+</body>
+</html>
