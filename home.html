@@ -1,237 +1,219 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINANCE POINT</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
-      background-size: cover;
-      background-position: center;
-      color: gold;
-    }
-    header {
-      background-color: rgba(20, 20, 20, 0.95);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      box-shadow: 0 0 10px gold;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-    .logout-icon {
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: gold;
-    }
-    .container {
-      padding: 100px 20px 60px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .welcome-box {
-      text-align: center;
-      margin-bottom: 30px;
-      background-color: rgba(30, 30, 30, 0.85);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px gold;
-    }
-    .section {
-      background-color: rgba(25, 25, 25, 0.85);
-      padding: 20px;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
-    }
-    .section h2 {
-      border-bottom: 1px solid gold;
-      margin-bottom: 15px;
-      padding-bottom: 5px;
-      text-align: center;
-    }
-    .item {
-      margin-bottom: 15px;
-      border: 1px dashed gold;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-    .item img {
-      width: 100%;
-      max-height: 250px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-    .item.center {
-      text-align: center;
-    }
-    .item.center p {
-      margin: 5px 0;
-    }
-    .item.center strong {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    .item.center a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 16px;
-      background-color: gold;
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(20, 20, 20, 0.95);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .bottom-nav a {
-      color: gold;
-      font-size: 1.4rem;
-      text-decoration: none;
-    }
-    .bottom-nav a.active {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    @media(min-width: 768px) {
-      .bottom-nav { display: none; }
-    }
-    .toast {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      background-color: #222;
-      color: gold;
-      padding: 12px 20px;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-      display: none;
-      z-index: 999;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>FINANCE POINT</h1>
-    <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
-  </header>
+This is my home code do not make any changes apart from the nav bar refix
 
-  <div class="container">
-    <div class="welcome-box">
-      <h2 id="welcome">Welcome, Student</h2>
-      <p id="matricDisplay"></p>
-    </div>
+<!DOCTYPE html><html lang="en">  <head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>FINANCE POINT</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />  
+  <style>  
+    * {  
+      box-sizing: border-box;  
+      margin: 0;  
+      padding: 0;  
+    }  
+    body {  
+      font-family: 'Segoe UI', sans-serif;  
+      background-color: #000;  
+      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');  
+      background-size: cover;  
+      background-position: center;  
+      color: gold;  
+    }  
+    header {  
+      background-color: rgba(20, 20, 20, 0.95);  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      padding: 15px 20px;  
+      box-shadow: 0 0 10px gold;  
+      position: sticky;  
+      top: 0;  
+      z-index: 1000;  
+    }  
+    header h1 {  
+      font-size: 1.8rem;  
+      font-weight: bold;  
+    }  
+    .logout-icon {  
+      font-size: 1.3rem;  
+      cursor: pointer;  
+      color: gold;  
+    }  
+    .container {  
+      padding: 100px 20px 60px;  
+      max-width: 1000px;  
+      margin: auto;  
+    }  
+    .welcome-box {  
+      text-align: center;  
+      margin-bottom: 30px;  
+      background-color: rgba(30, 30, 30, 0.85);  
+      padding: 20px;  
+      border-radius: 10px;  
+      box-shadow: 0 0 10px gold;  
+    }  
+    .section {  
+      background-color: rgba(25, 25, 25, 0.85);  
+      padding: 20px;  
+      margin-bottom: 30px;  
+      border-radius: 10px;  
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);  
+    }  
+    .section h2 {  
+      border-bottom: 1px solid gold;  
+      margin-bottom: 15px;  
+      padding-bottom: 5px;  
+      text-align: center;  
+    }  
+    .item {  
+      margin-bottom: 15px;  
+      border: 1px dashed gold;  
+      padding: 10px;  
+      border-radius: 8px;  
+      background-color: rgba(0, 0, 0, 0.2);  
+    }  
+    .item img {  
+      width: 100%;  
+      max-height: 250px;  
+      object-fit: cover;  
+      border-radius: 6px;  
+      margin-bottom: 10px;  
+    }  
+    .item.center {  
+      text-align: center;  
+    }  
+    .item.center p {  
+      margin: 5px 0;  
+    }  
+    .item.center strong {  
+      display: block;  
+      font-size: 1.2rem;  
+      font-weight: bold;  
+      text-transform: uppercase;  
+    }  
+    .item.center a {  
+      display: inline-block;  
+      margin-top: 10px;  
+      padding: 8px 16px;  
+      background-color: gold;  
+      color: #000;  
+      font-weight: bold;  
+      border-radius: 5px;  
+      text-decoration: none;  
+    }  
+    .bottom-nav {  
+      position: fixed;  
+      bottom: 0;  
+      left: 0;  
+      width: 100%;  
+      background: rgba(20, 20, 20, 0.95);  
+      display: flex;  
+      justify-content: space-around;  
+      align-items: center;  
+      padding: 10px 0;  
+      z-index: 100;  
+    }  
+    .bottom-nav a {  
+      color: gold;  
+      font-size: 1.4rem;  
+      text-decoration: none;  
+    }  
+    .bottom-nav a.active {  
+      opacity: 0.4;  
+      pointer-events: none;  
+    }  
+    @media(min-width: 768px) {  
+      .bottom-nav { display: none; }  
+    }  
+    .toast {  
+      position: fixed;  
+      top: 80px;  
+      right: 20px;  
+      background-color: #222;  
+      color: gold;  
+      padding: 12px 20px;  
+      border-radius: 6px;  
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);  
+      display: none;  
+      z-index: 999;  
+    }  
+  </style>  
+</head>  
+<body>  
+  <header>  
+    <h1>FINANCE POINT</h1>  
+    <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>  
+  </header>  <div class="container">  
+    <div class="welcome-box">  
+      <h2 id="welcome">Welcome, Student</h2>  
+      <p id="matricDisplay"></p>  
+    </div><div class="section">  
+  <h2>Finance Tips</h2>  
+  <div class="item">• Save 20% of all earnings monthly.</div>  
+  <div class="item">• Track your expenses weekly.</div>  
+</div>  <div class="section">  
+  <h2>Latest News</h2>  
+  <div class="item">• Finance Department summit holds August 2nd.</div>  
+  <div class="item">• Course registration ends July 18th.</div>  
+</div>  <div class="section">  
+  <h2>Birthday Wall</h2>  
+  <div class="item center">  
+    <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">  
+    <p><strong>AYUBA RACHAEL</strong></p>  
+    <p>🎉 Happy Birthday! May your year be prosperous!</p>  
+  </div>  
+</div>  <div class="section">  
+  <h2>Adverts Placement</h2>  
+  <div class="item center">  
+    <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">  
+    <p><strong>OBA PRINTING SERVICES</strong></p>  
+    <p>We print handouts, assignments and more. Affordable and fast!</p>  
+    <a href="#">Visit Page</a>  
+  </div>  
+</div>    </div>  <div class="bottom-nav">  
+    <a href="#" class="active"><i class="fas fa-home"></i></a>  
+    <a href="events.html"><i class="fas fa-calendar"></i></a>  
+    <a href="downloads.html"><i class="fas fa-download"></i></a>  
+    <a href="cbt.html"><i class="fas fa-question"></i></a>  
+    <a href="feedback.html"><i class="fas fa-comment"></i></a>  
+  </div>  <div class="toast" id="toast"></div>  <script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";  
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";  const firebaseConfig = {  
+  apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",  
+  authDomain: "finsa-connect.firebaseapp.com",  
+  projectId: "finsa-connect",  
+  storageBucket: "finsa-connect.appspot.com",  
+  messagingSenderId: "126845965255",  
+  appId: "1:126845965255:web:c82539297a8464873d7fe2"  
+};  
 
-    <div class="section">
-      <h2>Finance Tips</h2>
-      <div class="item">• Save 20% of all earnings monthly.</div>
-      <div class="item">• Track your expenses weekly.</div>
-    </div>
+const app = initializeApp(firebaseConfig);  
+const auth = getAuth(app);  
 
-    <div class="section">
-      <h2>Latest News</h2>
-      <div class="item">• Finance Department summit holds August 2nd.</div>
-      <div class="item">• Course registration ends July 18th.</div>
-    </div>
+const welcome = document.getElementById("welcome");  
+const matric = document.getElementById("matricDisplay");  
+const fullName = sessionStorage.getItem("userFullName");  
+const matricNumber = sessionStorage.getItem("userMatric");  
+if (fullName) {  
+  const firstName = fullName.split(" ")[0];  
+  welcome.textContent = `Welcome, ${firstName}`;  
+}  
+if (matricNumber) {  
+  matric.textContent = `Matric Number: ${matricNumber}`;  
+}  
 
-    <div class="section">
-      <h2>Birthday Wall</h2>
-      <div class="item center">
-        <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
-        <p><strong>AYUBA RACHAEL</strong></p>
-        <p>🎉 Happy Birthday! May your year be prosperous!</p>
-      </div>
-    </div>
+window.logoutUser = function () {  
+  signOut(auth)  
+    .then(() => {  
+      window.location.href = "login.html?status=logout";  
+    })  
+    .catch((error) => {  
+      document.getElementById("toast").textContent = "Logout failed: " + error.message;  
+      document.getElementById("toast").style.display = "block";  
+      setTimeout(() => document.getElementById("toast").style.display = "none", 4000);  
+    });  
+}
 
-    <div class="section">
-      <h2>Adverts Placement</h2>
-      <div class="item center">
-        <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
-        <p><strong>OBA PRINTING SERVICES</strong></p>
-        <p>We print handouts, assignments and more. Affordable and fast!</p>
-        <a href="#">Visit Page</a>
-      </div>
-    </div>
-  </div>
+</script></body>
 
-  <div class="bottom-nav">
-    <a href="#" class="active"><i class="fas fa-home"></i></a>
-    <a href="announcement-events.html"><i class="fas fa-calendar"></i></a>
-    <a href="downloads.html"><i class="fas fa-download"></i></a>
-    <a href="cbt.html"><i class="fas fa-question"></i></a>
-    <a href="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const welcome = document.getElementById("welcome");
-    const matric = document.getElementById("matricDisplay");
-    const fullName = sessionStorage.getItem("userFullName");
-    const matricNumber = sessionStorage.getItem("userMatric");
-    if (fullName) {
-      const firstName = fullName.split(" ")[0];
-      welcome.textContent = `Welcome, ${firstName}`;
-    }
-    if (matricNumber) {
-      matric.textContent = `Matric Number: ${matricNumber}`;
-    }
-
-    window.logoutUser = function () {
-      signOut(auth)
-        .then(() => {
-          window.location.href = "login.html?status=logout";
-        })
-        .catch((error) => {
-          document.getElementById("toast").textContent = "Logout failed: " + error.message;
-          document.getElementById("toast").style.display = "block";
-          setTimeout(() => document.getElementById("toast").style.display = "none", 4000);
-        });
-    }
-  </script>
-</body>
 </html>
