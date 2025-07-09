@@ -1,107 +1,84 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Finance Point</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINANCE POINT</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #000;
-      color: gold;
+      background-color: #000;
       background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
       background-size: cover;
-      background-repeat: no-repeat;
       background-position: center;
+      color: gold;
     }
     header {
+      background-color: rgba(20, 20, 20, 0.95);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(20, 20, 20, 0.95);
-      padding: 15px 25px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-      position: fixed;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
       top: 0;
-      width: 100%;
-      z-index: 99;
+      z-index: 1000;
     }
     header h1 {
       font-size: 1.8rem;
       font-weight: bold;
     }
     .logout-icon {
-      font-size: 1.4rem;
-      color: gold;
+      font-size: 1.3rem;
       cursor: pointer;
-    }
-    .toast {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      background-color: #222;
       color: gold;
-      padding: 12px 20px;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-      display: none;
-      z-index: 999;
     }
-    main {
-      padding-top: 100px;
-      padding-bottom: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .container {
+      padding: 100px 20px 60px;
+      max-width: 1000px;
+      margin: auto;
     }
     .welcome-box {
-      margin: 40px auto 20px;
-      background: rgba(30, 30, 30, 0.85);
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px gold;
       text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
+      margin-bottom: 30px;
+      background-color: rgba(30, 30, 30, 0.85);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
     }
     .section {
-      margin: 30px 0;
+      background-color: rgba(25, 25, 25, 0.85);
       padding: 20px;
-      width: 90%;
-      max-width: 800px;
-      background: rgba(20, 20, 20, 0.85);
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
     .section h2 {
-      margin-top: 0;
       border-bottom: 1px solid gold;
+      margin-bottom: 15px;
       padding-bottom: 5px;
     }
-    .tip-item, .news-item, .birthday-item, .advert-item {
-      margin: 10px 0;
-      padding: 10px;
+    .item {
+      margin-bottom: 15px;
       border: 1px dashed gold;
+      padding: 10px;
       border-radius: 8px;
-      text-align: center;
+      background-color: rgba(0, 0, 0, 0.2);
     }
-    .birthday-item img, .advert-item img {
+    .item img {
       width: 100%;
-      max-width: 100%;
-      height: auto;
-      max-height: 300px;
+      max-height: 250px;
       object-fit: cover;
       border-radius: 6px;
       margin-bottom: 10px;
     }
-    .advert-item a {
-      display: inline-block;
-      margin-top: 5px;
-      color: #ffd700;
+    .item a {
+      color: gold;
       text-decoration: underline;
     }
     .bottom-nav {
@@ -128,48 +105,60 @@
     @media(min-width: 768px) {
       .bottom-nav { display: none; }
     }
+    .toast {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background-color: #222;
+      color: gold;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      display: none;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>FINANCE POINT</h1>
-    <i class="fas fa-right-from-bracket logout-icon" onclick="logoutUser()" title="Logout"></i>
-  </header>  <main>
+    <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
+  </header>  <div class="container">
     <div class="welcome-box">
       <h2 id="welcome">Welcome, Student</h2>
       <p id="matricDisplay"></p>
     </div><div class="section">
   <h2>Finance Tips</h2>
-  <div class="tip-item">• Start saving at least 20% of every income.</div>
-  <div class="tip-item">• Avoid taking unnecessary loans.</div>
+  <div class="item">• Save 20% of all earnings monthly.</div>
+  <div class="item">• Track your expenses weekly.</div>
 </div>
 
 <div class="section">
   <h2>Latest News</h2>
-  <div class="news-item">• Finance Week starts on July 15th. Don’t miss out!</div>
-  <div class="news-item">• Scholarship applications close on August 5th.</div>
+  <div class="item">• Finance Department summit holds August 2nd.</div>
+  <div class="item">• Course registration ends July 18th.</div>
 </div>
 
 <div class="section">
   <h2>Birthday Wall</h2>
-  <div class="birthday-item">
-    <img src="https://images.unsplash.com/photo-1606851091811-0ef6d08db5e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Birthday">
-    <p><strong>Adedayo Michael</strong></p>
-    <p>🎉 Wishing you a prosperous year ahead!</p>
+  <div class="item">
+    <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
+    <p><strong>Ayuba Rachael</strong></p>
+    <p>🎉 Happy Birthday! May your year be prosperous!</p>
   </div>
 </div>
 
 <div class="section">
   <h2>Adverts Placement</h2>
-  <div class="advert-item">
-    <img src="https://images.unsplash.com/photo-1581093458791-252d44c2d188?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Ad">
-    <p><strong>Elite Fin Tutors</strong></p>
-    <p>Premium tutorials for finance students. Learn from experts today.</p>
+  <div class="item">
+    <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
+    <p><strong>Oba Printing Services</strong></p>
+    <p>We print handouts, assignments and more. Affordable and fast!</p>
     <a href="#">Visit Page</a>
   </div>
 </div>
 
-  </main>  <div class="bottom-nav">
+  </div>  <div class="bottom-nav">
     <a href="#" class="active"><i class="fas fa-home"></i></a>
     <a href="events.html"><i class="fas fa-calendar"></i></a>
     <a href="downloads.html"><i class="fas fa-download"></i></a>
@@ -209,17 +198,10 @@
           window.location.href = "login.html?status=logout";
         })
         .catch((error) => {
-          showToast("Logout failed: " + error.message);
+          document.getElementById("toast").textContent = "Logout failed: " + error.message;
+          document.getElementById("toast").style.display = "block";
+          setTimeout(() => document.getElementById("toast").style.display = "none", 4000);
         });
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.style.display = "block";
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 4000);
     }
   </script></body>
 </html>
