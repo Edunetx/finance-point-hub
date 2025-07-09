@@ -55,29 +55,41 @@
 
     input {
       width: 100%;
-      padding: 14px;
-      margin: 10px 0;
+      padding: 10px;
+      margin: 8px 0;
       background: rgba(17,17,17,0.9);
       border: 2px solid gold;
-      border-radius: 10px;
+      border-radius: 8px;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
     }
 
     input::placeholder {
       color: #ccc;
     }
 
+    .forgot {
+      text-align: right;
+      margin-top: 5px;
+      font-size: 13px;
+    }
+
+    .forgot a {
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
     button {
       width: 100%;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 12px;
+      margin-top: 15px;
       background: gold;
       color: #111;
       font-weight: bold;
-      font-size: 17px;
+      font-size: 16px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
@@ -88,14 +100,13 @@
     .links {
       text-align: center;
       margin-top: 15px;
+      font-size: 14px;
     }
 
     .links a {
       color: gold;
       font-weight: bold;
       text-decoration: none;
-      display: block;
-      margin: 6px 0;
     }
 
     .popup {
@@ -140,11 +151,15 @@
     <h2>Login</h2>
     <input type="email" id="email" placeholder="Email Address" required>
     <input type="password" id="password" placeholder="Password" required>
-    <button onclick="login()">Login</button>
+
+    <div class="forgot">
+      <a href="#" onclick="resetPassword()">Forgot Password?</a>
+    </div>
+
+    <button onclick="login()">Sign In</button>
 
     <div class="links">
-      <a href="#" onclick="resetPassword()">Forgot Password?</a>
-      <a href="signup.html">Don't have an account? Sign up here</a>
+      New here? <a href="signup.html">Create Account</a>
     </div>
   </div>
 </div>
