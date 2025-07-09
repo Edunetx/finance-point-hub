@@ -20,28 +20,26 @@
     header {
       background-color: rgba(20, 20, 20, 0.9);
       padding: 20px;
-      text-align: center;
+      text-align: left;
       font-size: 1.5rem;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     #logoutBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 10px 16px;
-      background-color: gold;
-      color: black;
+      background: none;
       border: none;
-      border-radius: 6px;
-      font-weight: bold;
+      font-size: 1.2rem;
+      color: gold;
       cursor: pointer;
-      box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+      padding: 5px 10px;
     }
     #logoutBtn:hover {
-      background-color: #ffd700;
+      color: #ffd700;
     }
     main {
       padding: 20px;
@@ -72,8 +70,8 @@
 </head>
 <body>
   <header>
-    <div id="welcome">Welcome, Student</div>
-    <button id="logoutBtn" onclick="logout()">Logout</button>
+    <div id="welcome">Finance Point</div>
+    <button id="logoutBtn" title="Logout" onclick="logout()">🚪</button>
   </header>
   <main>
     <section class="card">
@@ -87,6 +85,14 @@
     <section class="card">
       <h2>Did You Know?</h2>
       <p>The concept of compound interest was described by Einstein as the 8th wonder of the world.</p>
+    </section>
+    <section class="card">
+      <h2>🎉 Birthday Wall</h2>
+      <p>Shoutout to all celebrants today! View and celebrate your classmates!</p>
+    </section>
+    <section class="card">
+      <h2>📢 Ad Placement</h2>
+      <p>Want to promote a product, service, or event to AAUA Finance students? Contact the PRO to place your ad here.</p>
     </section>
   </main>  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -117,9 +123,8 @@
     const matric = sessionStorage.getItem("userMatric") || "*********";
     const shortMatric = matric.slice(0, 3) + "*****" + matric.slice(-1);
     const shortName = name.split(" ")[0] || "Student";
-    document.getElementById("welcome").textContent = `Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
+    document.getElementById("welcome").textContent = `Finance Point — Welcome, ${shortName.toUpperCase()} (${shortMatric})`;
 
-    // Reveal animations on scroll
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
