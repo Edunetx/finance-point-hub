@@ -54,11 +54,13 @@
     main {
       padding-top: 100px;
       padding-bottom: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .welcome-box {
       margin: 40px auto 20px;
       background: rgba(30, 30, 30, 0.85);
-      width: fit-content;
       padding: 20px 30px;
       border-radius: 12px;
       box-shadow: 0 0 10px gold;
@@ -67,7 +69,7 @@
       font-weight: bold;
     }
     .section {
-      margin: 30px auto;
+      margin: 30px 0;
       padding: 20px;
       width: 90%;
       max-width: 800px;
@@ -85,12 +87,16 @@
       padding: 10px;
       border: 1px dashed gold;
       border-radius: 8px;
+      text-align: center;
     }
     .birthday-item img, .advert-item img {
       width: 100%;
-      max-height: 200px;
+      max-width: 100%;
+      height: auto;
+      max-height: 300px;
       object-fit: cover;
       border-radius: 6px;
+      margin-bottom: 10px;
     }
     .advert-item a {
       display: inline-block;
@@ -146,7 +152,7 @@
 <div class="section">
   <h2>Birthday Wall</h2>
   <div class="birthday-item">
-    <img src="https://source.unsplash.com/400x200/?birthday,student" alt="Birthday">
+    <img src="https://source.unsplash.com/800x400/?birthday,student" alt="Birthday">
     <p><strong>Adedayo Michael</strong></p>
     <p>🎉 Wishing you a prosperous year ahead!</p>
   </div>
@@ -155,7 +161,7 @@
 <div class="section">
   <h2>Adverts Placement</h2>
   <div class="advert-item">
-    <img src="https://source.unsplash.com/400x200/?finance,business" alt="Ad">
+    <img src="https://source.unsplash.com/800x400/?finance,business" alt="Ad">
     <p><strong>Elite Fin Tutors</strong></p>
     <p>Premium tutorials for finance students. Learn from experts today.</p>
     <a href="#">Visit Page</a>
