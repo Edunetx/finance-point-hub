@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CBT | Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
-      padding-bottom: 80px;
+      margin: 0;
+      padding-bottom: 100px;
     }
     header {
-      background: rgba(20, 20, 20, 0.95);
-      padding: 15px 20px;
-      font-size: 1.5rem;
+      background-color: rgba(20, 20, 20, 0.95);
       text-align: center;
+      padding: 15px;
+      font-size: 1.6rem;
       font-weight: bold;
       box-shadow: 0 0 10px gold;
       position: sticky;
@@ -29,60 +28,39 @@
       margin: auto;
       padding: 20px;
     }
-    .select-box {
-      margin-bottom: 20px;
-      background: rgba(30, 30, 30, 0.85);
-      padding: 15px;
+    .section {
+      background-color: rgba(30, 30, 30, 0.9);
       border-radius: 10px;
-      text-align: center;
-    }
-    select {
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      margin-top: 10px;
-    }
-    .question-card {
-      background: rgba(30, 30, 30, 0.9);
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-    }
-    .question-card h4 {
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-    .option {
-      display: block;
-      margin: 8px 0;
-      padding: 8px 12px;
-      background: rgba(255, 215, 0, 0.1);
-      border-radius: 5px;
-      cursor: pointer;
-      border: 1px solid gold;
-    }
-    .option:hover {
-      background: rgba(255, 215, 0, 0.2);
-    }
-    .submit-btn {
-      background: gold;
-      color: #000;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 20px;
       margin-top: 20px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    select, button {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h4 {
+      margin-bottom: 8px;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
     }
     .bottom-nav {
       position: fixed;
       bottom: 0;
+      left: 0;
       width: 100%;
       background: rgba(20, 20, 20, 0.95);
       display: flex;
       justify-content: space-around;
+      align-items: center;
       padding: 10px 0;
       z-index: 100;
     }
@@ -95,104 +73,105 @@
       opacity: 0.4;
       pointer-events: none;
     }
+    @media(min-width: 768px) {
+      .bottom-nav { display: none; }
+    }
   </style>
 </head>
 <body>
-  <header>CBT Section</header>
+  <header>CBT Practice</header>
   <div class="container">
-    <div class="select-box" id="levelBox">
-      <p>Select your Level (Only once):</p>
-      <select id="levelSelect">
-        <option value="">-- Choose Level --</option>
+    <div class="section">
+      <label for="level">Select Your Level:</label>
+      <select id="level">
         <option value="100">100 Level</option>
         <option value="200">200 Level</option>
         <option value="300">300 Level</option>
         <option value="400">400 Level</option>
       </select>
-    </div>
+      <button onclick="loadQuestions()">Start Practice</button>
+    </div><div class="section" id="questions-container" style="display:none"></div>
 
-    <div id="questionsContainer"></div>
-    <button id="submitBtn" class="submit-btn" style="display:none;">Submit Answers</button>
-  </div>
-
-  <div class="bottom-nav">
+  </div>  <div class="bottom-nav">
     <a href="home.html"><i class="fas fa-home"></i></a>
     <a href="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
     <a href="downloads.html"><i class="fas fa-download"></i></a>
     <a href="#" class="active"><i class="fas fa-question"></i></a>
     <a href="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  </div>  <script>
+    const questions = {
+      "100": [
+        {
+          q: "Which of the following best defines finance?",
+          options: ["Managing time", "Investing in crypto", "Raising and managing funds", "Saving money in a bank"],
+          answer: "Raising and managing funds"
+        },
+        {
+          q: "What does a budget help you do?",
+          options: ["Spend freely", "Avoid exams", "Track expenses", "Hack ATMs"],
+          answer: "Track expenses"
+        }
+      ],
+      "200": [
+        {
+          q: "What is working capital?",
+          options: ["Capital punishment", "Cash from parents", "Current assets minus current liabilities", "Total equity"],
+          answer: "Current assets minus current liabilities"
+        },
+        {
+          q: "Which is NOT part of a balance sheet?",
+          options: ["Assets", "Liabilities", "Income", "Equity"],
+          answer: "Income"
+        }
+      ],
+      "300": [
+        {
+          q: "What does ROI stand for?",
+          options: ["Rate of Interest", "Return on Investment", "Refund of Income", "Ratio of Investment"],
+          answer: "Return on Investment"
+        },
+        {
+          q: "Depreciation is best described as:",
+          options: ["Appreciating assets", "Value increase", "Asset wear and tear", "Bank charges"],
+          answer: "Asset wear and tear"
+        }
+      ],
+      "400": [
+        {
+          q: "Basel III is related to:",
+          options: ["Climate Change", "Banking Regulation", "Oil Prices", "Crypto Mining"],
+          answer: "Banking Regulation"
+        },
+        {
+          q: "Enterprise Risk Management includes:",
+          options: ["Only finance risks", "Physical risks only", "All organization-wide risks", "None of the above"],
+          answer: "All organization-wide risks"
+        }
+      ]
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    function loadQuestions() {
+      const level = document.getElementById("level").value;
+      const container = document.getElementById("questions-container");
+      container.innerHTML = "";
+      container.style.display = "block";
 
-    const levelSelect = document.getElementById("levelSelect");
-    const levelBox = document.getElementById("levelBox");
-    const questionsContainer = document.getElementById("questionsContainer");
-    const submitBtn = document.getElementById("submitBtn");
+      questions[level].forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
 
-    const savedLevel = localStorage.getItem("cbtLevel");
+        const q = document.createElement("h4");
+        q.textContent = `${index + 1}. ${item.q}`;
+        div.appendChild(q);
 
-    if (savedLevel) {
-      levelBox.style.display = "none";
-      loadQuestions(savedLevel);
-    } else {
-      levelSelect.addEventListener("change", () => {
-        const level = levelSelect.value;
-        if (level) {
-          localStorage.setItem("cbtLevel", level);
-          levelBox.style.display = "none";
-          loadQuestions(level);
-        }
+        item.options.forEach(opt => {
+          const label = document.createElement("label");
+          label.innerHTML = `<input type="radio" name="q${index}" value="${opt}"> ${opt}`;
+          div.appendChild(label);
+        });
+
+        container.appendChild(div);
       });
     }
-
-    async function loadQuestions(level) {
-      questionsContainer.innerHTML = "<p>Loading questions...</p>";
-      const q = query(collection(db, "cbt_questions"), where("level", "==", level));
-      const querySnapshot = await getDocs(q);
-      questionsContainer.innerHTML = "";
-      let index = 1;
-
-      querySnapshot.forEach(doc => {
-        const data = doc.data();
-        const card = document.createElement("div");
-        card.className = "question-card";
-        card.innerHTML = `
-          <h4>${index}. ${data.question}</h4>
-          <label class="option"><input type="radio" name="q${index}" value="A" /> A. ${data.optionA}</label>
-          <label class="option"><input type="radio" name="q${index}" value="B" /> B. ${data.optionB}</label>
-          <label class="option"><input type="radio" name="q${index}" value="C" /> C. ${data.optionC}</label>
-          <label class="option"><input type="radio" name="q${index}" value="D" /> D. ${data.optionD}</label>
-        `;
-        questionsContainer.appendChild(card);
-        index++;
-      });
-
-      if (index > 1) {
-        submitBtn.style.display = "inline-block";
-      } else {
-        questionsContainer.innerHTML = "<p>No questions available for this level yet.</p>";
-      }
-    }
-
-    submitBtn.addEventListener("click", () => {
-      alert("Submission successful! (You can now implement scoring and result saving.)");
-      // Logic to score, save result to Firestore (optional) can be added here
-    });
-  </script>
-</body>
+  </script></body>
 </html>
