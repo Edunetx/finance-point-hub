@@ -137,6 +137,7 @@
   </header>  <main>
     <div class="welcome-box">
       <h2 id="welcome">Welcome, Student</h2>
+      <p id="matricDisplay"></p>
     </div><div class="section">
   <h2>Finance Tips</h2>
   <div class="tip-item">• Start saving at least 20% of every income.</div>
@@ -152,7 +153,7 @@
 <div class="section">
   <h2>Birthday Wall</h2>
   <div class="birthday-item">
-    <img src="https://source.unsplash.com/800x400/?birthday,student" alt="Birthday">
+    <img src="https://images.unsplash.com/photo-1606851091811-0ef6d08db5e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Birthday">
     <p><strong>Adedayo Michael</strong></p>
     <p>🎉 Wishing you a prosperous year ahead!</p>
   </div>
@@ -161,7 +162,7 @@
 <div class="section">
   <h2>Adverts Placement</h2>
   <div class="advert-item">
-    <img src="https://source.unsplash.com/800x400/?finance,business" alt="Ad">
+    <img src="https://images.unsplash.com/photo-1581093458791-252d44c2d188?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Ad">
     <p><strong>Elite Fin Tutors</strong></p>
     <p>Premium tutorials for finance students. Learn from experts today.</p>
     <a href="#">Visit Page</a>
@@ -191,9 +192,15 @@
     const auth = getAuth(app);
 
     const welcome = document.getElementById("welcome");
+    const matric = document.getElementById("matricDisplay");
     const fullName = sessionStorage.getItem("userFullName");
+    const matricNumber = sessionStorage.getItem("userMatric");
     if (fullName) {
-      welcome.textContent = `Welcome, ${fullName}`;
+      const firstName = fullName.split(" ")[0];
+      welcome.textContent = `Welcome, ${firstName}`;
+    }
+    if (matricNumber) {
+      matric.textContent = `Matric Number: ${matricNumber}`;
     }
 
     window.logoutUser = function () {
