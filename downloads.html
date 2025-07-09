@@ -1,1 +1,156 @@
-<!DOCTYPE html><html><head><title>Downloads</title></head><body><h1>Downloads</h1></body></html>
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downloads | Finance Point</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+      padding-bottom: 80px;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.95);
+      text-align: center;
+      padding: 15px 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+    .search-filter {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .search-filter input {
+      width: 70%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .section h2 {
+      border-bottom: 1px solid gold;
+      padding-bottom: 5px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .file-card {
+      background-color: rgba(30, 30, 30, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    .file-card h4 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      color: gold;
+    }
+    .file-card p {
+      color: #ddd;
+      margin: 0 0 10px;
+      font-size: 0.9rem;
+    }
+    .file-card a {
+      background: gold;
+      color: #000;
+      padding: 8px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.95);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: gold;
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+    .bottom-nav a.active {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    @media(min-width: 768px) {
+      .bottom-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>Downloads</header>
+  <div class="container">
+    <div class="search-filter">
+      <input type="text" id="searchInput" placeholder="Search by course title or level..." onkeyup="filterFiles()">
+    </div><div class="section" id="downloadsSection">
+  <h2>100 Level</h2>
+  <div class="file-card">
+    <h4>BUS 101 - Introduction to Business</h4>
+    <p>Basic principles of business operations and structures</p>
+    <a href="https://example.com/BUS101.pdf" target="_blank">Download</a>
+  </div>
+
+  <h2>200 Level</h2>
+  <div class="file-card">
+    <h4>FIN 206 - Strategic Cost Management</h4>
+    <p>Handout covering advanced cost planning and control mechanisms</p>
+    <a href="https://example.com/FIN206.pdf" target="_blank">Download</a>
+  </div>
+
+  <h2>300 Level</h2>
+  <div class="file-card">
+    <h4>FIN 307 - Corporate Finance</h4>
+    <p>Comprehensive notes on funding sources, dividend policy, capital structure</p>
+    <a href="https://example.com/FIN307.pdf" target="_blank">Download</a>
+  </div>
+
+  <h2>400 Level</h2>
+  <div class="file-card">
+    <h4>FIN 401 - Financial Statement Analysis</h4>
+    <p>Insights into interpreting and analyzing company financials</p>
+    <a href="https://example.com/FIN401.pdf" target="_blank">Download</a>
+  </div>
+</div>
+
+  </div>  <div class="bottom-nav">
+    <a href="home.html"><i class="fas fa-home"></i></a>
+    <a href="events.html"><i class="fas fa-calendar"></i></a>
+    <a href="#" class="active"><i class="fas fa-download"></i></a>
+    <a href="cbt.html"><i class="fas fa-question"></i></a>
+    <a href="feedback.html"><i class="fas fa-comment"></i></a>
+  </div>  <script>
+    function filterFiles() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const section = document.getElementById('downloadsSection');
+      const cards = section.getElementsByClassName('file-card');
+      for (let card of cards) {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? 'block' : 'none';
+      }
+    }
+  </script></body>
+</html>
