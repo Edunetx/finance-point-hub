@@ -106,7 +106,6 @@
 
   <div id="popup" class="popup"></div>
 
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -154,7 +153,7 @@
               msg = "No user found with that email.";
               break;
             case "auth/wrong-password":
-              msg = "Incorrect password.";
+              msg = "Incorrect password. Try again.";
               break;
             case "auth/invalid-email":
               msg = "Enter a valid email address.";
@@ -163,7 +162,9 @@
               msg = "Password field is empty.";
               break;
             default:
-              msg = "Login failed. Try again.";
+              msg = error.message.includes("wrong-password")
+                ? "Incorrect password. Try again."
+                : "Login failed. Try again.";
           }
           showPopup(msg);
         });
