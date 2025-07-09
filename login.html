@@ -116,12 +116,12 @@
       setTimeout(() => toast.style.display = "none", 4000);
     }
 
-    // Handle logout message if redirected
+    // Handle logout redirect
     window.addEventListener("DOMContentLoaded", () => {
       const params = new URLSearchParams(window.location.search);
       if (params.get("status") === "logout") {
         showToast("Signed out successfully!");
-        history.replaceState(null, "", "login.html"); // Clean up URL
+        history.replaceState(null, "", "login.html");
       }
     });
 
