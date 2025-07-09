@@ -13,6 +13,10 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -40,11 +44,11 @@
     .form-container {
       max-width: 400px;
       width: 100%;
-      padding: 30px;
-      background: rgba(20, 20, 20, 0.4);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      box-shadow: 0 0 30px gold, 0 0 8px rgba(255, 215, 0, 0.2);
+      padding: 25px;
+      background: rgba(20, 20, 20, 0.5);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      box-shadow: 0 0 12px gold; /* Reduced glow */
     }
 
     h2 {
@@ -57,7 +61,7 @@
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      background: rgba(17,17,17,0.9);
+      background: rgba(17,17,17,0.95);
       border: 2px solid gold;
       border-radius: 8px;
       color: white;
@@ -65,12 +69,12 @@
     }
 
     input::placeholder {
-      color: #ccc;
+      color: #bbb;
     }
 
     .forgot {
       text-align: right;
-      margin-top: 5px;
+      margin-top: 6px;
       font-size: 13px;
     }
 
@@ -225,7 +229,6 @@
       });
   }
 
-  // Particles background
   tsParticles.load("tsparticles", {
     background: { color: { value: "#0d0d0d" } },
     fpsLimit: 60,
