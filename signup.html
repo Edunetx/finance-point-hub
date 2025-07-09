@@ -18,11 +18,11 @@
       box-sizing: border-box;
     }
 
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      height: 100vh;
       background-color: #0d0d0d;
       color: white;
     }
@@ -34,15 +34,22 @@
       z-index: -1;
     }
 
+    .wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
+    }
+
     .form-container {
+      width: 100%;
       max-width: 420px;
-      width: 90%;
-      margin: 40px auto 0 auto;
       padding: 30px;
-      background: rgba(20, 20, 20, 0.65);
+      background: rgba(20, 20, 20, 0.4); /* More transparent */
+      backdrop-filter: blur(12px);
       border-radius: 16px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 25px gold, 0 0 10px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 30px gold, 0 0 8px rgba(255, 215, 0, 0.2);
       animation: fadeIn 1s ease-in-out;
     }
 
@@ -61,7 +68,7 @@
       width: 100%;
       padding: 14px;
       margin: 10px 0;
-      background: #111;
+      background: rgba(17,17,17,0.9);
       color: white;
       border: 2px solid gold;
       border-radius: 10px;
@@ -123,7 +130,6 @@
 
     @media (max-width: 480px) {
       .form-container {
-        margin: 30px auto 0 auto;
         padding: 20px;
       }
 
@@ -138,17 +144,19 @@
 <!-- Particle Background -->
 <div id="tsparticles"></div>
 
-<div class="form-container">
-  <h2>Sign Up</h2>
-  <input type="text" id="fullName" placeholder="Full Name" required>
-  <input type="text" id="matric" placeholder="Matric Number" required>
-  <input type="email" id="email" placeholder="Email Address" required>
-  <input type="password" id="password" placeholder="Password" required>
-  <button onclick="signUp()">Create Account</button>
+<div class="wrapper">
+  <div class="form-container">
+    <h2>Sign Up</h2>
+    <input type="text" id="fullName" placeholder="Full Name" required>
+    <input type="text" id="matric" placeholder="Matric Number" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="signUp()">Create Account</button>
 
-  <div class="login-link">
-    <span>Already have an account?</span>
-    <a href="login.html">Login here</a>
+    <div class="login-link">
+      <span>Already have an account?</span>
+      <a href="login.html">Login here</a>
+    </div>
   </div>
 </div>
 
@@ -212,9 +220,7 @@
 
   // Gold particle background
   tsParticles.load("tsparticles", {
-    background: {
-      color: { value: "#0d0d0d" }
-    },
+    background: { color: { value: "#0d0d0d" } },
     fpsLimit: 60,
     interactivity: {
       events: {
@@ -222,10 +228,7 @@
         resize: true
       },
       modes: {
-        repulse: {
-          distance: 60,
-          duration: 0.4
-        }
+        repulse: { distance: 60, duration: 0.4 }
       }
     },
     particles: {
