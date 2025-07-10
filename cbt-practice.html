@@ -74,6 +74,12 @@
       padding: 20px;
       border-radius: 10px;
     }
+    #cooldown {
+      color: orange;
+      text-align: center;
+      margin: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -89,6 +95,7 @@
 
   <main>
     <h2>Answer the following questions:</h2>
+    <div id="cooldown"></div>
     <div id="question-container"></div>
     <div id="result"></div>
     <div id="summary"></div>
@@ -101,16 +108,52 @@
     let correctCount = 0;
     let wrongCount = 0;
     let currentUserEmail = '';
+    const COOLDOWN_TIME = 3 * 60 * 1000; // 3 minutes
+
+    function showCooldown(msLeft) {
+      const cd = document.getElementById("cooldown");
+      let secs = Math.floor(msLeft / 1000);
+      const timer = setInterval(() => {
+        if (secs <= 0) {
+          clearInterval(timer);
+          cd.innerHTML = "";
+          initCBT(); // try again after cooldown
+        } else {
+          let min = Math.floor(secs / 60);
+          let sec = secs % 60;
+          cd.innerHTML = `⏳ Please wait ${min}:${sec.toString().padStart(2, "0")} before starting a new session.`;
+          secs--;
+        }
+      }, 1000);
+    }
+
+    function checkCooldown() {
+      const lastTaken = localStorage.getItem("lastCBTTime");
+      if (lastTaken) {
+        const now = Date.now();
+        const diff = now - parseInt(lastTaken);
+        if (diff < COOLDOWN_TIME) {
+          showCooldown(COOLDOWN_TIME - diff);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    async function initCBT() {
+      if (!checkCooldown()) return;
+      const snapshot = await db.collection("cbt_questions").get();
+      const allQuestions = snapshot.docs.map(doc => doc.data());
+      questions = shuffle(allQuestions).slice(0, 5); // pick 5
+      showQuestion();
+    }
 
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         currentUserEmail = user.email;
-        const snapshot = await db.collection("cbt_questions").get();
-        const allQuestions = snapshot.docs.map(doc => doc.data());
-        questions = shuffle(allQuestions).slice(0, 5); // pick 5 questions
-        showQuestion();
+        initCBT();
       } else {
-        document.getElementById("question-container").innerHTML = "<p>Please login to access CBT.</p>";
+        document.getElementById("question-container").innerHTML = "<p>Please login to attempt the CBT.</p>";
       }
     });
 
@@ -172,6 +215,8 @@
         <p>Wrong Answers: ${wrongCount}</p>
         <p>Score: <strong>${score}%</strong></p>
       `;
+      // Start cooldown
+      localStorage.setItem("lastCBTTime", Date.now().toString());
     }
 
     function saveScore() {
@@ -188,7 +233,7 @@
         total: total,
         date: timestamp
       }).then(() => {
-        console.log("Score saved successfully.");
+        console.log("Score saved.");
       }).catch(err => {
         console.error("Error saving score:", err);
       });
