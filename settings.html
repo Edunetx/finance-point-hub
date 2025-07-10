@@ -1,44 +1,47 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Settings</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>Settings - Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background-color: rgba(20, 20, 20, 0.95);
+      background: rgba(20, 20, 20, 0.95);
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    header h1 {
-      font-size: 1.5rem;
-    }
+    h1 { font-size: 1.5rem; }
     .nav-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
       background: #111;
       padding: 10px;
-      display: flex;
-      justify-content: space-around;
       border-bottom: 2px solid gold;
     }
     .nav-container a {
       color: gold;
       text-decoration: none;
-      font-weight: bold;
-      padding: 8px 12px;
-      border-radius: 5px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      background: #222;
       transition: 0.3s;
+      font-weight: bold;
     }
     .nav-container a.active {
       background: gold;
@@ -48,20 +51,24 @@
     .container {
       max-width: 500px;
       margin: 30px auto;
-      background: rgba(20, 20, 20, 0.85);
-      padding: 25px;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
     }
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-top: 15px;
       font-weight: bold;
     }
-    input[type="text"], input[type="email"] {
+    input[type="text"],
+    input[type="email"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 20px;
       border: 1px solid gold;
       border-radius: 6px;
       background: #111;
@@ -70,107 +77,143 @@
     input[readonly] {
       opacity: 0.6;
     }
-    #profilePicPreview {
-      width: 100px;
-      height: 100px;
+    input[type="file"] {
+      margin-top: 10px;
+      color: gold;
+    }
+    img#preview {
+      display: block;
+      margin: 10px auto;
+      width: 120px;
+      height: 120px;
       object-fit: cover;
       border-radius: 50%;
-      display: block;
-      margin: 0 auto 10px;
       border: 2px solid gold;
     }
-    .save-btn {
+    button {
+      margin-top: 20px;
+      padding: 10px 16px;
       width: 100%;
-      padding: 12px;
       background: gold;
-      border: none;
       color: black;
-      font-weight: bold;
-      font-size: 1rem;
+      border: none;
       border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Settings</h1>
-    <a href="me.html" style="color: gold"><i class="fas fa-user-circle"></i></a>
-  </header>  <div class="nav-container">
-    <a href="home.html">Home</a>
-    <a href="announcement-events.html">Announcements</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="cbt.html">CBT</a>
-    <a href="leaderboard.html">Leaderboard</a>
-    <a href="feedback.html">Feedback</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <a href="me.html">Me</a>
-    <a href="settings.html" class="active">Settings</a>
-  </div>  <div class="container">
-    <img id="profilePicPreview" src="" alt="Profile Picture">
-    <label for="profilePic">Change Profile Picture:</label>
-    <input type="file" id="profilePic" accept="image/*" /><label>Full Name:</label>
-<input type="text" id="fullName" readonly />
 
-<label>Matric Number:</label>
-<input type="text" id="matric" readonly />
+<header>
+  <h1>FINANCE POINT</h1>
+</header>
 
-<label>Email:</label>
-<input type="email" id="email" />
+<div class="nav-container">
+  <a href="home.html">Home</a>
+  <a href="announcement-events.html">Announcements</a>
+  <a href="downloads.html">Downloads</a>
+  <a href="cbt.html">CBT</a>
+  <a href="leaderboard.html">Leaderboard</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="lostfound.html">Lost & Found</a>
+  <a href="me.html">Me</a>
+  <a href="settings.html" class="active">Settings</a>
+</div>
 
-<button class="save-btn" onclick="saveChanges()">Save Changes</button>
+<div class="container">
+  <h2>Update Profile</h2>
+  <label>Full Name</label>
+  <input type="text" id="name" readonly />
 
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, updateEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  <label>Matric Number</label>
+  <input type="text" id="matric" readonly />
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
+  <label>Email</label>
+  <input type="email" id="email" />
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+  <label>Profile Picture</label>
+  <input type="file" id="photoInput" accept="image/*" />
+  <img id="preview" src="" alt="Profile Preview" />
 
-    let currentUser;
-    const emailField = document.getElementById("email");
-    const fullNameField = document.getElementById("fullName");
-    const matricField = document.getElementById("matric");
-    const profilePicPreview = document.getElementById("profilePicPreview");
+  <button id="saveBtn">Save Changes</button>
+</div>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return location.href = "login.html";
-      currentUser = user;
-      emailField.value = user.email;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, updateEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        const data = snap.data();
-        fullNameField.value = data.fullName || "";
-        matricField.value = data.matricNumber || "";
-        profilePicPreview.src = data.profilePic || "https://i.imgur.com/sUVlBKA.png";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  const nameField = document.getElementById("name");
+  const matricField = document.getElementById("matric");
+  const emailField = document.getElementById("email");
+  const photoInput = document.getElementById("photoInput");
+  const preview = document.getElementById("preview");
+  const saveBtn = document.getElementById("saveBtn");
+
+  let currentUser;
+  let currentPhotoUrl = "";
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return window.location.href = "login.html";
+    currentUser = user;
+
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      nameField.value = data.fullName || "";
+      matricField.value = data.matricNumber || "";
+      emailField.value = user.email || "";
+      if (data.photoURL) {
+        preview.src = data.photoURL;
+        currentPhotoUrl = data.photoURL;
+      } else {
+        preview.src = "https://i.imgur.com/nq3Z1Yz.png"; // default placeholder
       }
+    }
+  });
+
+  saveBtn.addEventListener("click", async () => {
+    if (!currentUser) return;
+
+    const email = emailField.value.trim();
+    let newPhotoURL = currentPhotoUrl;
+
+    const file = photoInput.files[0];
+    if (file) {
+      const storageRef = sRef(storage, `profile_pictures/${currentUser.uid}`);
+      await uploadBytes(storageRef, file);
+      newPhotoURL = await getDownloadURL(storageRef);
+    }
+
+    await updateDoc(doc(db, "users", currentUser.uid), {
+      photoURL: newPhotoURL
     });
 
-    window.saveChanges = async () => {
-      if (!currentUser) return;
-      const newEmail = emailField.value;
-      try {
-        if (newEmail !== currentUser.email) await updateEmail(currentUser, newEmail);
-      } catch (e) {
-        alert("Email update failed: " + e.message);
-      }
+    if (email !== currentUser.email) {
+      await updateEmail(currentUser, email);
+    }
 
-      const file = document.getElementById("profilePic").files[0];
-      let profilePicURL = profilePicPreview.src;
-      if (file) {
-        const storage
+    alert("Profile updated!");
+    location.reload();
+  });
+</script>
+
+</body>
+</html>
