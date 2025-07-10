@@ -1,1 +1,159 @@
-<!DOCTYPE html><html><head><title>Leaderboard</title></head><body><h1>Top Scorers</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CBT Leaderboard</title>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script defer src="firebase-config.js"></script>
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #111;
+      color: #ffcc00;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav {
+      background: #1c1c1c;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+    }
+    nav a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .leaderboard {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #333;
+    }
+    .entry.me {
+      background-color: #292900;
+      color: #ffcc00;
+      font-weight: bold;
+    }
+    .rank {
+      width: 30px;
+    }
+    .email {
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+    .score {
+      font-weight: bold;
+    }
+    .trophy {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Finance Point – CBT Leaderboard</header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="cbt.html">CBT</a>
+    <a href="cbt-practice.html">Practice</a>
+    <a href="leaderboard.html">Leaderboard</a>
+  </nav>
+
+  <main>
+    <h2>🏆 Top CBT Performers</h2>
+    <div class="leaderboard" id="leaderboard">
+      <p>Loading leaderboard...</p>
+    </div>
+  </main>
+
+  <script>
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const getTrophy = (rank) => {
+      if (rank === 1) return "🥇";
+      if (rank === 2) return "🥈";
+      if (rank === 3) return "🥉";
+      return "";
+    };
+
+    auth.onAuthStateChanged(async (user) => {
+      const currentEmail = user ? user.email : null;
+
+      const snapshot = await db.collection("cbt_scores").orderBy("score", "desc").limit(10).get();
+      const scores = [];
+      snapshot.forEach(doc => scores.push(doc.data()));
+
+      const leaderboard = document.getElementById("leaderboard");
+      leaderboard.innerHTML = "";
+
+      scores.forEach((entry, index) => {
+        const isMe = entry.email === currentEmail;
+        const div = document.createElement("div");
+        div.className = "entry" + (isMe ? " me" : "");
+        div.innerHTML = `
+          <div class="rank">${index + 1}</div>
+          <div class="email">${entry.email}${isMe ? " <span style='font-size:0.8rem;'>(ME)</span>" : ""}</div>
+          <div class="score">${entry.score}% <span class="trophy">${getTrophy(index + 1)}</span></div>
+        `;
+        leaderboard.appendChild(div);
+      });
+
+      if (currentEmail && !scores.some(e => e.email === currentEmail)) {
+        // Fetch current user's latest score
+        const userSnapshot = await db.collection("cbt_scores")
+          .where("email", "==", currentEmail)
+          .orderBy("score", "desc")
+          .limit(1)
+          .get();
+
+        if (!userSnapshot.empty) {
+          const myScore = userSnapshot.docs[0].data();
+          const div = document.createElement("div");
+          div.className = "entry me";
+          div.innerHTML = `
+            <div class="rank">--</div>
+            <div class="email">${myScore.email} <span style='font-size:0.8rem;'>(ME)</span></div>
+            <div class="score">${myScore.score}%</div>
+          `;
+          leaderboard.appendChild(document.createElement("hr"));
+          leaderboard.appendChild(div);
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
