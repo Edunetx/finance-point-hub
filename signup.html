@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,14 +18,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: #000; /* enforce black background */
     }
     .signup-container {
       background-color: rgba(20, 20, 20, 0.88);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-      max-width: 400px;
-      width: 90%;
+      max-width: 360px;
+      width: 100%;
       text-align: center;
     }
     h2 {
@@ -90,7 +92,10 @@
     <button onclick="signUp()">Sign Up</button>
     <div class="bottom-link">Already have an account? <a href="login.html">Sign in</a></div>
   </div>
-  <div class="toast" id="toast"></div>  <script type="module">
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
     import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
     import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -131,7 +136,8 @@
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        await setDoc(doc(db, "Users", user.uid), {
+        // 🔥 Store in lowercase 'users' collection (fix)
+        await setDoc(doc(db, "users", user.uid), {
           fullName,
           matricNumber,
           email
@@ -151,5 +157,6 @@
         container.classList.remove("loading");
       }
     }
-  </script></body>
+  </script>
+</body>
 </html>
