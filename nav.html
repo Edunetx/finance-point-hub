@@ -1,23 +1,48 @@
-<nav style="background: rgba(20,20,20,0.95); padding: 12px 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; border-bottom: 1px solid gold; font-family: 'Segoe UI', sans-serif;">
-  <a href="index.html" class="nav-link" data-page="index.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Home</a>
-  <a href="cbt.html" class="nav-link" data-page="cbt.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">CBT</a>
-  <a href="cbt-practice.html" class="nav-link" data-page="cbt-practice.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Practice</a>
-  <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Leaderboard</a>
-  <a href="executives.html" class="nav-link" data-page="executives.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Executives</a>
-  <a href="events.html" class="nav-link" data-page="events.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Events</a>
-  <a href="downloads.html" class="nav-link" data-page="downloads.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Downloads</a>
-  <a href="lost-found.html" class="nav-link" data-page="lost-found.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Lost & Found</a>
-  <a href="feedback.html" class="nav-link" data-page="feedback.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Feedback Box</a>
-</nav>
+<style>
+  .nav-container {
+    background: #111;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid gold;
+    box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+  }
+  .nav-container a {
+    color: gold;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  .nav-container a:hover {
+    background: gold;
+    color: black;
+  }
+  .nav-container a.active {
+    background: gold;
+    color: black;
+    pointer-events: none;
+  }
+</style>
+
+<div class="nav-container" id="navLinks">
+  <a href="home.html">Home</a>
+  <a href="announcement-events.html">Announcements</a>
+  <a href="downloads.html">Downloads</a>
+  <a href="cbt.html">CBT</a>
+  <a href="leaderboard.html">Leaderboard</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="lostfound.html">Lost & Found</a>
+</div>
 
 <script>
-  const navLinks = document.querySelectorAll('.nav-link');
-  const current = window.location.pathname.split('/').pop();
-  navLinks.forEach(link => {
-    if (link.dataset.page === current) {
-      link.style.opacity = "0.4";
-      link.style.pointerEvents = "none";
-      link.style.backgroundColor = "rgba(255, 215, 0, 0.15)";
+  const links = document.querySelectorAll('#navLinks a');
+  const currentPage = location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
     }
   });
 </script>
