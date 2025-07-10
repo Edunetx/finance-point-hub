@@ -14,31 +14,28 @@
   background-color: rgba(20, 20, 20, 0.95);
   display: flex;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px;
   box-shadow: 0 0 10px gold;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
 }
 
-.back-icon {
-  font-size: 1.4rem;
+.back-btn {
   color: gold;
-  cursor: pointer;
-  margin-right: 15px;
+  font-size: 1.2rem;
+  margin-right: 10px;
+  text-decoration: none;
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 700px;
   margin: 30px auto;
-  background: rgba(20, 20, 20, 0.9);
   padding: 20px;
+  background: rgba(25, 25, 25, 0.9);
   border-radius: 10px;
-  box-shadow: 0 0 10px gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 
 .section {
@@ -48,81 +45,41 @@ h1 {
 .section h2 {
   border-bottom: 1px solid gold;
   padding-bottom: 5px;
-  margin-bottom: 10px;
-  text-align: center;
+  margin-bottom: 15px;
 }
 
 .item {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-left: 3px solid gold;
-  margin-bottom: 10px;
-  border-radius: 6px;
-}
-
-.admin-box {
-  margin-top: 30px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px;
-  border: 1px dashed gold;
-  border-radius: 6px;
-}
-
-input, select, button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-input, select {
-  background: black;
-  color: gold;
+  background: rgba(0, 0, 0, 0.6);
   border: 1px solid gold;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
-button {
-  background: gold;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #ffd700;
+.item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
 }
 
   </style>
 </head>
 <body>
   <header>
-    <a href="home.html"><i class="fas fa-arrow-left back-icon"></i></a>
+    <a href="home.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Announcements & Events</h1>
   </header>  <div class="container">
     <div class="section">
       <h2>📢 Announcements</h2>
-      <div id="announcements"></div>
-    </div><div class="section">
-  <h2>🎉 Events</h2>
-  <div id="events"></div>
-</div>
-
-<div class="admin-box">
-  <h3>Add Announcement/Event</h3>
-  <select id="type">
-    <option value="announcement">Announcement</option>
-    <option value="event">Event</option>
-  </select>
-  <input type="text" id="message" placeholder="Enter message..." />
-  <button onclick="addUpdate()">Post</button>
-</div>
-
+      <div id="announcementList">Loading...</div>
+    </div>
+    <div class="section">
+      <h2>📅 Events</h2>
+      <div id="eventList">Loading...</div>
+    </div>
   </div>  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -136,41 +93,25 @@ button:hover {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const announcementsDiv = document.getElementById("announcements");
-    const eventsDiv = document.getElementById("events");
+    const announcementList = document.getElementById("announcementList");
+    const eventList = document.getElementById("eventList");
 
-    const updatesRef = collection(db, "updates");
-    const q = query(updatesRef, orderBy("timestamp", "desc"));
-
-    onSnapshot(q, (snapshot) => {
-      announcementsDiv.innerHTML = "";
-      eventsDiv.innerHTML = "";
-      snapshot.forEach(doc => {
+    async function loadContent() {
+      const announcementsSnap = await getDocs(collection(db, "announcements"));
+      announcementList.innerHTML = "";
+      announcementsSnap.forEach(doc => {
         const data = doc.data();
-        const div = document.createElement("div");
-        div.className = "item";
-        div.textContent = data.message;
-        if (data.type === "announcement") announcementsDiv.appendChild(div);
-        else if (data.type === "event") eventsDiv.appendChild(div);
+        announcementList.innerHTML += `<div class='item'><strong>${data.title}</strong>${data.message}</div>`;
       });
-    });
 
-    window.addUpdate = async function () {
-      const message = document.getElementById("message").value.trim();
-      const type = document.getElementById("type").value;
-      if (!message) return alert("Enter message");
-
-      try {
-        await addDoc(updatesRef, {
-          message,
-          type,
-          timestamp: new Date()
-        });
-        document.getElementById("message").value = "";
-        alert("Posted successfully!");
-      } catch (e) {
-        alert("Failed to post: " + e.message);
-      }
+      const eventsSnap = await getDocs(collection(db, "events"));
+      eventList.innerHTML = "";
+      eventsSnap.forEach(doc => {
+        const data = doc.data();
+        eventList.innerHTML += `<div class='item'><strong>${data.title}</strong>${data.details}</div>`;
+      });
     }
+
+    loadContent();
   </script></body>
 </html>
