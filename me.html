@@ -67,18 +67,9 @@
     }
 
     .profile-icon {
-      font-size: 3rem;
+      font-size: 5rem;
       color: gold;
-      margin-bottom: 10px;
-    }
-
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid gold;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .info-box {
@@ -136,8 +127,7 @@
 
   <div class="container">
     <div class="profile-icon"><i class="fas fa-user-circle"></i></div>
-    <img id="profilePic" class="profile-img" src="https://i.imgur.com/nq3Z1Yz.png" alt="Profile" />
-    
+
     <div class="info-box">
       <strong id="fullName">Full Name</strong>
       <span id="matricNum">Matric Number</span>
@@ -178,7 +168,6 @@
     const fullNameEl = document.getElementById("fullName");
     const matricNumEl = document.getElementById("matricNum");
     const emailEl = document.getElementById("emailText");
-    const profilePic = document.getElementById("profilePic");
     const leaderboardInfo = document.getElementById("leaderboardInfo");
 
     onAuthStateChanged(auth, async (user) => {
@@ -190,10 +179,8 @@
         fullNameEl.textContent = data.fullName || "User";
         matricNumEl.textContent = data.matricNumber || "Not Available";
         emailEl.textContent = user.email || "No Email";
-        profilePic.src = data.photoURL || "https://i.imgur.com/nq3Z1Yz.png";
       }
 
-      // 🏆 Leaderboard Check (Top 10 logic)
       const scoresRef = collection(db, "cbt_scores");
       const q = query(scoresRef, orderBy("score", "desc"), limit(10));
       const topScores = await getDocs(q);
