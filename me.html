@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Profile - Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.95);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.5rem;
+    }
+    .nav-container {
+      background: #111;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+    }
+    .nav-container a {
+      color: gold;
+      text-decoration: none;
+      padding: 8px 12px;
+      margin: 5px;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    .nav-container a.active {
+      background: gold;
+      color: black;
+      pointer-events: none;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
+    }
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid gold;
+      display: block;
+      margin: 0 auto 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid gold;
+      background: #111;
+      color: gold;
+    }
+    input[readonly] {
+      background: #222;
+      color: #888;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .toast {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: #222;
+      color: gold;
+      padding: 10px 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px gold;
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Profile</h1>
+    <a href="home.html" title="Back to Home"><i class="fas fa-home logout-icon"></i></a>
+  </header>
+
+  <!-- Top Nav -->
+  <div class="nav-container">
+    <a href="home.html">Home</a>
+    <a href="announcement-events.html">Announcements</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="cbt.html">CBT</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <a href="me.html" class="active">Me</a>
+  </div>
+
+  <div class="container">
+    <img src="https://i.imgur.com/2zK3zsi.png" alt="Profile Picture" class="profile-pic" />
+    <label>Full Name:</label>
+    <input type="text" id="fullName" />
+
+    <label>Matric Number:</label>
+    <input type="text" id="matricNumber" />
+
+    <label>Email:</label>
+    <input type="email" id="email" readonly />
+
+    <button onclick="saveChanges()">Save Changes</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase Setup -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const toast = document.getElementById("toast");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return window.location.href = "login.html";
+
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("fullName").value = data.fullName || '';
+        document.getElementById("matricNumber").value = data.matricNumber || '';
+        document.getElementById("email").value = user.email || '';
+      }
+    });
+
+    window.saveChanges = async () => {
+      const fullName = document.getElementById("fullName").value.trim();
+      const matricNumber = document.getElementById("matricNumber").value.trim();
+      const user = auth.currentUser;
+      if (!user || !fullName || !matricNumber) return;
+
+      try {
+        await updateDoc(doc(db, "users", user.uid), {
+          fullName,
+          matricNumber
+        });
+        toast.textContent = "Profile updated successfully!";
+      } catch (e) {
+        toast.textContent = "Update failed: " + e.message;
+      }
+      toast.style.display = "block";
+      setTimeout(() => toast.style.display = "none", 3000);
+    };
+  </script>
+</body>
+</html>
