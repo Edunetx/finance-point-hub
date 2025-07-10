@@ -1,119 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Admin Panel - Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
+      font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
     }
+
     header {
       background-color: rgba(20, 20, 20, 0.95);
-      padding: 15px 20px;
-      box-shadow: 0 0 10px gold;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    header h1 {
+
+    h1 {
       font-size: 1.5rem;
     }
+
+    .container {
+      display: none;
+      padding: 20px;
+    }
+
+    .access-denied {
+      display: none;
+      text-align: center;
+      padding: 50px;
+      font-size: 1.2rem;
+      color: crimson;
+    }
+
     .section {
-      background-color: rgba(20, 20, 20, 0.85);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid gold;
+      border-radius: 10px;
       margin: 20px auto;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px gold;
-      max-width: 800px;
+      max-width: 700px;
     }
+
     .section h2 {
-      text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       border-bottom: 1px solid gold;
       padding-bottom: 5px;
     }
-    label, input, textarea, select, button {
-      display: block;
+
+    .section textarea, .section input {
       width: 100%;
-      margin: 8px 0;
-      font-size: 1rem;
-    }
-    input, textarea, select {
       padding: 10px;
+      margin-bottom: 10px;
       border-radius: 6px;
-      border: 1px solid gold;
-      background: #111;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
       color: gold;
     }
+
     button {
-      background-color: gold;
-      color: black;
-      padding: 10px;
+      padding: 10px 16px;
       border: none;
+      background: gold;
+      color: black;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
     }
-    .logout-btn {
-      background-color: crimson;
-      color: white;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    .error {
-      color: crimson;
-      text-align: center;
-      font-weight: bold;
+
+    button:hover {
+      background: #ffd700d3;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Admin Panel</h1>
-    <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <h1>ADMIN PANEL</h1>
+    <a href="home.html" title="Go Back"><i class="fas fa-arrow-left" style="color: gold; font-size: 1.5rem;"></i></a>
   </header>
 
-  <div id="errorBox" class="error hidden">Access Denied: Not an Admin</div>
+  <div class="access-denied" id="deniedMessage">
+    ❌ Access Denied: You are not an admin.
+  </div>
 
-  <div id="adminContent" class="hidden">
-    <div class="section" id="announcementSection">
-      <h2>📢 Announcements</h2>
-      <input type="text" id="announcementTitle" placeholder="Enter announcement title" />
-      <textarea id="announcementText" placeholder="Enter announcement text"></textarea>
-      <button onclick="addAnnouncement()">Add Announcement</button>
-      <div id="announcementList"></div>
+  <div class="container" id="adminContainer">
+    <!-- Birthday Wall Section -->
+    <div class="section">
+      <h2>🎉 Birthday Wall</h2>
+      <input type="text" id="bdayName" placeholder="Student Name" />
+      <input type="text" id="bdayWish" placeholder="Short Wish Message" />
+      <input type="text" id="bdayImage" placeholder="Image URL" />
+      <button onclick="saveBirthday()">Update Birthday Wall</button>
     </div>
-    <div class="section" id="eventSection">
-      <h2>🎉 Events</h2>
-      <input type="text" id="eventTitle" placeholder="Event title" />
-      <input type="text" id="eventDate" placeholder="Event date (e.g., July 20)" />
-      <textarea id="eventDetails" placeholder="Details about the event"></textarea>
-      <button onclick="addEvent()">Add Event</button>
-      <div id="eventList"></div>
+
+    <!-- Adverts Section -->
+    <div class="section">
+      <h2>📢 Adverts Placement</h2>
+      <input type="text" id="adName" placeholder="Advert Title" />
+      <input type="text" id="adText" placeholder="Description" />
+      <input type="text" id="adImage" placeholder="Image URL" />
+      <input type="text" id="adLink" placeholder="Link (optional)" />
+      <button onclick="saveAdverts()">Update Adverts</button>
     </div>
   </div>
 
+  <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getFirestore, collection, addDoc, getDocs, deleteDoc, doc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import {
-      getAuth, signOut, onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -125,192 +130,937 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    const errorBox = document.getElementById("errorBox");
-    const adminContent = document.getElementById("adminContent");
+    const adminContainer = document.getElementById("adminContainer");
+    const deniedMessage = document.getElementById("deniedMessage");
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) return location.href = "login.html";
+      if (!user) return (window.location.href = "login.html");
 
-      const userDoc = await getDocs(collection(db, "users"));
-      let isAdmin = false;
-      userDoc.forEach(docSnap => {
-        if (docSnap.id === user.uid && docSnap.data().role === "admin") {
-          isAdmin = true;
+      const docRef = doc(db, "Users", user.uid); // 🔐 capital "Users"
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const role = docSnap.data().role;
+        if (role === "admin") {
+          adminContainer.style.display = "block";
+        } else {
+          deniedMessage.style.display = "block";
         }
-      });
-
-      if (isAdmin) {
-        adminContent.classList.remove("hidden");
-        loadAnnouncements();
-        loadEvents();
       } else {
-        errorBox.classList.remove("hidden");
+        deniedMessage.textContent = "❌ Access Denied: No record found.";
+        deniedMessage.style.display = "block";
       }
     });
+    async function saveBirthday() {
+      const name = document.getElementById("bdayName").value.trim();
+      const message = document.getElementById("bdayWish").value.trim();
+      const image = document.getElementById("bdayImage").value.trim();
 
-    window.logout = () => signOut(auth).then(() => location.href = "login.html");
+      if (!name || !message || !image) {
+        alert("Please fill all birthday fields.");
+        return;
+      }
 
-    async function addAnnouncement() {
-      const title = document.getElementById("announcementTitle").value.trim();
-      const text = document.getElementById("announcementText").value.trim();
-      if (!title || !text) return alert("Please fill all fields");
-
-      await addDoc(collection(db, "announcements"), {
-        title,
-        text,
-        timestamp: new Date()
-      });
-
-      document.getElementById("announcementTitle").value = "";
-      document.getElementById("announcementText").value = "";
-      loadAnnouncements();
-    }
-
-    async function loadAnnouncements() {
-      const list = document.getElementById("announcementList");
-      list.innerHTML = "";
-      const snap = await getDocs(collection(db, "announcements"));
-      snap.forEach(docSnap => {
-        const data = docSnap.data();
-        const div = document.createElement("div");
-        div.style.border = "1px dashed gold";
-        div.style.margin = "10px 0";
-        div.style.padding = "10px";
-        div.innerHTML = `
-          <strong>${data.title}</strong><br>
-          <p>${data.text}</p>
-          <button onclick="deleteAnnouncement('${docSnap.id}')">Delete</button>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    async function deleteAnnouncement(id) {
-      await deleteDoc(doc(db, "announcements", id));
-      loadAnnouncements();
-    }
-    async function addEvent() {
-      const title = document.getElementById("eventTitle").value.trim();
-      const date = document.getElementById("eventDate").value.trim();
-      const details = document.getElementById("eventDetails").value.trim();
-      if (!title || !date || !details) return alert("Please fill all fields");
-
-      await addDoc(collection(db, "events"), {
-        title,
-        date,
-        details,
-        timestamp: new Date()
-      });
-
-      document.getElementById("eventTitle").value = "";
-      document.getElementById("eventDate").value = "";
-      document.getElementById("eventDetails").value = "";
-      loadEvents();
-    }
-
-    async function loadEvents() {
-      const list = document.getElementById("eventList");
-      list.innerHTML = "";
-      const snap = await getDocs(collection(db, "events"));
-      snap.forEach(docSnap => {
-        const data = docSnap.data();
-        const div = document.createElement("div");
-        div.style.border = "1px dashed gold";
-        div.style.margin = "10px 0";
-        div.style.padding = "10px";
-        div.innerHTML = `
-          <strong>${data.title} (${data.date})</strong><br>
-          <p>${data.details}</p>
-          <button onclick="deleteEvent('${docSnap.id}')">Delete</button>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    async function deleteEvent(id) {
-      await deleteDoc(doc(db, "events", id));
-      loadEvents();
-    }
-
-    // 🎂 BIRTHDAY WALL - JSONStorage
-    async function updateBirthday(name, message, imageURL) {
-      const data = {
+      const birthdayData = {
         name,
         message,
-        image: imageURL,
+        image,
         timestamp: new Date().toISOString()
       };
-      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      alert("Birthday Wall updated");
+
+      try {
+        await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(birthdayData)
+        });
+        alert("🎉 Birthday Wall Updated Successfully!");
+      } catch (error) {
+        alert("Failed to update birthday: " + error.message);
+      }
     }
 
-    // 📢 ADVERT PLACEMENT - JSONStorage
-    async function updateAdvert(title, description, imageURL) {
-      const data = {
-        title,
-        description,
-        image: imageURL,
+    async function saveAdverts() {
+      const name = document.getElementById("adName").value.trim();
+      const desc = document.getElementById("adText").value.trim();
+      const image = document.getElementById("adImage").value.trim();
+      const link = document.getElementById("adLink").value.trim();
+
+      if (!name || !desc || !image) {
+        alert("Please fill all advert fields.");
+        return;
+      }
+
+      const advertData = {
+        name,
+        description: desc,
+        image,
+        link,
         timestamp: new Date().toISOString()
       };
-      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      alert("Advert Placement updated");
-    }
 
+      try {
+        await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(advertData)
+        });
+        alert("📢 Advert Updated Successfully!");
+      } catch (error) {
+        alert("Failed to update advert: " + error.message);
+      }
+    }
   </script>
 </body>
 </html>
-// 🎯 FINANCE FACTS (Future Optional)
-  async function updateFinanceFact(text) {
-    await setDoc(doc(db, "extras", "finance_fact"), {
-      text,
-      timestamp: new Date()
+<!-- 📊 Leaderboard Management -->
+<div class="section" id="leaderboardSection">
+  <h2>🏅 Leaderboard (CBT Scores)</h2>
+  <div id="leaderboardList">Loading leaderboard...</div>
+</div>
+
+<script type="module">
+  import { collection, query, getDocs, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const leaderboardList = document.getElementById("leaderboardList");
+
+  async function loadLeaderboard() {
+    leaderboardList.innerHTML = "<em>Loading scores...</em>";
+    try {
+      const scoreRef = collection(db, "cbt_scores");
+      const scoreQuery = query(scoreRef, orderBy("score", "desc"));
+      const scoreSnap = await getDocs(scoreQuery);
+      
+      if (scoreSnap.empty) {
+        leaderboardList.innerHTML = "<p>No CBT scores yet.</p>";
+        return;
+      }
+
+      let html = "<ol>";
+      scoreSnap.forEach((docSnap, index) => {
+        const data = docSnap.data();
+        html += `
+          <li style="margin-bottom: 10px;">
+            <strong>#${index + 1}</strong> - Score: ${data.score || 0}
+            <button onclick="deleteScore('${docSnap.id}')" style="margin-left: 10px; background: crimson; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Delete</button>
+          </li>
+        `;
+      });
+      html += "</ol>";
+      leaderboardList.innerHTML = html;
+    } catch (err) {
+      leaderboardList.innerHTML = "<p>Error loading scores.</p>";
+    }
+  }
+
+  window.deleteScore = async (docId) => {
+    const confirmDelete = confirm("Are you sure you want to delete this score?");
+    if (!confirmDelete) return;
+    try {
+      await deleteDoc(doc(db, "cbt_scores", docId));
+      alert("Score deleted.");
+      loadLeaderboard();
+    } catch (err) {
+      alert("Error deleting score.");
+    }
+  };
+
+  loadLeaderboard();
+</script>
+<!-- 🔵 LOST & FOUND MANAGEMENT -->
+<div class="admin-section">
+  <h2>Lost & Found Manager</h2>
+  <div id="lostFoundList">Loading...</div>
+</div>
+
+<script type="module">
+  import {
+    collection,
+    getDocs,
+    deleteDoc,
+    updateDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const lostFoundList = document.getElementById("lostFoundList");
+
+  async function fetchLostFoundItems() {
+    lostFoundList.innerHTML = "Loading items...";
+    const snapshot = await getDocs(collection(db, "lostFoundItems"));
+    if (snapshot.empty) {
+      lostFoundList.innerHTML = "<p>No lost or found items yet.</p>";
+      return;
+    }
+
+    let html = "";
+    snapshot.forEach((docSnap) => {
+      const item = docSnap.data();
+      html += `
+        <div class="admin-card">
+          <p><strong>Item:</strong> ${item.title || 'Unknown'}</p>
+          <p><strong>Desc:</strong> ${item.description || ''}</p>
+          <p><strong>Status:</strong> ${item.status || 'Unspecified'}</p>
+          <button onclick="deleteLostFound('${docSnap.id}')">🗑 Delete</button>
+          <button onclick="markReturned('${docSnap.id}')">✅ Mark as Returned</button>
+        </div>
+      `;
     });
-    alert("Finance Fact updated");
+
+    lostFoundList.innerHTML = html;
   }
 
-  // 💬 FEEDBACK BOX (Future Optional)
-  async function clearFeedbacks() {
-    const snap = await getDocs(collection(db, "feedback"));
-    const promises = snap.docs.map(doc => deleteDoc(doc.ref));
-    await Promise.all(promises);
-    alert("All feedback messages deleted.");
+  window.deleteLostFound = async function (id) {
+    if (confirm("Delete this item permanently?")) {
+      await deleteDoc(doc(db, "lostFoundItems", id));
+      showToast("Item deleted ✅");
+      fetchLostFoundItems();
+    }
   }
 
-  // 🧠 QUIZ OF THE WEEK (Future Optional)
-  async function updateWeeklyQuiz(question, optionA, optionB, optionC, optionD, answer) {
-    await setDoc(doc(db, "weekly_quiz", "quiz"), {
-      question,
-      options: { A: optionA, B: optionB, C: optionC, D: optionD },
-      answer,
-      timestamp: new Date()
+  window.markReturned = async function (id) {
+    await updateDoc(doc(db, "lostFoundItems", id), {
+      status: "Returned ✅"
     });
-    alert("Quiz of the Week updated");
+    showToast("Marked as returned");
+    fetchLostFoundItems();
   }
 
-  // 🥇 LEADERBOARD RESET (Optional)
-  async function resetLeaderboard() {
-    const snap = await getDocs(collection(db, "cbt_scores"));
-    const promises = snap.docs.map(doc => deleteDoc(doc.ref));
-    await Promise.all(promises);
-    alert("Leaderboard has been reset.");
-  }
+  fetchLostFoundItems();
+</script>
+<!-- 🟡 FINANCE TIPS MANAGEMENT -->
+<div class="admin-section">
+  <h2>Finance Tips</h2>
+  <textarea id="financeTipInput" placeholder="Write a tip..."></textarea>
+  <button onclick="addFinanceTip()">➕ Add Tip</button>
+  <div id="tipsList">Loading tips...</div>
+</div>
 
-  // 📣 NOTIFICATION POPUP
-  async function updatePopupNotification(message) {
-    await setDoc(doc(db, "extras", "popup"), {
-      message,
-      timestamp: new Date()
+<script type="module">
+  import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const tipsList = document.getElementById("tipsList");
+  const financeTipInput = document.getElementById("financeTipInput");
+
+  async function loadFinanceTips() {
+    tipsList.innerHTML = "Loading...";
+    const snapshot = await getDocs(collection(db, "financeTips"));
+    if (snapshot.empty) {
+      tipsList.innerHTML = "<p>No finance tips yet.</p>";
+      return;
+    }
+
+    let html = "";
+    snapshot.forEach((docSnap) => {
+      const tip = docSnap.data().text || "";
+      html += `
+        <div class="admin-card">
+          <p>💡 ${tip}</p>
+          <button onclick="deleteFinanceTip('${docSnap.id}')">🗑 Delete</button>
+        </div>
+      `;
     });
-    alert("Notification popup updated!");
+
+    tipsList.innerHTML = html;
   }
+
+  window.addFinanceTip = async function () {
+    const text = financeTipInput.value.trim();
+    if (!text) return alert("Tip cannot be empty!");
+    await addDoc(collection(db, "financeTips"), { text });
+    financeTipInput.value = "";
+    showToast("Tip added ✅");
+    loadFinanceTips();
+  }
+
+  window.deleteFinanceTip = async function (id) {
+    await deleteDoc(doc(db, "financeTips", id));
+    showToast("Tip deleted ❌");
+    loadFinanceTips();
+  }
+
+  loadFinanceTips();
+</script>
+<!-- 🎉 BIRTHDAY WALL EDITOR -->
+<div class="admin-section">
+  <h2>Birthday Wall</h2>
+  <input type="text" id="bdayName" placeholder="Full Name" />
+  <input type="text" id="bdayMessage" placeholder="Birthday Message" />
+  <input type="url" id="bdayImage" placeholder="Image URL" />
+  <button onclick="saveBirthday()">🎈 Save Birthday</button>
+  <div id="bdayPreview" class="admin-card">Loading current...</div>
+</div>
+
+<script>
+  const birthdayJsonUrl = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071";
+
+  async function loadBirthday() {
+    try {
+      const res = await fetch(birthdayJsonUrl);
+      const data = await res.json();
+      document.getElementById("bdayPreview").innerHTML = `
+        <p><strong>${data.name || 'No Name'}</strong></p>
+        <p>${data.message || 'No message set'}</p>
+        <img src="${data.image || 'https://i.imgur.com/G0LZLzF.jpg'}" alt="Birthday" width="100%" style="margin-top:10px; border-radius:8px;" />
+      `;
+    } catch (err) {
+      document.getElementById("bdayPreview").innerHTML = "<p>Error loading birthday wall.</p>";
+    }
+  }
+
+  window.saveBirthday = async function () {
+    const name = document.getElementById("bdayName").value.trim();
+    const message = document.getElementById("bdayMessage").value.trim();
+    const image = document.getElementById("bdayImage").value.trim();
+
+    if (!name || !message || !image) {
+      return alert("All fields are required.");
+    }
+
+    const newData = { name, message, image };
+    await fetch(birthdayJsonUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newData)
+    });
+
+    showToast("🎉 Birthday updated!");
+    loadBirthday();
+  }
+
+  loadBirthday();
+</script>
+<!-- 📢 ADVERT PLACEMENT EDITOR -->
+<div class="admin-section">
+  <h2>Adverts Placement</h2>
+  <input type="text" id="adTitle" placeholder="Advert Title" />
+  <input type="text" id="adDescription" placeholder="Short Description" />
+  <input type="url" id="adImage" placeholder="Image URL" />
+  <input type="url" id="adLink" placeholder="Optional Link (e.g. https://...)" />
+  <button onclick="addAdvert()">📢 Add Advert</button>
+  <div id="adsList" class="admin-list">Loading adverts...</div>
+</div>
+
+<script>
+  const advertsJsonUrl = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc";
+
+  async function loadAdverts() {
+    try {
+      const res = await fetch(advertsJsonUrl);
+      const data = await res.json();
+
+      let html = '';
+      data.forEach((ad, index) => {
+        html += `
+          <div class="admin-card">
+            <strong>${ad.title}</strong>
+            <p>${ad.description}</p>
+            <img src="${ad.image}" alt="Advert Image" style="width:100%;max-height:120px;object-fit:cover;margin-top:8px;border-radius:6px;" />
+            ${ad.link ? `<p><a href="${ad.link}" target="_blank" style="color:lightblue;">Visit</a></p>` : ""}
+            <button onclick="deleteAdvert(${index})" style="margin-top:8px;">🗑 Remove</button>
+          </div>
+        `;
+      });
+
+      document.getElementById("adsList").innerHTML = html || "<p>No adverts yet.</p>";
+    } catch (err) {
+      document.getElementById("adsList").innerHTML = "<p>Error loading adverts.</p>";
+    }
+  }
+
+  window.addAdvert = async function () {
+    const title = document.getElementById("adTitle").value.trim();
+    const description = document.getElementById("adDescription").value.trim();
+    const image = document.getElementById("adImage").value.trim();
+    const link = document.getElementById("adLink").value.trim();
+
+    if (!title || !description || !image) {
+      return alert("Please fill all required fields.");
+    }
+
+    const res = await fetch(advertsJsonUrl);
+    const ads = await res.json();
+    ads.unshift({ title, description, image, link });
+
+    await fetch(advertsJsonUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(ads)
+    });
+
+    showToast("✅ Advert added!");
+    loadAdverts();
+  }
+
+  window.deleteAdvert = async function (index) {
+    const res = await fetch(advertsJsonUrl);
+    const ads = await res.json();
+    ads.splice(index, 1);
+
+    await fetch(advertsJsonUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(ads)
+    });
+
+    showToast("🗑 Advert removed!");
+    loadAdverts();
+  }
+
+  loadAdverts();
+</script>
+<!-- 📬 FEEDBACK MANAGER (Firestore) -->
+<div class="admin-section">
+  <h2>📥 Feedback Box</h2>
+  <div id="feedbackList" class="admin-list">Loading feedbacks...</div>
+</div>
+
+<script>
+  async function loadFeedbacks() {
+    const snap = await getDocs(collection(db, "feedbacks"));
+    const list = document.getElementById("feedbackList");
+    let html = "";
+
+    snap.forEach(doc => {
+      const fb = doc.data();
+      html += `
+        <div class="admin-card">
+          <strong>${fb.subject || "No Subject"}</strong>
+          <p>${fb.message}</p>
+          <small>By: ${fb.email || "Anonymous"}</small>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html || "<p>No feedbacks yet.</p>";
+  }
+
+  loadFeedbacks();
+</script>
+
+<!-- 🧳 LOST & FOUND MANAGER (JSON) -->
+<div class="admin-section">
+  <h2>🧳 Lost & Found</h2>
+  <div id="lostList" class="admin-list">Loading lost/found items...</div>
+</div>
+
+<script>
+  const lostJsonUrl = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+
+  async function loadLostFound() {
+    try {
+      const res = await fetch(lostJsonUrl);
+      const items = await res.json();
+      let html = "";
+
+      items.forEach((item, i) => {
+        html += `
+          <div class="admin-card">
+            <strong>${item.title}</strong>
+            <p>${item.description}</p>
+            <small>By: ${item.name} (${item.contact})</small><br/>
+            <button onclick="removeLostItem(${i})" style="margin-top: 8px;">🗑 Remove</button>
+          </div>
+        `;
+      });
+
+      document.getElementById("lostList").innerHTML = html || "<p>No lost/found posts yet.</p>";
+    } catch (err) {
+      document.getElementById("lostList").innerHTML = "<p>Error loading items.</p>";
+    }
+  }
+
+  async function removeLostItem(index) {
+    const res = await fetch(lostJsonUrl);
+    const items = await res.json();
+    items.splice(index, 1);
+
+    await fetch(lostJsonUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(items)
+    });
+
+    showToast("🗑 Item removed!");
+    loadLostFound();
+  }
+
+  loadLostFound();
+</script>
+<!-- 🔐 Password Reset Section -->
+<div class="admin-section">
+  <h2>🔐 Admin Settings</h2>
+  <p>If you ever forget your password or want to reset it, click below:</p>
+  <button onclick="resetAdminPassword()">Reset Password</button>
+</div>
+
+<script>
+  function resetAdminPassword() {
+    const user = auth.currentUser;
+    if (user && user.email) {
+      sendPasswordResetEmail(auth, user.email)
+        .then(() => showToast("📩 Reset link sent to " + user.email))
+        .catch((e) => showToast("❌ Error: " + e.message));
+    } else {
+      showToast("⚠️ Admin email not found.");
+    }
+  }
+</script>
+
+<!-- ✅ Toast Already Defined Above -->
+<!-- If not defined earlier, you can place this near top of body -->
+<div id="toast" class="toast" style="display:none;position:fixed;top:70px;right:20px;padding:12px 20px;background:#222;color:gold;border-radius:6px;box-shadow:0 0 10px rgba(255,215,0,0.5);z-index:999;"></div>
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.style.display = "block";
+    setTimeout(() => toast.style.display = "none", 4000);
+  }
+</script>
+
+<!-- ✅ Minimal CSS Touch-up (Optional) -->
+<style>
+  .admin-section h2 {
+    margin-bottom: 10px;
+    border-bottom: 1px solid gold;
+    padding-bottom: 4px;
+  }
+
+  .admin-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid gold;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
+
+  button {
+    background: gold;
+    border: none;
+    padding: 8px 14px;
+    font-weight: bold;
+    color: #000;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #ffdf00;
+  }
+</style>
+<!-- 📊 Dashboard Overview Section -->
+<div class="admin-section">
+  <h2>📊 Site Overview (Auto Stats)</h2>
+  <div class="overview-grid">
+    <div class="stat-card" id="totalUsers">👤 Users: ...</div>
+    <div class="stat-card" id="totalFeedbacks">📝 Feedbacks: ...</div>
+    <div class="stat-card" id="totalAnnouncements">📢 Announcements: ...</div>
+    <div class="stat-card" id="totalEvents">📅 Events: ...</div>
+    <div class="stat-card" id="totalExecutives">🎓 Executives: ...</div>
+    <div class="stat-card" id="totalCBT">🧠 CBT Questions: ...</div>
+    <div class="stat-card" id="totalLost">🧳 Lost & Found: ...</div>
+    <div class="stat-card" id="totalDownloads">📥 Downloads: ...</div>
+  </div>
+</div>
+
+<style>
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid gold;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    color: gold;
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
+  }
+</style>
+
+<script type="module">
+  import {
+    collection,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  async function loadDashboardStats() {
+    const usersSnap = await getDocs(collection(db, "Users"));
+    const feedbackSnap = await getDocs(collection(db, "feedbacks"));
+    const announceSnap = await getDocs(collection(db, "announcements"));
+    const eventsSnap = await getDocs(collection(db, "events"));
+    const execSnap = await getDocs(collection(db, "executives"));
+    const cbtSnap = await getDocs(collection(db, "cbt_questions"));
+    const downloadsSnap = await getDocs(collection(db, "downloads"));
+
+    document.getElementById("totalUsers").textContent = `👤 Users: ${usersSnap.size}`;
+    document.getElementById("totalFeedbacks").textContent = `📝 Feedbacks: ${feedbackSnap.size}`;
+    document.getElementById("totalAnnouncements").textContent = `📢 Announcements: ${announceSnap.size}`;
+    document.getElementById("totalEvents").textContent = `📅 Events: ${eventsSnap.size}`;
+    document.getElementById("totalExecutives").textContent = `🎓 Executives: ${execSnap.size}`;
+    document.getElementById("totalCBT").textContent = `🧠 CBT Questions: ${cbtSnap.size}`;
+    document.getElementById("totalDownloads").textContent = `📥 Downloads: ${downloadsSnap.size}`;
+
+    // Lost & Found (from JSON)
+    fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("totalLost").textContent = `🧳 Lost & Found: ${data.length || 0}`;
+      })
+      .catch(() => {
+        document.getElementById("totalLost").textContent = "🧳 Lost & Found: Error";
+      });
+  }
+
+  // 🔄 Run on load
+  loadDashboardStats();
+</script>
+<!-- 🎉 Birthday Wall Manager -->
+<div class="admin-section">
+  <h2>🎂 Birthday Wall</h2>
+  <input type="text" id="bdayName" placeholder="Student Name" />
+  <input type="text" id="bdayMsg" placeholder="Birthday Message" />
+  <input type="text" id="bdayImg" placeholder="Image URL" />
+  <button onclick="updateBirthday()">Update Birthday</button>
+</div>
+
+<!-- 🛍 Advert Placement -->
+<div class="admin-section">
+  <h2>📢 Advert Placement</h2>
+  <input type="text" id="adName" placeholder="Advert Title" />
+  <input type="text" id="adMsg" placeholder="Advert Message" />
+  <input type="text" id="adImg" placeholder="Image URL" />
+  <button onclick="updateAdvert()">Update Advert</button>
+</div>
+
+<script>
+  const birthdayURL = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071";
+  const advertURL = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc";
+
+  async function updateBirthday() {
+    const name = document.getElementById("bdayName").value.trim();
+    const msg = document.getElementById("bdayMsg").value.trim();
+    const img = document.getElementById("bdayImg").value.trim();
+
+    const payload = {
+      name,
+      msg,
+      img,
+      date: new Date().toISOString().split("T")[0] // today only
+    };
+
+    const res = await fetch(birthdayURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert("🎂 Birthday updated successfully!");
+    } else {
+      alert("Error updating birthday!");
+    }
+  }
+
+  async function updateAdvert() {
+    const name = document.getElementById("adName").value.trim();
+    const msg = document.getElementById("adMsg").value.trim();
+    const img = document.getElementById("adImg").value.trim();
+
+    const payload = { name, msg, img };
+
+    const res = await fetch(advertURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert("📢 Advert updated successfully!");
+    } else {
+      alert("Error updating advert!");
+    }
+  }
+</script>
+
+<style>
+  input[type="text"] {
+    display: block;
+    width: 90%;
+    max-width: 400px;
+    margin: 8px auto;
+    padding: 8px;
+    background: #111;
+    color: gold;
+    border: 1px solid gold;
+    border-radius: 4px;
+  }
+
+  button {
+    background: gold;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 16px;
+    border: none;
+    margin-top: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #ffcc00;
+  }
+</style>
+<!-- 📦 Lost & Found Manager -->
+<div class="admin-section">
+  <h2>📦 Lost & Found</h2>
+  <input type="text" id="lostItem" placeholder="Item Name" />
+  <input type="text" id="lostOwner" placeholder="Owner Name or Description" />
+  <input type="text" id="lostContact" placeholder="Contact Info" />
+  <button onclick="addLostItem()">Add Item</button>
+</div>
+
+<!-- 📥 Downloads Uploader -->
+<div class="admin-section">
+  <h2>📁 Upload Study Materials</h2>
+  <input type="text" id="downloadTitle" placeholder="Title (e.g., FIN 206 Notes)" />
+  <input type="text" id="downloadLink" placeholder="Google Drive or PDF Link" />
+  <button onclick="addDownload()">Upload Material</button>
+</div>
+
+<!-- 💬 Feedback Viewer (Read-only for now) -->
+<div class="admin-section">
+  <h2>💬 Student Feedback</h2>
+  <div id="feedbackList" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.4); padding: 10px; border: 1px dashed gold;"></div>
+</div>
+
+<script>
+  const lostFoundURL = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/b40a296b-90e2-49bb-ad28-5ca202f6543b";
+  const downloadsURL = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/63853063-9eb3-46ff-a551-9e3e1b19bf8a";
+
+  async function addLostItem() {
+    const item = document.getElementById("lostItem").value.trim();
+    const owner = document.getElementById("lostOwner").value.trim();
+    const contact = document.getElementById("lostContact").value.trim();
+
+    const newItem = { item, owner, contact, time: new Date().toLocaleString() };
+
+    const res = await fetch(lostFoundURL);
+    const data = await res.json();
+    data.unshift(newItem); // add to top
+
+    await fetch(lostFoundURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    alert("✅ Lost item posted!");
+  }
+
+  async function addDownload() {
+    const title = document.getElementById("downloadTitle").value.trim();
+    const link = document.getElementById("downloadLink").value.trim();
+
+    const newDownload = { title, link };
+
+    const res = await fetch(downloadsURL);
+    const data = await res.json();
+    data.unshift(newDownload); // latest first
+
+    await fetch(downloadsURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    alert("✅ Study material uploaded!");
+  }
+
+  // 💬 Load Feedbacks
+  async function loadFeedbacks() {
+    const fbList = document.getElementById("feedbackList");
+
+    const qSnap = await getDocs(collection(db, "feedbacks"));
+    qSnap.forEach(doc => {
+      const fb = doc.data();
+      const div = document.createElement("div");
+      div.style.marginBottom = "10px";
+      div.innerHTML = `<strong>${fb.name || "Anonymous"}:</strong> ${fb.message}`;
+      fbList.appendChild(div);
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", loadFeedbacks);
+</script>
+<!-- 🔥 Quiz of the Week -->
+<div class="admin-section" id="quiz-section">
+  <h2>📘 Quiz of the Week</h2>
+  <form id="quizForm">
+    <input type="text" placeholder="Question" id="quizQ" required />
+    <input type="text" placeholder="Option A" id="optA" required />
+    <input type="text" placeholder="Option B" id="optB" required />
+    <input type="text" placeholder="Option C" id="optC" required />
+    <input type="text" placeholder="Option D" id="optD" required />
+    <select id="correctOpt" required>
+      <option value="">Correct Answer</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+    <button type="submit">➕ Add Quiz</button>
+  </form>
+  <div id="quizList" class="data-list"></div>
+</div>
+
+<!-- 🔔 Popup Notification -->
+<div class="admin-section" id="popup-section">
+  <h2>🔔 Notification Popup</h2>
+  <textarea id="popupMsg" rows="3" placeholder="Write your notification..."></textarea>
+  <select id="popupShow">
+    <option value="true">Show</option>
+    <option value="false">Hide</option>
+  </select>
+  <button onclick="savePopup()">💾 Save Notification</button>
+</div>
+
+<script>
+const quizJsonUrl = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9417d0a0-20b9-404b-9da4-559ca7100be6";
+const popupJsonUrl = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9e7a8d7c-cb36-4edd-b66c-007189720044";
+
+// Load existing quiz
+async function loadQuiz() {
+  const res = await fetch(quizJsonUrl);
+  const quizData = await res.json();
+  const quizList = document.getElementById("quizList");
+  quizList.innerHTML = "";
+  quizData.forEach((q, index) => {
+    quizList.innerHTML += `
+      <div class="item">
+        <strong>Q${index + 1}:</strong> ${q.question} <br>
+        <small>A. ${q.A} | B. ${q.B} | C. ${q.C} | D. ${q.D} <br>✅ ${q.answer}</small><br>
+        <button onclick="deleteQuiz(${index})">🗑 Delete</button>
+      </div>
+    `;
+  });
+}
+
+document.getElementById("quizForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const question = document.getElementById("quizQ").value;
+  const A = document.getElementById("optA").value;
+  const B = document.getElementById("optB").value;
+  const C = document.getElementById("optC").value;
+  const D = document.getElementById("optD").value;
+  const answer = document.getElementById("correctOpt").value;
+
+  const res = await fetch(quizJsonUrl);
+  const quizData = await res.json();
+  quizData.push({ question, A, B, C, D, answer });
+
+  await fetch(quizJsonUrl, {
+    method: "PUT",
+    body: JSON.stringify(quizData),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  e.target.reset();
+  loadQuiz();
+});
+
+async function deleteQuiz(index) {
+  const res = await fetch(quizJsonUrl);
+  const quizData = await res.json();
+  quizData.splice(index, 1);
+  await fetch(quizJsonUrl, {
+    method: "PUT",
+    body: JSON.stringify(quizData),
+    headers: { "Content-Type": "application/json" },
+  });
+  loadQuiz();
+}
+
+// 🔔 Load & Save Popup Notification
+async function loadPopup() {
+  const res = await fetch(popupJsonUrl);
+  const data = await res.json();
+  document.getElementById("popupMsg").value = data.message || "";
+  document.getElementById("popupShow").value = String(data.show);
+}
+
+async function savePopup() {
+  const msg = document.getElementById("popupMsg").value;
+  const show = document.getElementById("popupShow").value === "true";
+  await fetch(popupJsonUrl, {
+    method: "PUT",
+    body: JSON.stringify({ message: msg, show }),
+    headers: { "Content-Type": "application/json" },
+  });
+  alert("Popup saved!");
+}
+
+loadQuiz();
+loadPopup();
+</script>
+
+<script>
+// -------------------------
+// Helper Function: Show Fallback If Empty
+// -------------------------
+function showIfEmpty(containerId, message = "Nothing to show yet.") {
+  const container = document.getElementById(containerId);
+  if (container && container.innerHTML.trim() === '') {
+    container.innerHTML = `<p style="text-align:center;opacity:0.6">${message}</p>`;
+  }
+}
+
+// -------------------------
+// Loader Display (Optional)
+// -------------------------
+function showLoading(id, message = "Loading...") {
+  const element = document.getElementById(id);
+  if (element) element.innerHTML = `<p style="text-align:center;color:gray;">${message}</p>`;
+}
+
+// -------------------------
+// Export JSON Utility (Optional)
+// -------------------------
+function downloadJSON(data, filename = 'data.json') {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Usage Example (call this from admin):
+// downloadJSON(currentQuizData, 'quiz_backup.json');
+
+// -------------------------
+// Fallback Checks (onLoad)
+// -------------------------
+window.addEventListener('load', () => {
+  showIfEmpty("announcementSection", "No announcements posted yet.");
+  showIfEmpty("eventSection", "No upcoming events.");
+  showIfEmpty("quizSection", "Quiz of the week not available.");
+  showIfEmpty("birthdayWall", "No birthday celebrants today.");
+  showIfEmpty("advertsWall", "No adverts displayed yet.");
+});
+</script>
