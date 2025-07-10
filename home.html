@@ -14,7 +14,6 @@
       background-size: cover;
       background-position: center;
       color: gold;
-      padding-bottom: 80px; /* space for bottom nav */
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -37,7 +36,7 @@
       color: gold;
     }
     .container {
-      padding: 100px 20px 40px;
+      padding: 20px;
       max-width: 1000px;
       margin: auto;
     }
@@ -113,10 +112,14 @@
   </style>
 </head>
 <body>
+
   <header>
     <h1>FINANCE POINT</h1>
     <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
   </header>
+
+  <!-- 🔼 Top Navigation Loads Here -->
+  <div id="top-nav"></div>
 
   <div class="container">
     <div class="welcome-box">
@@ -156,13 +159,9 @@
     </div>
   </div>
 
-  <!-- 🟡 Bottom Navigation will load here -->
-  <div id="bottom-nav"></div>
-
   <!-- 🔥 Toast Notification -->
   <div class="toast" id="toast"></div>
 
-  <!-- 🔥 Firebase Config + Nav Loader -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -208,10 +207,10 @@
         });
     };
 
-    // 🟡 Load external nav
+    // Load Top Nav
     fetch("nav.html")
       .then(res => res.text())
-      .then(html => document.getElementById("bottom-nav").innerHTML = html);
+      .then(html => document.getElementById("top-nav").innerHTML = html);
   </script>
 </body>
 </html>
