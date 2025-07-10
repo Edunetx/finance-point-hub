@@ -77,6 +77,12 @@
     .trophy {
       font-size: 1.2rem;
     }
+    #updated-time {
+      font-size: 0.8rem;
+      color: #aaa;
+      text-align: right;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -96,11 +102,13 @@
     <div class="leaderboard" id="leaderboard">
       <p>Loading leaderboard...</p>
     </div>
+    <div id="updated-time"></div>
   </main>
 
   <script>
     const db = firebase.firestore();
     const auth = firebase.auth();
+    let currentEmail = null;
 
     const getTrophy = (rank) => {
       if (rank === 1) return "🥇";
@@ -109,15 +117,22 @@
       return "";
     };
 
-    auth.onAuthStateChanged(async (user) => {
-      const currentEmail = user ? user.email : null;
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentEmail = user.email;
+        loadLeaderboard(); // Initial load
+        setInterval(loadLeaderboard, 600000); // Reload every 10 minutes
+      } else {
+        document.getElementById("leaderboard").innerHTML = "<p>Please login to view the leaderboard.</p>";
+      }
+    });
 
-      const snapshot = await db.collection("cbt_scores").orderBy("score", "desc").limit(10).get();
-      const scores = [];
-      snapshot.forEach(doc => scores.push(doc.data()));
-
+    async function loadLeaderboard() {
       const leaderboard = document.getElementById("leaderboard");
       leaderboard.innerHTML = "";
+
+      const snapshot = await db.collection("cbt_scores").orderBy("score", "desc").limit(10).get();
+      const scores = snapshot.docs.map(doc => doc.data());
 
       scores.forEach((entry, index) => {
         const isMe = entry.email === currentEmail;
@@ -132,7 +147,7 @@
       });
 
       if (currentEmail && !scores.some(e => e.email === currentEmail)) {
-        // Fetch current user's latest score
+        // Add current user's score if not in top 10
         const userSnapshot = await db.collection("cbt_scores")
           .where("email", "==", currentEmail)
           .orderBy("score", "desc")
@@ -152,7 +167,10 @@
           leaderboard.appendChild(div);
         }
       }
-    });
+
+      const updated = new Date().toLocaleTimeString();
+      document.getElementById("updated-time").innerText = `🔄 Last updated: ${updated}`;
+    }
   </script>
 
 </body>
