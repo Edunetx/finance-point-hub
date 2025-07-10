@@ -2,15 +2,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Profile</title>
+  <title>My Profile - Finance Point</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
+      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
-      margin: 0;
-      padding: 0;
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -19,82 +18,85 @@
       align-items: center;
       padding: 15px 20px;
       box-shadow: 0 0 10px gold;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
     header h1 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
     }
-    .container {
-      max-width: 600px;
-      margin: 30px auto;
-      background: rgba(20, 20, 20, 0.85);
+    .profile-container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: rgba(20, 20, 20, 0.9);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
     }
-    .profile-section {
+    .profile-pic {
       text-align: center;
       margin-bottom: 20px;
     }
-    .profile-section img {
+    .profile-pic img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 2px solid gold;
       object-fit: cover;
+      border: 2px solid gold;
     }
-    .profile-section input[type="file"] {
+    .profile-pic input {
       margin-top: 10px;
       color: gold;
     }
-    .profile-details {
-      margin-top: 20px;
+    .profile-field {
+      margin: 15px 0;
     }
-    .profile-details p {
-      margin: 10px 0;
+    .profile-field label {
+      display: block;
+      margin-bottom: 5px;
     }
-    input[type="email"] {
+    .profile-field input {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid gold;
       background: #111;
       color: gold;
+      border: 1px solid gold;
+      border-radius: 5px;
     }
-    button {
-      padding: 10px 20px;
+    .save-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
       background: gold;
       color: black;
+      font-weight: bold;
       border: none;
-      border-radius: 5px;
-      margin-top: 10px;
+      border-radius: 6px;
       cursor: pointer;
     }
     .logout {
       text-align: right;
-      margin-top: 30px;
+      margin-top: 20px;
+    }
+    .logout button {
+      background: transparent;
+      border: none;
+      color: gold;
+      cursor: pointer;
+      font-size: 1rem;
     }
     .nav-container {
-      background: #111;
-      padding: 10px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      border-bottom: 2px solid gold;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      background: #111;
       box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
     }
     .nav-container a {
-      color: gold;
+      padding: 8px 12px;
       text-decoration: none;
       font-weight: bold;
-      padding: 8px 12px;
-      border-radius: 5px;
-      width: 90%;
-      text-align: center;
-      margin: 5px 0;
+      color: gold;
+      border-radius: 6px;
+      background-color: rgba(40, 40, 40, 0.9);
     }
     .nav-container a.active {
       background: gold;
@@ -106,6 +108,7 @@
 <body>
   <header>
     <h1>FINANCE POINT</h1>
+    <img id="profileIcon" src="" alt="Profile" style="width:40px;height:40px;border-radius:50%;cursor:pointer" onclick="window.location.href='me.html'"/>
   </header>  <div class="nav-container">
     <a href="home.html">Home</a>
     <a href="announcement-events.html">Announcements</a>
@@ -115,26 +118,32 @@
     <a href="feedback.html">Feedback</a>
     <a href="lostfound.html">Lost & Found</a>
     <a href="me.html" class="active">Me</a>
-  </div>  <div class="container">
-    <div class="profile-section">
-      <img id="profileImage" src="https://i.imgur.com/G0LZLzF.jpg" alt="Profile Picture">
-      <input type="file" id="imageUpload" accept="image/*" />
-    </div><div class="profile-details">
-  <p><strong>Full Name:</strong> <span id="fullName"></span></p>
-  <p><strong>Matric Number:</strong> <span id="matricNumber"></span></p>
-  <p><strong>Email:</strong></p>
-  <input type="email" id="emailInput" placeholder="Update your email" />
-  <button onclick="saveEmail()">Save Email</button>
-</div>
-
-<div class="logout">
-  <button onclick="logoutUser()">Logout</button>
+  </div>  <div class="profile-container">
+    <div class="profile-pic">
+      <img id="displayPic" src="https://via.placeholder.com/120" alt="Profile Picture" />
+      <input type="file" id="picUpload" accept="image/*" />
+    </div>
+    <div class="profile-field">
+      <label>Full Name</label>
+      <input type="text" id="fullName" disabled />
+    </div>
+    <div class="profile-field">
+      <label>Matric Number</label>
+      <input type="text" id="matricNumber" disabled />
+    </div>
+    <div class="profile-field">
+      <label>Email</label>
+      <input type="email" id="emailInput" />
+    </div>
+    <button class="save-btn" onclick="saveChanges()">Save Changes</button><div class="logout">
+  <button onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</button>
 </div>
 
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -146,47 +155,57 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const auth = getAuth();
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    let currentUser = null;
+    let currentUser;
 
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          document.getElementById("fullName").textContent = data.fullName || "-";
-          document.getElementById("matricNumber").textContent = data.matricNumber || "-";
-          document.getElementById("emailInput").value = user.email || "";
+      if (!user) return window.location.href = "login.html";
+      currentUser = user;
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("fullName").value = data.fullName || "";
+        document.getElementById("matricNumber").value = data.matricNumber || "";
+        document.getElementById("emailInput").value = user.email || "";
+        if (data.profilePic) {
+          document.getElementById("displayPic").src = data.profilePic;
+          document.getElementById("profileIcon").src = data.profilePic;
         }
-      } else {
-        window.location.href = "login.html";
       }
     });
 
-    window.saveEmail = async function () {
-      const email = document.getElementById("emailInput").value.trim();
-      if (!email || !currentUser) return;
-      await updateDoc(doc(db, "users", currentUser.uid), { email });
-      alert("Email updated successfully!");
-    };
+    window.saveChanges = async function () {
+      const emailInput = document.getElementById("emailInput").value;
+      const picFile = document.getElementById("picUpload").files[0];
 
-    document.getElementById("imageUpload").addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-          document.getElementById("profileImage").src = evt.target.result;
-        }
-        reader.readAsDataURL(file);
+      const userRef = doc(db, "users", currentUser.uid);
+
+      let updates = {};
+
+      if (picFile) {
+        const picRef = ref(storage, `profile_pics/${currentUser.uid}`);
+        await uploadBytes(picRef, picFile);
+        const url = await getDownloadURL(picRef);
+        document.getElementById("displayPic").src = url;
+        document.getElementById("profileIcon").src = url;
+        updates.profilePic = url;
       }
-    });
+
+      if (emailInput && emailInput !== currentUser.email) {
+        await currentUser.updateEmail(emailInput); // optional, might need re-auth
+      }
+
+      await updateDoc(userRef, updates);
+      alert("Profile updated successfully!");
+    }
 
     window.logoutUser = function () {
       signOut(auth).then(() => window.location.href = "login.html");
-    };
+    }
   </script></body>
 </html>
