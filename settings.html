@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - Finance Point</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.95);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px gold;
+    }
+    header h1 {
+      font-size: 1.5rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: rgba(30, 30, 30, 0.85);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="email"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #111;
+      color: gold;
+    }
+    .save-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: gold;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Settings</h1>
+  </header>  <div class="container">
+    <label for="email">Update Email</label>
+    <input type="email" id="email" placeholder="Enter new email" /><label for="photo">Update Profile Picture</label>
+<input type="file" id="photo" accept="image/*" />
+
+<button class="save-btn" onclick="saveSettings()">Save Changes</button>
+
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, updateEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    let currentUser;
+    onAuthStateChanged(auth, user => {
+      if (!user) return location.href = "login.html";
+      currentUser = user;
+      document.getElementById("email").value = user.email;
+    });
+
+    window.saveSettings = async function () {
+      const newEmail = document.getElementById("email").value.trim();
+      const file = document.getElementById("photo").files[0];
+
+      if (newEmail && newEmail !== currentUser.email) {
+        await updateEmail(currentUser, newEmail);
+        await updateDoc(doc(db, "users", currentUser.uid), { email: newEmail });
+        alert("Email updated!");
+      }
+
+      if (file) {
+        const storageRef = ref(storage, `profilePics/${currentUser.uid}`);
+        await uploadBytes(storageRef, file);
+        const photoURL = await getDownloadURL(storageRef);
+        await updateDoc(doc(db, "users", currentUser.uid), { photoURL });
+        alert("Profile picture updated!");
+      }
+
+      location.href = "me.html";
+    };
+  </script></body>
+</html>
