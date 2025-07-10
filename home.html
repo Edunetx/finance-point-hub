@@ -14,6 +14,7 @@
       background-size: cover;
       background-position: center;
       color: gold;
+      padding-bottom: 80px; /* space for bottom nav */
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -36,7 +37,7 @@
       color: gold;
     }
     .container {
-      padding: 100px 20px 60px;
+      padding: 100px 20px 40px;
       max-width: 1000px;
       margin: auto;
     }
@@ -97,30 +98,6 @@
       border-radius: 5px;
       text-decoration: none;
     }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(20, 20, 20, 0.95);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .bottom-nav a {
-      color: gold;
-      font-size: 1.4rem;
-      text-decoration: none;
-    }
-    .bottom-nav a.active {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    @media(min-width: 768px) {
-      .bottom-nav { display: none; }
-    }
     .toast {
       position: fixed;
       top: 80px;
@@ -179,19 +156,17 @@
     </div>
   </div>
 
-  <div class="bottom-nav">
-    <a href="home.html" class="nav-link" data-page="home.html"><i class="fas fa-home"></i></a>
-    <a href="announcement-events.html" class="nav-link" data-page="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
-    <a href="downloads.html" class="nav-link" data-page="downloads.html"><i class="fas fa-download"></i></a>
-    <a href="cbt.html" class="nav-link" data-page="cbt.html"><i class="fas fa-question"></i></a>
-    <a href="feedback.html" class="nav-link" data-page="feedback.html"><i class="fas fa-comment"></i></a>
-  </div>
+  <!-- 🟡 Bottom Navigation will load here -->
+  <div id="bottom-nav"></div>
 
+  <!-- 🔥 Toast Notification -->
   <div class="toast" id="toast"></div>
 
+  <!-- 🔥 Firebase Config + Nav Loader -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -204,43 +179,39 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    const welcome = document.getElementById("welcome");
-    const matric = document.getElementById("matricDisplay");
-    const fullName = sessionStorage.getItem("userFullName");
-    const matricNumber = sessionStorage.getItem("userMatric");
-
-    if (fullName) {
-      const firstName = fullName.split(" ")[0].toUpperCase();
-      welcome.textContent = `Welcome, ${firstName}`;
-    } else {
-      welcome.textContent = "Welcome, Student";
-    }
-
-    if (matricNumber) {
-      matric.textContent = `Matric Number: ${matricNumber}`;
-    }
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          const firstName = data.fullName?.split(" ")[0]?.toUpperCase() || "STUDENT";
+          document.getElementById("welcome").textContent = `Welcome, ${firstName}`;
+          document.getElementById("matricDisplay").textContent = `Matric Number: ${data.matricNumber || ''}`;
+        } else {
+          document.getElementById("welcome").textContent = "Welcome, Student";
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
 
     window.logoutUser = function () {
       signOut(auth)
-        .then(() => {
-          window.location.href = "login.html?status=logout";
-        })
+        .then(() => window.location.href = "login.html?status=logout")
         .catch((error) => {
-          document.getElementById("toast").textContent = "Logout failed: " + error.message;
-          document.getElementById("toast").style.display = "block";
-          setTimeout(() => document.getElementById("toast").style.display = "none", 4000);
+          const toast = document.getElementById("toast");
+          toast.textContent = "Logout failed: " + error.message;
+          toast.style.display = "block";
+          setTimeout(() => toast.style.display = "none", 4000);
         });
-    }
+    };
 
-    // Highlight current page in nav
-    const links = document.querySelectorAll(".nav-link");
-    const currentPage = window.location.pathname.split("/").pop();
-    links.forEach(link => {
-      if (link.dataset.page === currentPage) {
-        link.classList.add("active");
-      }
-    });
+    // 🟡 Load external nav
+    fetch("nav.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("bottom-nav").innerHTML = html);
   </script>
 </body>
 </html>
