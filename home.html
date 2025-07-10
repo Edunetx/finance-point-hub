@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard | FINANCE POINT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <title>FINANCE POINT</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      background-color: #000;
+      background-image: url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif');
+      background-size: cover;
+      background-position: center;
       color: gold;
-      margin: 0;
-      padding: 0;
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -24,20 +26,41 @@
       top: 0;
       z-index: 1000;
     }
-    h1 {
-      font-size: 1.8rem;
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: bold;
     }
-    .profile-pic {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
+    .profile-icon {
+      font-size: 1.4rem;
       cursor: pointer;
-      border: 2px solid gold;
+      color: gold;
+    }
+    .nav-container {
+      background: #111;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      border-bottom: 2px solid gold;
+      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+    }
+    .nav-container a {
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin: 4px;
+      transition: 0.3s;
+    }
+    .nav-container a.active {
+      background: gold;
+      color: black;
+      pointer-events: none;
     }
     .container {
-      padding: 20px;
-      max-width: 900px;
+      padding: 30px 20px;
+      max-width: 1000px;
       margin: auto;
     }
     .welcome-box {
@@ -48,81 +71,163 @@
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
     }
-    .welcome-box h2 {
-      margin-bottom: 10px;
-      font-size: 1.6rem;
+    .section {
+      background-color: rgba(25, 25, 25, 0.85);
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
-    .welcome-box p {
-      font-size: 1rem;
-      color: #ffd700;
+    .section h2 {
+      border-bottom: 1px solid gold;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      text-align: center;
+    }
+    .item {
+      margin-bottom: 15px;
+      border: 1px dashed gold;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .item img {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .item.center {
+      text-align: center;
+    }
+    .item.center p {
+      margin: 5px 0;
+    }
+    .item.center strong {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .item.center a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: gold;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .toast {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background-color: #222;
+      color: gold;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      display: none;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>FINANCE POINT</h1>
+    <a href="me.html" title="My Profile"><i class="fas fa-user-circle profile-icon"></i></a>
+  </header>
 
-<header>
-  <h1>FINANCE POINT</h1>
-  <img src="https://i.imgur.com/afGHZJf.png" alt="Profile" class="profile-pic" onclick="window.location.href='me.html'" title="View Profile" />
-</header>
-
-<div class="container">
-  <div class="welcome-box">
-    <h2 id="welcomeText">Welcome</h2>
-    <p id="matricText">Matric Number:</p>
+  <!-- 🔝 Top Navigation -->
+  <div class="nav-container">
+    <a href="home.html" class="active">Home</a>
+    <a href="announcement-events.html">Announcements</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="cbt.html">CBT</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="lostfound.html">Lost & Found</a>
   </div>
 
-  <!-- Dashboard Content Goes Here -->
-  <div>
-    <p>🎯 This is where you can add dashboard features like:</p>
-    <ul>
-      <li>📌 Latest Activities</li>
-      <li>📊 Summary of Quiz Scores</li>
-      <li>🏆 Quick Leaderboard Position</li>
-      <li>📁 Study Materials / Reminders</li>
-    </ul>
+  <div class="container">
+    <div class="welcome-box">
+      <h2 id="welcome">Welcome</h2>
+      <p id="matricDisplay"></p>
+    </div>
+
+    <div class="section">
+      <h2>Finance Tips</h2>
+      <div class="item">• Save at least 20% of all earnings monthly.</div>
+      <div class="item">• Track and review your expenses weekly.</div>
+      <div class="item">• Avoid impulse purchases — stick to your budget.</div>
+    </div>
+
+    <div class="section">
+      <h2>Latest News</h2>
+      <div class="item">• Finance Department summit holds August 2nd.</div>
+      <div class="item">• Course registration ends July 18th.</div>
+    </div>
+
+    <div class="section">
+      <h2>Birthday Wall 🎉</h2>
+      <div class="item center">
+        <img src="https://i.imgur.com/G0LZLzF.jpg" alt="Birthday">
+        <p><strong>AYUBA RACHAEL</strong></p>
+        <p>🎂 Happy Birthday! Wishing you success, peace, and joy always!</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Adverts Placement</h2>
+      <div class="item center">
+        <img src="https://i.imgur.com/3yAfXZC.jpg" alt="Advert">
+        <p><strong>OBA PRINTING SERVICES</strong></p>
+        <p>We print handouts, assignments, and more — affordable and fast!</p>
+        <a href="#">Visit Page</a>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Firebase & Script -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <div class="toast" id="toast"></div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.appspot.com",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
+  <!-- 🔥 Firebase Setup -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
 
-  const welcomeEl = document.getElementById("welcomeText");
-  const matricEl = document.getElementById("matricText");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const docRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(docRef);
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        const firstName = data.fullName?.split(" ")[0]?.toUpperCase() || "STUDENT";
-        const matric = data.matricNumber || "Unknown";
-        welcomeEl.textContent = `Welcome, ${firstName}`;
-        matricEl.textContent = `Matric Number: ${matric}`;
+    const toast = document.getElementById("toast");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          const firstName = data.fullName?.split(" ")[0]?.toUpperCase() || "STUDENT";
+          document.getElementById("welcome").textContent = `Welcome, ${firstName}`;
+          document.getElementById("matricDisplay").textContent = `Matric Number: ${data.matricNumber || ''}`;
+        } else {
+          document.getElementById("welcome").textContent = "Welcome, Student";
+        }
       } else {
-        welcomeEl.textContent = "Welcome, Student";
+        window.location.href = "login.html";
       }
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-</script>
-
+    });
+  </script>
 </body>
 </html>
