@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile - Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
+      margin: 0;
+      padding: 0;
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -19,26 +20,29 @@
       align-items: center;
       padding: 15px 20px;
       box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     header h1 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
     .nav-container {
+      background: #111;
+      padding: 10px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      background: #111;
-      padding: 10px 5px;
+      gap: 8px;
       border-bottom: 2px solid gold;
     }
     .nav-container a {
       color: gold;
       text-decoration: none;
       font-weight: bold;
-      margin: 5px;
+      background: rgba(50, 50, 50, 0.85);
       padding: 8px 14px;
-      border-radius: 6px;
-      background-color: rgba(30, 30, 30, 0.9);
+      border-radius: 8px;
       transition: 0.3s;
     }
     .nav-container a.active {
@@ -47,119 +51,143 @@
       pointer-events: none;
     }
     .container {
-      max-width: 600px;
-      margin: 30px auto;
-      background: rgba(25, 25, 25, 0.85);
-      padding: 25px;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+    .profile-box {
+      background: rgba(20, 20, 20, 0.9);
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px gold;
+      box-shadow: 0 0 12px gold;
       text-align: center;
     }
-    .profile-pic {
-      width: 120px;
-      height: 120px;
+    .profile-box img {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid gold;
-      margin-bottom: 15px;
-    }
-    .info {
       margin-bottom: 10px;
     }
-    .info strong {
-      display: block;
-      font-size: 1.2rem;
+    .profile-box h2, .profile-box p {
+      margin: 10px 0;
     }
-    .settings-link {
-      display: inline-block;
-      margin: 20px 0 10px;
-      color: gold;
-      text-decoration: none;
-      font-weight: bold;
+    .leaderboard-box {
+      margin-top: 30px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    }
+    .leaderboard-box h3 {
+      margin-bottom: 15px;
+      border-bottom: 1px solid gold;
+      padding-bottom: 5px;
+      text-align: center;
     }
     .logout-btn {
-      display: block;
-      margin-top: 30px;
-      padding: 10px 20px;
-      background: red;
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: darkred;
       color: white;
+      font-weight: bold;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
-      float: right;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>FINANCE POINT</h1>
-  </header>
-
-  <!-- 🔶 Top Navigation Bar -->
-  <div class="nav-container">
-    <a href="home.html">Home</a>
-    <a href="announcement-events.html">Announcements</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="cbt.html">CBT</a>
-    <a href="leaderboard.html">Leaderboard</a>
-    <a href="feedback.html">Feedback</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <a href="me.html" class="active">Me</a>
+<header>
+  <h1>FINANCE POINT</h1>
+  <i class="fas fa-cog logout-icon" onclick="window.location.href='settings.html'" title="Settings"></i>
+</header>
+<div class="nav-container" id="topNav"></div>
+<div class="container">
+  <div class="profile-box">
+    <img id="profilePic" src="https://via.placeholder.com/100" alt="Profile Picture"/>
+    <h2 id="userName">Student Name</h2>
+    <p id="userMatric">Matric Number</p>
   </div>
-
-  <div class="container">
-    <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic" id="profilePic">
-    
-    <div class="info">
-      <strong id="fullName">Full Name</strong>
-      <p id="matricNumber">Matric Number</p>
-      <p id="email">Email</p>
-    </div>
-
-    <a href="settings.html" class="settings-link"><i class="fas fa-cog"></i> Settings</a>
-    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+  <div class="leaderboard-box">
+    <h3>Leaderboard Stats</h3>
+    <p><strong>CBT Rank:</strong> <span id="userRank">Loading...</span></p>
+    <p><strong>Total Score:</strong> <span id="userScore">0</span></p>
   </div>
+  <button class="logout-btn" onclick="logoutUser()">Logout</button>
+</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const nameEl = document.getElementById("userName");
+  const matricEl = document.getElementById("userMatric");
+  const picEl = document.getElementById("profilePic");
+  const rankEl = document.getElementById("userRank");
+  const scoreEl = document.getElementById("userScore");
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return location.href = "login.html";
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
+  async function loadUserProfile(user) {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      nameEl.textContent = data.fullName || "Student Name";
+      matricEl.textContent = data.matricNumber || "Matric Number";
+      if (data.profileURL) picEl.src = data.profileURL;
+    }
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        document.getElementById("fullName").textContent = data.fullName || "Unknown User";
-        document.getElementById("matricNumber").textContent = `Matric Number: ${data.matricNumber || "N/A"}`;
-        document.getElementById("email").textContent = `Email: ${user.email}`;
-        if (data.photoURL) {
-          document.getElementById("profilePic").src = data.photoURL;
-        }
+    // Get leaderboard
+    const q = query(collection(db, "cbt_scores"), orderBy("score", "desc"));
+    const allScores = await getDocs(q);
+    let rank = 1;
+    allScores.forEach(docSnap => {
+      const s = docSnap.data();
+      if (s.userId === user.uid) {
+        scoreEl.textContent = s.score;
+        rankEl.textContent = rank;
+      } else {
+        rank++;
       }
     });
+  }
 
-    window.logoutUser = function () {
-      signOut(auth).then(() => {
-        location.href = "login.html?status=logout";
+  onAuthStateChanged(auth, user => {
+    if (!user) return window.location.href = "login.html";
+    loadUserProfile(user);
+  });
+
+  window.logoutUser = function () {
+    signOut(auth).then(() => window.location.href = "login.html");
+  };
+
+  // Load nav
+  fetch("nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("topNav").innerHTML = html;
+      const current = window.location.pathname.split("/").pop();
+      document.querySelectorAll(".nav-container a").forEach(link => {
+        if (link.getAttribute("href") === current) {
+          link.classList.add("active");
+        }
       });
-    };
-  </script>
+    });
+</script>
 </body>
 </html>
