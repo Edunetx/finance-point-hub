@@ -1,0 +1,62 @@
+<style>
+  #bottom-nav-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #111;
+    border-top: 2px solid #ffcc00;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    z-index: 1000;
+  }
+
+  .nav-link {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    padding: 8px 12px;
+    margin: 4px;
+    border-radius: 8px;
+    color: #ffcc00;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .nav-link:hover {
+    background-color: #2c2c2c;
+  }
+
+  .nav-link.disabled {
+    color: #777;
+    pointer-events: none;
+    background-color: #0b0b0b;
+    border: 1px solid #222;
+  }
+</style>
+
+<div id="bottom-nav-container">
+  <a href="index.html" class="nav-link" data-page="index.html">Home</a>
+  <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+  <a href="cbt.html" class="nav-link" data-page="cbt.html">CBT</a>
+  <a href="cbt-practice.html" class="nav-link" data-page="cbt-practice.html">Practice</a>
+  <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html">Leaderboard</a>
+  <a href="executives.html" class="nav-link" data-page="executives.html">Executives</a>
+  <a href="events.html" class="nav-link" data-page="events.html">Events</a>
+  <a href="downloads.html" class="nav-link" data-page="downloads.html">Downloads</a>
+  <a href="lost-found.html" class="nav-link" data-page="lost-found.html">Lost & Found</a>
+  <a href="feedback.html" class="nav-link" data-page="feedback.html">Feedback Box</a>
+</div>
+
+<script>
+  // Disable current page’s link
+  const links = document.querySelectorAll('.nav-link');
+  const current = window.location.pathname.split("/").pop();
+  links.forEach(link => {
+    if (link.getAttribute('data-page') === current) {
+      link.classList.add('disabled');
+    }
+  });
+</script>
