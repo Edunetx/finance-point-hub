@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Your Profile - Finance Point</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>My Profile | FINANCE POINT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -13,6 +13,7 @@
       margin: 0;
       padding: 0;
     }
+
     header {
       background-color: rgba(20, 20, 20, 0.95);
       display: flex;
@@ -20,102 +21,132 @@
       align-items: center;
       padding: 15px 20px;
       box-shadow: 0 0 10px gold;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
-    header h1 {
+
+    h1 {
       font-size: 1.5rem;
     }
+
     .nav-container {
       background: #111;
       padding: 10px;
       display: flex;
       justify-content: space-around;
-      flex-wrap: wrap;
-      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+      border-bottom: 2px solid gold;
     }
+
     .nav-container a {
       color: gold;
       text-decoration: none;
-      padding: 8px 12px;
-      margin: 5px;
       font-weight: bold;
-      border-radius: 6px;
-      transition: 0.3s;
+      padding: 8px 12px;
+      border-radius: 5px;
     }
+
     .nav-container a.active {
       background: gold;
       color: black;
       pointer-events: none;
     }
+
     .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: rgba(20, 20, 20, 0.9);
-      padding: 20px;
+      padding: 30px 20px;
+      max-width: 500px;
+      margin: auto;
+      background-color: rgba(25, 25, 25, 0.9);
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
+      margin-top: 40px;
     }
-    .profile-pic {
+
+    .profile-section {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-section img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid gold;
-      display: block;
-      margin: 0 auto 20px;
+      border: 2px solid gold;
+      margin-bottom: 10px;
     }
-    label {
+
+    .info {
+      margin: 15px 0;
+    }
+
+    .info label {
       display: block;
-      margin-top: 15px;
       font-weight: bold;
+      margin-bottom: 5px;
     }
-    input {
+
+    .info input {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
+      background-color: #111;
       border: 1px solid gold;
-      background: #111;
+      border-radius: 6px;
       color: gold;
     }
-    input[readonly] {
-      background: #222;
-      color: #888;
+
+    .info input[disabled] {
+      opacity: 0.6;
     }
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
+
+    .save-btn {
       background: gold;
-      color: black;
-      font-weight: bold;
+      color: #000;
+      padding: 10px 20px;
       border: none;
+      font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
-      width: 100%;
+      margin-top: 15px;
     }
+
+    .logout-area {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 40px;
+    }
+
+    .logout-area button {
+      background: none;
+      border: none;
+      color: gold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .logout-area button i {
+      margin-right: 6px;
+    }
+
     .toast {
       position: fixed;
       top: 80px;
       right: 20px;
-      background: #222;
+      background-color: #222;
       color: gold;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border-radius: 6px;
-      box-shadow: 0 0 10px gold;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
       display: none;
-      z-index: 1000;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>My Profile</h1>
-    <a href="home.html" title="Back to Home"><i class="fas fa-home logout-icon"></i></a>
+    <h1>FINANCE POINT - My Profile</h1>
   </header>
 
-  <!-- Top Nav -->
   <div class="nav-container">
     <a href="home.html">Home</a>
     <a href="announcement-events.html">Announcements</a>
@@ -128,25 +159,38 @@
   </div>
 
   <div class="container">
-    <img src="https://i.imgur.com/2zK3zsi.png" alt="Profile Picture" class="profile-pic" />
-    <label>Full Name:</label>
-    <input type="text" id="fullName" />
+    <div class="profile-section">
+      <img src="https://i.imgur.com/G0LZLzF.jpg" id="profileImage" alt="Profile Picture">
+      <p><small>Profile Picture (coming soon to edit)</small></p>
+    </div>
 
-    <label>Matric Number:</label>
-    <input type="text" id="matricNumber" />
+    <div class="info">
+      <label>Full Name</label>
+      <input type="text" id="fullName" disabled>
+    </div>
 
-    <label>Email:</label>
-    <input type="email" id="email" readonly />
+    <div class="info">
+      <label>Matric Number</label>
+      <input type="text" id="matricNumber" disabled>
+    </div>
 
-    <button onclick="saveChanges()">Save Changes</button>
+    <div class="info">
+      <label>Email</label>
+      <input type="email" id="emailInput">
+    </div>
+
+    <button class="save-btn" onclick="saveEmail()">Save Email</button>
+
+    <div class="logout-area">
+      <button onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <!-- Firebase Setup -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut, updateEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -161,40 +205,45 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
     const toast = document.getElementById("toast");
 
+    let currentUser = null;
+
     onAuthStateChanged(auth, async (user) => {
-      if (!user) return window.location.href = "login.html";
-
-      const userRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(userRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        document.getElementById("fullName").value = data.fullName || '';
-        document.getElementById("matricNumber").value = data.matricNumber || '';
-        document.getElementById("email").value = user.email || '';
+      if (user) {
+        currentUser = user;
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById("fullName").value = data.fullName || "N/A";
+          document.getElementById("matricNumber").value = data.matricNumber || "N/A";
+          document.getElementById("emailInput").value = user.email;
+        }
+      } else {
+        window.location.href = "login.html";
       }
     });
 
-    window.saveChanges = async () => {
-      const fullName = document.getElementById("fullName").value.trim();
-      const matricNumber = document.getElementById("matricNumber").value.trim();
-      const user = auth.currentUser;
-      if (!user || !fullName || !matricNumber) return;
-
-      try {
-        await updateDoc(doc(db, "users", user.uid), {
-          fullName,
-          matricNumber
-        });
-        toast.textContent = "Profile updated successfully!";
-      } catch (e) {
-        toast.textContent = "Update failed: " + e.message;
+    window.saveEmail = async function () {
+      const email = document.getElementById("emailInput").value;
+      if (currentUser && email) {
+        try {
+          await updateEmail(currentUser, email);
+          await updateDoc(doc(db, "users", currentUser.uid), { email });
+          toast.textContent = "Email updated successfully.";
+        } catch (e) {
+          toast.textContent = "Error: " + e.message;
+        }
+        toast.style.display = "block";
+        setTimeout(() => toast.style.display = "none", 3000);
       }
-      toast.style.display = "block";
-      setTimeout(() => toast.style.display = "none", 3000);
+    }
+
+    window.logoutUser = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
     };
   </script>
 </body>
