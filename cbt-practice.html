@@ -64,9 +64,15 @@
     button:hover {
       background-color: #ffaa00;
     }
-    #result {
-      margin-top: 15px;
+    #result, #summary {
+      margin-top: 20px;
       font-weight: bold;
+    }
+    #summary {
+      font-size: 1.2rem;
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -82,65 +88,111 @@
   </nav>
 
   <main>
-    <h2>Answer the following question:</h2>
-    <div id="question-container">
-      <div class="question-box" id="question-box">
-        <p><strong>Loading question...</strong></p>
-      </div>
-    </div>
+    <h2>Answer the following questions:</h2>
+    <div id="question-container"></div>
     <div id="result"></div>
+    <div id="summary"></div>
   </main>
 
   <script>
     const db = firebase.firestore();
-    let currentQuestion = null;
+    let questions = [];
+    let current = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let currentUserEmail = '';
 
-    function renderQuestion(data) {
-      const container = document.getElementById("question-box");
-      container.innerHTML = `
-        <p><strong>${data.question}</strong></p>
-        ${data.options.map((opt, index) => `
-          <div class="option">
-            <input type="radio" name="answer" value="${opt}" id="opt${index}">
-            <label for="opt${index}">${opt}</label>
-          </div>
-        `).join('')}
-        <br>
-        <button onclick="checkAnswer()">Submit</button>
-      `;
-      currentQuestion = data;
-    }
-
-    function checkAnswer() {
-      const selected = document.querySelector('input[name="answer"]:checked');
-      const resultBox = document.getElementById("result");
-      if (!selected) {
-        resultBox.innerHTML = "❗ Please choose an answer.";
-        resultBox.style.color = "orange";
-        return;
-      }
-      const isCorrect = selected.value === currentQuestion.answer;
-      resultBox.innerHTML = isCorrect ? "✅ Correct!" : `❌ Incorrect. Correct Answer: <b>${currentQuestion.answer}</b>`;
-      resultBox.style.color = isCorrect ? "lightgreen" : "red";
-    }
-
-    async function loadQuestion() {
-      const snapshot = await db.collection("cbt_questions").limit(1).get();
-      if (snapshot.empty) {
-        document.getElementById("question-box").innerHTML = "<p>No questions found.</p>";
-        return;
-      }
-      const data = snapshot.docs[0].data();
-      renderQuestion(data);
-    }
-
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        loadQuestion();
+        currentUserEmail = user.email;
+        const snapshot = await db.collection("cbt_questions").get();
+        const allQuestions = snapshot.docs.map(doc => doc.data());
+        questions = shuffle(allQuestions).slice(0, 5); // pick 5 questions
+        showQuestion();
       } else {
-        document.getElementById("question-box").innerHTML = "<p>Please login to attempt the CBT.</p>";
+        document.getElementById("question-container").innerHTML = "<p>Please login to access CBT.</p>";
       }
     });
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function showQuestion() {
+      const q = questions[current];
+      const container = document.getElementById("question-container");
+      document.getElementById("result").innerHTML = "";
+      container.innerHTML = `
+        <div class="question-box">
+          <p><strong>Q${current + 1}:</strong> ${q.question}</p>
+          ${q.options.map((opt, i) => `
+            <div class="option">
+              <input type="radio" name="answer" value="${opt}" id="opt${i}">
+              <label for="opt${i}">${opt}</label>
+            </div>
+          `).join("")}
+          <br>
+          <button onclick="submitAnswer()">Submit</button>
+        </div>
+      `;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      const correctAns = questions[current].answer;
+      if (!selected) {
+        document.getElementById("result").innerHTML = "❗ Please select an answer.";
+        document.getElementById("result").style.color = "orange";
+        return;
+      }
+
+      if (selected.value === correctAns) {
+        correctCount++;
+      } else {
+        wrongCount++;
+      }
+
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showSummary();
+        saveScore();
+      }
+    }
+
+    function showSummary() {
+      document.getElementById("question-container").innerHTML = "";
+      const total = questions.length;
+      const score = Math.round((correctCount / total) * 100);
+      document.getElementById("summary").innerHTML = `
+        <h3>✅ CBT Completed!</h3>
+        <p>Total Questions: ${total}</p>
+        <p>Correct Answers: ${correctCount}</p>
+        <p>Wrong Answers: ${wrongCount}</p>
+        <p>Score: <strong>${score}%</strong></p>
+      `;
+    }
+
+    function saveScore() {
+      const now = new Date();
+      const timestamp = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+      const total = questions.length;
+      const score = Math.round((correctCount / total) * 100);
+
+      db.collection("cbt_scores").add({
+        email: currentUserEmail,
+        score: score,
+        correct: correctCount,
+        wrong: wrongCount,
+        total: total,
+        date: timestamp
+      }).then(() => {
+        console.log("Score saved successfully.");
+      }).catch(err => {
+        console.error("Error saving score:", err);
+      });
+    }
   </script>
 
 </body>
