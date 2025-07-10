@@ -1,1 +1,316 @@
-<!DOCTYPE html><html><head><title>Admin Panel</title></head><body><h1>Admin Controls</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel - Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: rgba(20, 20, 20, 0.95);
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.5rem;
+    }
+    .section {
+      background-color: rgba(20, 20, 20, 0.85);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
+      max-width: 800px;
+    }
+    .section h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid gold;
+      padding-bottom: 5px;
+    }
+    label, input, textarea, select, button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      font-size: 1rem;
+    }
+    input, textarea, select {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid gold;
+      background: #111;
+      color: gold;
+    }
+    button {
+      background-color: gold;
+      color: black;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .logout-btn {
+      background-color: crimson;
+      color: white;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: crimson;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Panel</h1>
+    <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </header>
+
+  <div id="errorBox" class="error hidden">Access Denied: Not an Admin</div>
+
+  <div id="adminContent" class="hidden">
+    <div class="section" id="announcementSection">
+      <h2>📢 Announcements</h2>
+      <input type="text" id="announcementTitle" placeholder="Enter announcement title" />
+      <textarea id="announcementText" placeholder="Enter announcement text"></textarea>
+      <button onclick="addAnnouncement()">Add Announcement</button>
+      <div id="announcementList"></div>
+    </div>
+    <div class="section" id="eventSection">
+      <h2>🎉 Events</h2>
+      <input type="text" id="eventTitle" placeholder="Event title" />
+      <input type="text" id="eventDate" placeholder="Event date (e.g., July 20)" />
+      <textarea id="eventDetails" placeholder="Details about the event"></textarea>
+      <button onclick="addEvent()">Add Event</button>
+      <div id="eventList"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc, getDocs, deleteDoc, doc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      getAuth, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const errorBox = document.getElementById("errorBox");
+    const adminContent = document.getElementById("adminContent");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return location.href = "login.html";
+
+      const userDoc = await getDocs(collection(db, "users"));
+      let isAdmin = false;
+      userDoc.forEach(docSnap => {
+        if (docSnap.id === user.uid && docSnap.data().role === "admin") {
+          isAdmin = true;
+        }
+      });
+
+      if (isAdmin) {
+        adminContent.classList.remove("hidden");
+        loadAnnouncements();
+        loadEvents();
+      } else {
+        errorBox.classList.remove("hidden");
+      }
+    });
+
+    window.logout = () => signOut(auth).then(() => location.href = "login.html");
+
+    async function addAnnouncement() {
+      const title = document.getElementById("announcementTitle").value.trim();
+      const text = document.getElementById("announcementText").value.trim();
+      if (!title || !text) return alert("Please fill all fields");
+
+      await addDoc(collection(db, "announcements"), {
+        title,
+        text,
+        timestamp: new Date()
+      });
+
+      document.getElementById("announcementTitle").value = "";
+      document.getElementById("announcementText").value = "";
+      loadAnnouncements();
+    }
+
+    async function loadAnnouncements() {
+      const list = document.getElementById("announcementList");
+      list.innerHTML = "";
+      const snap = await getDocs(collection(db, "announcements"));
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        const div = document.createElement("div");
+        div.style.border = "1px dashed gold";
+        div.style.margin = "10px 0";
+        div.style.padding = "10px";
+        div.innerHTML = `
+          <strong>${data.title}</strong><br>
+          <p>${data.text}</p>
+          <button onclick="deleteAnnouncement('${docSnap.id}')">Delete</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function deleteAnnouncement(id) {
+      await deleteDoc(doc(db, "announcements", id));
+      loadAnnouncements();
+    }
+    async function addEvent() {
+      const title = document.getElementById("eventTitle").value.trim();
+      const date = document.getElementById("eventDate").value.trim();
+      const details = document.getElementById("eventDetails").value.trim();
+      if (!title || !date || !details) return alert("Please fill all fields");
+
+      await addDoc(collection(db, "events"), {
+        title,
+        date,
+        details,
+        timestamp: new Date()
+      });
+
+      document.getElementById("eventTitle").value = "";
+      document.getElementById("eventDate").value = "";
+      document.getElementById("eventDetails").value = "";
+      loadEvents();
+    }
+
+    async function loadEvents() {
+      const list = document.getElementById("eventList");
+      list.innerHTML = "";
+      const snap = await getDocs(collection(db, "events"));
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        const div = document.createElement("div");
+        div.style.border = "1px dashed gold";
+        div.style.margin = "10px 0";
+        div.style.padding = "10px";
+        div.innerHTML = `
+          <strong>${data.title} (${data.date})</strong><br>
+          <p>${data.details}</p>
+          <button onclick="deleteEvent('${docSnap.id}')">Delete</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function deleteEvent(id) {
+      await deleteDoc(doc(db, "events", id));
+      loadEvents();
+    }
+
+    // 🎂 BIRTHDAY WALL - JSONStorage
+    async function updateBirthday(name, message, imageURL) {
+      const data = {
+        name,
+        message,
+        image: imageURL,
+        timestamp: new Date().toISOString()
+      };
+      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      alert("Birthday Wall updated");
+    }
+
+    // 📢 ADVERT PLACEMENT - JSONStorage
+    async function updateAdvert(title, description, imageURL) {
+      const data = {
+        title,
+        description,
+        image: imageURL,
+        timestamp: new Date().toISOString()
+      };
+      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      alert("Advert Placement updated");
+    }
+
+  </script>
+</body>
+</html>
+// 🎯 FINANCE FACTS (Future Optional)
+  async function updateFinanceFact(text) {
+    await setDoc(doc(db, "extras", "finance_fact"), {
+      text,
+      timestamp: new Date()
+    });
+    alert("Finance Fact updated");
+  }
+
+  // 💬 FEEDBACK BOX (Future Optional)
+  async function clearFeedbacks() {
+    const snap = await getDocs(collection(db, "feedback"));
+    const promises = snap.docs.map(doc => deleteDoc(doc.ref));
+    await Promise.all(promises);
+    alert("All feedback messages deleted.");
+  }
+
+  // 🧠 QUIZ OF THE WEEK (Future Optional)
+  async function updateWeeklyQuiz(question, optionA, optionB, optionC, optionD, answer) {
+    await setDoc(doc(db, "weekly_quiz", "quiz"), {
+      question,
+      options: { A: optionA, B: optionB, C: optionC, D: optionD },
+      answer,
+      timestamp: new Date()
+    });
+    alert("Quiz of the Week updated");
+  }
+
+  // 🥇 LEADERBOARD RESET (Optional)
+  async function resetLeaderboard() {
+    const snap = await getDocs(collection(db, "cbt_scores"));
+    const promises = snap.docs.map(doc => deleteDoc(doc.ref));
+    await Promise.all(promises);
+    alert("Leaderboard has been reset.");
+  }
+
+  // 📣 NOTIFICATION POPUP
+  async function updatePopupNotification(message) {
+    await setDoc(doc(db, "extras", "popup"), {
+      message,
+      timestamp: new Date()
+    });
+    alert("Notification popup updated!");
+  }
