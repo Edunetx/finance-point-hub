@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign In</title>
+  <title>Login</title>
   <style>
     body {
       margin: 0;
@@ -19,29 +19,40 @@
       align-items: center;
       justify-content: center;
     }
+
     .login-container {
       background-color: rgba(20, 20, 20, 0.88);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-      max-width: 400px;
+      max-width: 350px;
       width: 90%;
       text-align: center;
     }
+
     h2 {
       color: gold;
       margin-bottom: 20px;
     }
+
     input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto;
+      display: block;
+      border: 1px solid gold;
       border-radius: 6px;
       font-size: 1rem;
+      background-color: #000;
+      color: gold;
     }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
     button {
-      width: 100%;
+      width: 90%;
       padding: 12px;
       background-color: gold;
       color: #000;
@@ -49,20 +60,24 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 15px;
     }
+
     button:hover {
       background-color: #ffd700;
     }
+
     .bottom-link {
       color: #ccc;
       margin-top: 15px;
       font-size: 0.9rem;
     }
+
     .bottom-link a {
       color: gold;
       text-decoration: none;
     }
+
     .toast {
       position: fixed;
       top: 20px;
@@ -75,26 +90,27 @@
       display: none;
       z-index: 999;
     }
+
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <div class="login-container">
+  <div class="login-container" id="loginContainer">
     <h2>Sign In</h2>
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Password" required />
-    <div class="bottom-link" style="text-align: right; margin-top: -5px;">
-      <a href="#" onclick="forgotPassword()">Forgot Password?</a>
-    </div>
-    <button onclick="loginUser()">Sign In</button>
-    <div class="bottom-link">New here? <a href="signup.html">Create account</a></div>
+    <button onclick="login()">Sign In</button>
+    <div class="bottom-link">Don't have an account? <a href="signup.html">Sign up</a></div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-    import { getFirestore, getDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -107,7 +123,6 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -116,61 +131,37 @@
       setTimeout(() => toast.style.display = "none", 4000);
     }
 
-    // Handle logout redirect
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("status") === "logout") {
-        showToast("Signed out successfully!");
-        history.replaceState(null, "", "login.html");
-      }
-    });
-
-    window.loginUser = async function () {
+    window.login = async function () {
+      const container = document.getElementById("loginContainer");
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      if (!email || !password) return showToast("Please fill in all fields");
+      if (!email || !password) return showToast("Fill in both email and password");
 
+      container.classList.add("loading");
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
         if (!user.emailVerified) {
-          showToast("Please verify your email before signing in");
+          showToast("Verify your email before logging in. Check your inbox and spam.");
+          container.classList.remove("loading");
           return;
         }
 
-        const userDoc = await getDoc(doc(db, "Users", user.uid));
-        if (userDoc.exists()) {
-          sessionStorage.setItem("userFullName", userDoc.data().fullName);
-          sessionStorage.setItem("userMatric", userDoc.data().matricNumber);
-        }
-
-        showToast("Sign in successful");
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 2000);
+        showToast("Login successful!");
+        setTimeout(() => window.location.href = "home.html", 1500);
       } catch (error) {
         let message = "Login failed";
-        if (error.code === "auth/wrong-password") message = "Incorrect password";
-        else if (error.code === "auth/user-not-found") message = "Email not found";
-        else if (error.code === "auth/invalid-email") message = "Invalid email format";
+        if (error.code === "auth/user-not-found") message = "No user found with this email";
+        else if (error.code === "auth/wrong-password") message = "Incorrect password";
+        else if (error.code === "auth/invalid-email") message = "Invalid email address";
         else message = error.message;
         showToast(message);
+      } finally {
+        container.classList.remove("loading");
       }
-    }
-
-    window.forgotPassword = async function () {
-      const email = prompt("Enter your registered email to reset password:");
-      if (!email) return;
-
-      try {
-        await sendPasswordResetEmail(auth, email);
-        showToast("Password reset link sent to your email");
-      } catch (error) {
-        showToast("Error: " + error.message);
-      }
-    }
+    };
   </script>
 </body>
 </html>
