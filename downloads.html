@@ -1,124 +1,142 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Resources | Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Downloads - Finance Point</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
-      padding-bottom: 80px;
+      margin: 0;
+      padding: 0;
     }
+
     header {
       background-color: rgba(20, 20, 20, 0.95);
-      text-align: center;
+      display: flex;
+      align-items: center;
       padding: 15px 20px;
-      font-size: 1.5rem;
-      font-weight: bold;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
-    .download-card {
-      background-color: rgba(30, 30, 30, 0.9);
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-    }
-    .download-card h4 {
-      margin: 0 0 5px;
-      font-size: 1.1rem;
-      color: gold;
-    }
-    .download-card p {
-      color: #ccc;
-      margin: 0 0 10px;
-      font-size: 0.95rem;
-    }
-    .download-card a {
-      display: inline-block;
-      padding: 8px 16px;
-      background-color: gold;
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(20, 20, 20, 0.95);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .bottom-nav a {
-      color: gold;
+
+    header i {
       font-size: 1.4rem;
+      color: gold;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid gold;
+      padding-bottom: 5px;
+    }
+
+    .item {
+      margin: 15px 0;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px dashed gold;
+      border-radius: 6px;
+    }
+
+    .item a {
+      display: inline-block;
+      margin-top: 8px;
+      color: #000;
+      background: gold;
+      padding: 6px 12px;
+      border-radius: 4px;
       text-decoration: none;
+      font-weight: bold;
     }
-    .bottom-nav a.active {
-      opacity: 0.4;
-      pointer-events: none;
+
+    .item a:hover {
+      background: #ffd700;
     }
-    @media(min-width: 768px) {
-      .bottom-nav { display: none; }
+
+    .empty-message {
+      text-align: center;
+      margin-top: 30px;
+      font-style: italic;
+      color: #bbb;
     }
   </style>
 </head>
 <body>
-  <header>Study Resources & Materials</header>
-  <div class="container"><div class="download-card">
-  <h4>FIN 201: Corporate Finance I</h4>
-  <p>2nd Semester | 200 Level | Handout + Slides</p>
-  <a href="#">Download</a>
-</div>
+  <header>
+    <i class="fas fa-arrow-left" onclick="history.back()" title="Go Back"></i>
+    <h1>Downloads</h1>
+  </header>
 
-<div class="download-card">
-  <h4>FIN 206: Finance Theory</h4>
-  <p>1st Semester | 200 Level | Past Questions & Notes</p>
-  <a href="#">Download</a>
-</div>
+  <div class="container">
+    <h2>Available Materials</h2>
+    <div id="downloadsList">
+      <p class="empty-message">Loading...</p>
+    </div>
+  </div>
 
-<div class="download-card">
-  <h4>FIN 217: Law of Banking</h4>
-  <p>Important case studies + Lecture Notes</p>
-  <a href="#">Download</a>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<div class="download-card">
-  <h4>ENT 204: Entrepreneurial Studies</h4>
-  <p>Business plan sample + Class workbook</p>
-  <a href="#">Download</a>
-</div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
 
-  </div>  <div class="bottom-nav">
-    <a href="home.html" class="nav-link" data-page="home.html"><i class="fas fa-home"></i></a>
-    <a href="announcement-events.html" class="nav-link" data-page="announcement-events.html"><i class="fas fa-bullhorn"></i></a>
-    <a href="#" class="nav-link active" data-page="downloads.html"><i class="fas fa-download"></i></a>
-    <a href="cbt.html" class="nav-link" data-page="cbt.html"><i class="fas fa-question"></i></a>
-    <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html"><i class="fas fa-trophy"></i></a>
-  </div>  <script>
-    const links = document.querySelectorAll(".nav-link");
-    const currentPage = window.location.pathname.split("/").pop();
-    links.forEach(link => {
-      if (link.dataset.page === currentPage) {
-        link.classList.add("active");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const downloadsList = document.getElementById("downloadsList");
+
+    async function loadDownloads() {
+      downloadsList.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "downloads"));
+
+      if (snapshot.empty) {
+        downloadsList.innerHTML = `<p class="empty-message">No files uploaded yet. Check back later.</p>`;
+        return;
       }
-    });
-  </script></body>
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `
+          <strong>${data.title || 'Untitled Material'}</strong>
+          <p>${data.description || 'No description'}</p>
+          <a href="${data.link}" target="_blank">Download</a>
+        `;
+        downloadsList.appendChild(item);
+      });
+    }
+
+    loadDownloads();
+  </script>
+</body>
 </html>
