@@ -77,11 +77,10 @@
     input[readonly] {
       opacity: 0.6;
     }
-    input[type="file"] {
-      margin-top: 10px;
-      color: gold;
+    #photoInput {
+      display: none;
     }
-    img#preview {
+    #preview {
       display: block;
       margin: 10px auto;
       width: 120px;
@@ -89,6 +88,10 @@
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid gold;
+      cursor: pointer;
+    }
+    #preview:hover {
+      box-shadow: 0 0 10px gold;
     }
     button {
       margin-top: 20px;
@@ -132,9 +135,9 @@
   <label>Email</label>
   <input type="email" id="email" />
 
-  <label>Profile Picture</label>
+  <label>Tap the image to change profile picture</label>
   <input type="file" id="photoInput" accept="image/*" />
-  <img id="preview" src="" alt="Profile Preview" />
+  <img id="preview" src="https://i.imgur.com/nq3Z1Yz.png" alt="Profile" />
 
   <button id="saveBtn">Save Changes</button>
 </div>
@@ -167,8 +170,12 @@
   const saveBtn = document.getElementById("saveBtn");
 
   let currentUser;
-  let currentPhotoUrl = "";
+  let currentPhotoURL = "";
 
+  // Preview click opens file dialog
+  preview.addEventListener("click", () => photoInput.click());
+
+  // Load user info
   onAuthStateChanged(auth, async (user) => {
     if (!user) return window.location.href = "login.html";
     currentUser = user;
@@ -180,40 +187,46 @@
       nameField.value = data.fullName || "";
       matricField.value = data.matricNumber || "";
       emailField.value = user.email || "";
-      if (data.photoURL) {
-        preview.src = data.photoURL;
-        currentPhotoUrl = data.photoURL;
-      } else {
-        preview.src = "https://i.imgur.com/nq3Z1Yz.png"; // default placeholder
-      }
+      currentPhotoURL = data.photoURL || "https://i.imgur.com/nq3Z1Yz.png";
+      preview.src = currentPhotoURL;
     }
   });
 
   saveBtn.addEventListener("click", async () => {
     if (!currentUser) return;
 
-    const email = emailField.value.trim();
-    let newPhotoURL = currentPhotoUrl;
-
+    const newEmail = emailField.value.trim();
     const file = photoInput.files[0];
+    let newPhotoURL = currentPhotoURL;
+
+    // Upload photo if selected
     if (file) {
-      const storageRef = sRef(storage, `profile_pictures/${currentUser.uid}`);
-      await uploadBytes(storageRef, file);
-      newPhotoURL = await getDownloadURL(storageRef);
+      const imgRef = sRef(storage, `profile_pictures/${currentUser.uid}`);
+      await uploadBytes(imgRef, file);
+      newPhotoURL = await getDownloadURL(imgRef);
     }
 
+    // Update Firestore
     await updateDoc(doc(db, "users", currentUser.uid), {
       photoURL: newPhotoURL
     });
 
-    if (email !== currentUser.email) {
-      await updateEmail(currentUser, email);
+    // Update email
+    if (newEmail !== currentUser.email) {
+      await updateEmail(currentUser, newEmail).catch(err => alert("Error: " + err.message));
     }
 
     alert("Profile updated!");
     location.reload();
   });
-</script>
 
+  // Show preview of selected file
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+    }
+  });
+</script>
 </body>
 </html>
