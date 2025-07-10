@@ -3,27 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>CBT - Start</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
       font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 100px 20px;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
       background-color: rgba(20, 20, 20, 0.95);
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 15px 20px;
       box-shadow: 0 0 10px gold;
       position: sticky;
       top: 0;
       z-index: 1000;
-      justify-content: space-between;
     }
 
     .back-icon {
@@ -37,48 +45,68 @@
       margin: 0 auto;
     }
 
-    .container {
-      background: rgba(20, 20, 20, 0.8);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px gold;
-      max-width: 500px;
-      margin: auto;
+    .main-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .content-box {
+      background: rgba(20, 20, 20, 0.9);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px gold;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .content-box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
 
     button {
-      padding: 15px 25px;
+      padding: 14px 28px;
       font-size: 1rem;
       background-color: gold;
       color: black;
       border: none;
       border-radius: 8px;
-      margin-top: 20px;
       cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #ffd700;
     }
 
     .disabled {
       background-color: gray;
       cursor: not-allowed;
     }
-
-    .countdown {
-      font-size: 1.2rem;
-      margin-top: 15px;
-    }
   </style>
 </head>
 <body>
   <header>
-    <i class="fas fa-arrow-left back-icon" onclick="window.location.href='home.html'" title="Go back"></i>
+    <i class="fas fa-arrow-left back-icon" onclick="window.location.href='home.html'" title="Go Back"></i>
     <h1>FINANCE POINT</h1>
-    <span></span> <!-- Filler to balance the flex layout -->
+    <span></span>
   </header>
 
-  <div class="container">
-    <h2>Start Your CBT Session</h2>
-    <p class="countdown" id="countdownMsg">Checking eligibility...</p>
-    <button id="startBtn" class="disabled" disabled>Start CBT</button>
+  <div class="main-area">
+    <div class="content-box">
+      <h2>Start Your CBT Session</h2>
+      <p class="countdown" id="countdownMsg">Checking eligibility...</p>
+      <button id="startBtn" class="disabled" disabled>Start CBT</button>
+    </div>
   </div>
 
   <script type="module">
@@ -114,7 +142,7 @@
           const diff = now - lastCBT;
 
           if (diff >= 180000) {
-            countdownMsg.textContent = "You're eligible to start.";
+            countdownMsg.textContent = "✅ You're eligible to start.";
             startBtn.disabled = false;
             startBtn.classList.remove("disabled");
           } else {
@@ -131,7 +159,7 @@
             }, 1000);
           }
         } else {
-          countdownMsg.textContent = "No CBT history. You can start now.";
+          countdownMsg.textContent = "No CBT history found. You can start now.";
           startBtn.disabled = false;
           startBtn.classList.remove("disabled");
         }
@@ -142,7 +170,7 @@
 
     function updateCountdown(ms) {
       const sec = Math.floor(ms / 1000);
-      countdownMsg.textContent = `Please wait ${sec} second(s) to retry.`;
+      countdownMsg.textContent = `⏳ Please wait ${sec} second(s) to retry.`;
     }
 
     startBtn.onclick = () => {
