@@ -18,31 +18,41 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #000; /* enforce black background */
     }
+
     .signup-container {
       background-color: rgba(20, 20, 20, 0.88);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-      max-width: 360px;
-      width: 100%;
+      max-width: 350px;
+      width: 90%;
       text-align: center;
     }
+
     h2 {
       color: gold;
       margin-bottom: 20px;
     }
+
     input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto;
+      display: block;
+      border: 1px solid gold;
       border-radius: 6px;
       font-size: 1rem;
+      background-color: #000;
+      color: gold;
     }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
     button {
-      width: 100%;
+      width: 90%;
       padding: 12px;
       background-color: gold;
       color: #000;
@@ -50,20 +60,24 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 15px;
     }
+
     button:hover {
       background-color: #ffd700;
     }
+
     .bottom-link {
       color: #ccc;
       margin-top: 15px;
       font-size: 0.9rem;
     }
+
     .bottom-link a {
       color: gold;
       text-decoration: none;
     }
+
     .toast {
       position: fixed;
       top: 20px;
@@ -76,6 +90,7 @@
       display: none;
       z-index: 999;
     }
+
     .loading {
       opacity: 0.6;
       pointer-events: none;
@@ -136,16 +151,15 @@
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // 🔥 Store in lowercase 'users' collection (fix)
-        await setDoc(doc(db, "users", user.uid), {
+        await setDoc(doc(db, "Users", user.uid), {
           fullName,
           matricNumber,
           email
         });
 
         await sendEmailVerification(user);
-        showToast("Signup successful. Verify your email.");
-        setTimeout(() => window.location.href = "login.html", 4000);
+        showToast("✅ Sign up successful! Check your email (including Spam) for the verification link.");
+        setTimeout(() => window.location.href = "login.html", 5000);
       } catch (error) {
         let message = "Signup failed";
         if (error.code === "auth/email-already-in-use") message = "Email already in use";
