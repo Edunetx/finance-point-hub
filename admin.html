@@ -1,5 +1,3 @@
-// ✅ Chunk 1 - Admin Panel Base Setup + Access Protection
-
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1051,8 +1049,6 @@ async function loadWeeklyQuiz() {
 
 window.addEventListener("load", loadWeeklyQuiz);
 </script>
-// ✅ Chunk 17 - Quiz of the Week Admin Panel (JSON Connected)
-
 <!-- 🔧 Admin Quiz Editor --><section id="quizAdmin" style="margin: 30px auto; max-width: 600px; padding: 20px; border: 1px solid gold; border-radius: 8px; background: rgba(255,255,255,0.03);">
   <h2 style="color: gold; text-align:center;">📝 Quiz of the Week (Admin)</h2>
   <form id="quizForm">
@@ -1159,59 +1155,97 @@ window.addEventListener("load", loadWeeklyQuiz);
 
   loadPopup();
 </script>
-  // General-purpose search filter
-  function addSearchInput(targetListId) {
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Search...";
-    input.style.cssText = "margin: 10px auto; display: block; padding: 6px; width: 80%; border-radius: 6px;";
-    input.oninput = () => {
-      const filter = input.value.toLowerCase();
-      document.querySelectorAll(`#${targetListId} .item-card`).forEach(item => {
-        const match = item.innerText.toLowerCase().includes(filter);
-        item.style.display = match ? "block" : "none";
-      });
-    };
-    const container = document.getElementById(targetListId);
-    if (container) container.parentNode.insertBefore(input, container);
-  }
+  <!-- ✅ Chunk 20: Search Filters + Clear Buttons (Fixed + Improved) -->
+<script>
+// 🎯 Add Search Input for any section
+function addSearchInput(targetListId) {
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Search...";
+  input.style.cssText = "margin: 10px auto; display: block; padding: 6px; width: 80%; border-radius: 6px;";
+  input.oninput = () => {
+    const filter = input.value.toLowerCase();
+    document.querySelectorAll(`#${targetListId} .item-card`).forEach(item => {
+      const match = item.innerText.toLowerCase().includes(filter);
+      item.style.display = match ? "block" : "none";
+    });
+  };
+  const container = document.getElementById(targetListId);
+  if (container) container.parentNode.insertBefore(input, container);
+}
 
-  // Run search inputs on needed sections
-  window.addEventListener("load", () => {
-    addSearchInput("announcementList");
-    addSearchInput("eventList");
-    addSearchInput("tipList");
-    addSearchInput("quizList");
-    addSearchInput("advertsWall");
-  });
-
-  // Optional Clear Button (For JSON-managed sections)
-  function addClearButton(listId, storageUrl) {
-    const btn = document.createElement("button");
-    btn.textContent = "🧹 Clear All";
-    btn.style.cssText = "margin: 10px auto; display: block; background:red;color:white;padding:5px 10px;border-radius:6px";
-    btn.onclick = async () => {
-      if (confirm("Are you sure you want to clear all items?")) {
-        try {
-          await fetch(storageUrl, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify([])
-          });
-          document.getElementById(listId).innerHTML = "<p>Cleared successfully.</p>";
-        } catch (err) {
-          alert("Failed to clear items.");
-        }
+// 🧹 Clear Button for JSON-managed content
+function addClearButton(listId, storageUrl) {
+  const btn = document.createElement("button");
+  btn.textContent = "🧹 Clear All";
+  btn.style.cssText = "margin: 10px auto; display: block; background:red;color:white;padding:5px 10px;border-radius:6px";
+  btn.onclick = async () => {
+    if (confirm("Are you sure you want to clear all items?")) {
+      try {
+        await fetch(storageUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify([])
+        });
+        document.getElementById(listId).innerHTML = "<p style='color:limegreen;'>✅ Cleared successfully.</p>";
+      } catch (err) {
+        alert("❌ Failed to clear items.");
       }
-    };
-    const container = document.getElementById(listId);
-    if (container) container.parentNode.insertBefore(btn, container);
-  }
+    }
+  };
+  const container = document.getElementById(listId);
+  if (container) container.parentNode.insertBefore(btn, container);
+}
 
-  // Call this for JSON-managed items (e.g., birthday/adverts/quiz)
-  window.addEventListener("load", () => {
-    addClearButton("birthdayWall", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071");
-    addClearButton("quizList", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9417d0a0-20b9-404b-9da4-559ca7100be6");
-    addClearButton("advertsWall", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc");
-  });
+// 🚀 Run on page load
+window.addEventListener("load", () => {
+  // Add Search Inputs
+  addSearchInput("announcementList");
+  addSearchInput("eventList");
+  addSearchInput("tipList");
+  addSearchInput("quizList");
+  addSearchInput("advertsWall");
+
+  // Add Clear Buttons for JSON Sections
+  addClearButton("birthdayWall", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/11e49477-aa50-48fa-9fee-abf8cb1ff071");
+  addClearButton("quizList", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9417d0a0-20b9-404b-9da4-559ca7100be6");
+  addClearButton("advertsWall", "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc");
+});
 </script>
+<!-- ✅ End of Chunk 20 -->
+// ✅ Chunk 21 - Popup Notification Management (Bottom Banner Style)
+
+<!-- Add this to admin.html where you manage announcements --><section id="popupAdmin" style="margin-top:30px;padding:20px;border-top:1px solid gold">
+  <h2 style="color:gold">🔔 Popup Notification</h2>
+  <textarea id="popupMessageInput" rows="3" placeholder="Enter notification message..." style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;"></textarea>
+  <label style="color:white;"><input type="checkbox" id="popupVisibilityToggle"> Show on Homepage</label><br><br>
+  <button onclick="savePopupNotification()" style="padding:10px 15px;background:gold;color:black;border:none;border-radius:6px;">💾 Save Notification</button>
+  <p id="popupSaveStatus" style="color:lightgreen;margin-top:10px"></p>
+</section><script>
+const popupStorageURL = "https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9e7a8d7c-cb36-4edd-b66c-007189720044";
+
+function savePopupNotification() {
+  const message = document.getElementById("popupMessageInput").value.trim();
+  const visible = document.getElementById("popupVisibilityToggle").checked;
+  const data = { message, visible };
+  fetch(popupStorageURL, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+    .then(res => res.ok ? "Saved" : "Error")
+    .then(msg => document.getElementById("popupSaveStatus").textContent = "✅ Notification saved.")
+    .catch(err => alert("Failed to save popup."));
+}
+</script><!-- ✅ Add this to home.html (or any public page to display popup) --><div id="popupNotification" style="position:fixed;bottom:0;width:100%;background:gold;color:black;padding:10px;text-align:center;display:none;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,0.5);"></div><script>
+fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/9e7a8d7c-cb36-4edd-b66c-007189720044")
+  .then(res => res.json())
+  .then(data => {
+    if (data.visible && data.message) {
+      const el = document.getElementById("popupNotification");
+      el.textContent = data.message;
+      el.style.display = "block";
+    }
+  })
+  .catch(err => console.error("Failed to load popup notification.", err));
+</script><!-- ✅ End of Chunk 21 -->
