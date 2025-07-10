@@ -2,243 +2,232 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CBT Practice</title>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script defer src="firebase-config.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body {
-      background-color: #0b0b0b;
-      color: #fff;
       font-family: 'Segoe UI', sans-serif;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
       margin: 0;
       padding: 0;
     }
     header {
-      background: #111;
-      color: #ffcc00;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    nav {
-      background: #1c1c1c;
+      background-color: rgba(20, 20, 20, 0.95);
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 15px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    nav a {
-      color: #ffcc00;
+    h1 {
+      font-size: 1.8rem;
+    }
+    .nav-container {
+      background: #111;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 2px solid gold;
+      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+    }
+    .nav-container a {
+      color: gold;
       text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: 0.3s;
     }
-    nav a:hover {
-      text-decoration: underline;
+    .nav-container a.active {
+      background: gold;
+      color: black;
+      pointer-events: none;
     }
-    main {
+    .container {
       padding: 20px;
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
     }
     .question-box {
-      background: #1e1e1e;
+      background: rgba(20, 20, 20, 0.85);
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px gold;
     }
-    .option {
-      margin: 10px 0;
-    }
-    button {
-      background-color: #ffcc00;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ffaa00;
-    }
-    #result, #summary {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    #summary {
+    .question-box h2 {
       font-size: 1.2rem;
-      background: #111;
+      margin-bottom: 15px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      background: #222;
+      border: 1px solid gold;
+      color: gold;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .options button:hover {
+      background: gold;
+      color: black;
+    }
+    .summary {
+      background: rgba(0, 0, 0, 0.7);
       padding: 20px;
       border-radius: 10px;
+      box-shadow: 0 0 10px gold;
+      margin-top: 20px;
     }
-    #cooldown {
-      color: orange;
-      text-align: center;
-      margin: 20px;
-      font-weight: bold;
+    .summary h3 {
+      margin-bottom: 10px;
+    }
+    .summary ul {
+      list-style: none;
+      padding: 0;
+    }
+    .summary li {
+      margin: 5px 0;
+      border-bottom: 1px dashed gold;
+      padding-bottom: 5px;
+    }
+    .summary button {
+      margin: 10px 10px 0 0;
+      padding: 10px 16px;
+      font-size: 1rem;
+      background: gold;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <header>Finance Point – CBT Practice</header>
+<header>
+  <h1>FINANCE POINT</h1>
+  <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
+</header>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="cbt.html">CBT</a>
-    <a href="events.html">Events</a>
-  </nav>
+<!-- Top navigation bar -->
+<div class="nav-container">
+  <a href="home.html">Home</a>
+  <a href="announcement-events.html">Announcements</a>
+  <a href="downloads.html">Downloads</a>
+  <a href="cbt.html" class="active">CBT</a>
+  <a href="leaderboard.html">Leaderboard</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="lostfound.html">Lost & Found</a>
+</div>
 
-  <main>
-    <h2>Answer the following questions:</h2>
-    <div id="cooldown"></div>
-    <div id="question-container"></div>
-    <div id="result"></div>
-    <div id="summary"></div>
-  </main>
+<div class="container" id="cbtArea"></div>
 
-  <script>
-    const db = firebase.firestore();
-    let questions = [];
-    let current = 0;
-    let correctCount = 0;
-    let wrongCount = 0;
-    let currentUserEmail = '';
-    const COOLDOWN_TIME = 3 * 60 * 1000; // 3 minutes
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    function showCooldown(msLeft) {
-      const cd = document.getElementById("cooldown");
-      let secs = Math.floor(msLeft / 1000);
-      const timer = setInterval(() => {
-        if (secs <= 0) {
-          clearInterval(timer);
-          cd.innerHTML = "";
-          initCBT(); // try again after cooldown
-        } else {
-          let min = Math.floor(secs / 60);
-          let sec = secs % 60;
-          cd.innerHTML = `⏳ Please wait ${min}:${sec.toString().padStart(2, "0")} before starting a new session.`;
-          secs--;
-        }
-      }, 1000);
-    }
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
 
-    function checkCooldown() {
-      const lastTaken = localStorage.getItem("lastCBTTime");
-      if (lastTaken) {
-        const now = Date.now();
-        const diff = now - parseInt(lastTaken);
-        if (diff < COOLDOWN_TIME) {
-          showCooldown(COOLDOWN_TIME - diff);
-          return false;
-        }
-      }
-      return true;
-    }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    async function initCBT() {
-      if (!checkCooldown()) return;
-      const snapshot = await db.collection("cbt_questions").get();
-      const allQuestions = snapshot.docs.map(doc => doc.data());
-      questions = shuffle(allQuestions).slice(0, 5); // pick 5
-      showQuestion();
-    }
+  const questions = [
+    { q: "What does CPU stand for?", a: "Central Processing Unit", b: "Computer Power Unit", c: "Core Program Utility", d: "Central Programming Unit", correct: "a" },
+    { q: "What is the full meaning of ATM?", a: "Automated Teller Machine", b: "Automatic Transfer Machine", c: "Auto Teller Mechanism", d: "Account Transfer Method", correct: "a" },
+    { q: "Which planet is closest to the sun?", a: "Venus", b: "Earth", c: "Mercury", d: "Mars", correct: "c" },
+    { q: "What is 15% of 200?", a: "25", b: "30", c: "35", d: "40", correct: "b" },
+    { q: "Which company owns Android?", a: "Apple", b: "Google", c: "Samsung", d: "Microsoft", correct: "b" },
+    { q: "Which document summarizes a company’s assets and liabilities?", a: "Balance Sheet", b: "Income Statement", c: "Bank Statement", d: "Invoice", correct: "a" },
+    { q: "Who wrote 'Things Fall Apart'?", a: "Wole Soyinka", b: "Chimamanda Adichie", c: "Chinua Achebe", d: "Ngũgĩ wa Thiong'o", correct: "c" },
+    { q: "Which is not a type of bank account?", a: "Savings", b: "Current", c: "Fixed", d: "Private", correct: "d" },
+    { q: "Which organ filters blood?", a: "Liver", b: "Heart", c: "Lungs", d: "Kidney", correct: "d" },
+    { q: "How many sides does a hexagon have?", a: "5", b: "6", c: "7", d: "8", correct: "b" },
+    { q: "Which of these is not an OS?", a: "Linux", b: "Windows", c: "Google", d: "macOS", correct: "c" },
+    // More questions (add up to 30)...
+  ];
 
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        currentUserEmail = user.email;
-        initCBT();
-      } else {
-        document.getElementById("question-container").innerHTML = "<p>Please login to attempt the CBT.</p>";
-      }
+  let index = 0, score = 0;
+  let currentUser = null;
+  const container = document.getElementById("cbtArea");
+
+  function loadQuestion() {
+    if (index >= questions.length) return showSummary();
+    const q = questions[index];
+    container.innerHTML = `
+      <div class="question-box">
+        <h2>Question ${index + 1} of ${questions.length}</h2>
+        <p>${q.q}</p>
+        <div class="options">
+          ${["a", "b", "c", "d"].map(opt =>
+            `<button onclick="checkAnswer('${opt}')">${q[opt]}</button>`
+          ).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  window.checkAnswer = (choice) => {
+    if (choice === questions[index].correct) score++;
+    index++;
+    loadQuestion();
+  }
+
+  async function showSummary() {
+    container.innerHTML = `
+      <div class="summary">
+        <h3>Quiz Completed!</h3>
+        <p>Score: ${score}/${questions.length}</p>
+        <h4>Correct Answers:</h4>
+        <ul>
+          ${questions.map((q, i) => `<li>${i + 1}. ${q.q} <br> <strong>${q[q.correct]}</strong></li>`).join("")}
+        </ul>
+        <button onclick="window.location.href='home.html'">Return Home</button>
+        <button disabled>Retake Quiz (wait 3 mins)</button>
+      </div>
+    `;
+
+    const ref = doc(db, "cbt_scores", currentUser.uid + "_" + Date.now());
+    await setDoc(ref, {
+      userId: currentUser.uid,
+      fullName: currentUser.displayName || "User",
+      matricNumber: sessionStorage.getItem("userMatric") || "Unknown",
+      score,
+      total: questions.length,
+      timestamp: serverTimestamp()
     });
 
-    function shuffle(array) {
-      return array.sort(() => Math.random() - 0.5);
-    }
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, { lastCBT: serverTimestamp() });
+  }
 
-    function showQuestion() {
-      const q = questions[current];
-      const container = document.getElementById("question-container");
-      document.getElementById("result").innerHTML = "";
-      container.innerHTML = `
-        <div class="question-box">
-          <p><strong>Q${current + 1}:</strong> ${q.question}</p>
-          ${q.options.map((opt, i) => `
-            <div class="option">
-              <input type="radio" name="answer" value="${opt}" id="opt${i}">
-              <label for="opt${i}">${opt}</label>
-            </div>
-          `).join("")}
-          <br>
-          <button onclick="submitAnswer()">Submit</button>
-        </div>
-      `;
-    }
+  onAuthStateChanged(auth, user => {
+    if (!user) return window.location.href = "login.html";
+    currentUser = user;
+    loadQuestion();
+  });
 
-    function submitAnswer() {
-      const selected = document.querySelector('input[name="answer"]:checked');
-      const correctAns = questions[current].answer;
-      if (!selected) {
-        document.getElementById("result").innerHTML = "❗ Please select an answer.";
-        document.getElementById("result").style.color = "orange";
-        return;
-      }
-
-      if (selected.value === correctAns) {
-        correctCount++;
-      } else {
-        wrongCount++;
-      }
-
-      current++;
-      if (current < questions.length) {
-        showQuestion();
-      } else {
-        showSummary();
-        saveScore();
-      }
-    }
-
-    function showSummary() {
-      document.getElementById("question-container").innerHTML = "";
-      const total = questions.length;
-      const score = Math.round((correctCount / total) * 100);
-      document.getElementById("summary").innerHTML = `
-        <h3>✅ CBT Completed!</h3>
-        <p>Total Questions: ${total}</p>
-        <p>Correct Answers: ${correctCount}</p>
-        <p>Wrong Answers: ${wrongCount}</p>
-        <p>Score: <strong>${score}%</strong></p>
-      `;
-      // Start cooldown
-      localStorage.setItem("lastCBTTime", Date.now().toString());
-    }
-
-    function saveScore() {
-      const now = new Date();
-      const timestamp = now.toLocaleDateString() + " " + now.toLocaleTimeString();
-      const total = questions.length;
-      const score = Math.round((correctCount / total) * 100);
-
-      db.collection("cbt_scores").add({
-        email: currentUserEmail,
-        score: score,
-        correct: correctCount,
-        wrong: wrongCount,
-        total: total,
-        date: timestamp
-      }).then(() => {
-        console.log("Score saved.");
-      }).catch(err => {
-        console.error("Error saving score:", err);
-      });
-    }
-  </script>
-
+  window.logoutUser = function () {
+    signOut(auth).then(() => window.location.href = "login.html");
+  }
+</script>
 </body>
 </html>
