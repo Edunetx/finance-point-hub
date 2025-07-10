@@ -1,58 +1,23 @@
-<style>
-  #top-nav {
-    background-color: #111;
-    border-bottom: 2px solid #ffcc00;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .nav-link {
-    background-color: #1c1c1c;
-    border: 1px solid #333;
-    padding: 8px 14px;
-    border-radius: 8px;
-    color: #ffcc00;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    transition: background 0.3s;
-  }
-
-  .nav-link:hover {
-    background-color: #2c2c2c;
-  }
-
-  .nav-link.disabled {
-    background-color: #0b0b0b;
-    border-color: #222;
-    color: #777;
-    pointer-events: none;
-  }
-</style>
-
-<div id="top-nav">
-  <a href="index.html" class="nav-link" data-page="index.html">Home</a>
-  <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
-  <a href="cbt.html" class="nav-link" data-page="cbt.html">CBT</a>
-  <a href="cbt-practice.html" class="nav-link" data-page="cbt-practice.html">Practice</a>
-  <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html">Leaderboard</a>
-  <a href="executives.html" class="nav-link" data-page="executives.html">Executives</a>
-  <a href="events.html" class="nav-link" data-page="events.html">Events</a>
-  <a href="downloads.html" class="nav-link" data-page="downloads.html">Downloads</a>
-  <a href="lost-found.html" class="nav-link" data-page="lost-found.html">Lost & Found</a>
-  <a href="feedback.html" class="nav-link" data-page="feedback.html">Feedback Box</a>
-</div>
+<nav style="background: rgba(20,20,20,0.95); padding: 12px 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; border-bottom: 1px solid gold; font-family: 'Segoe UI', sans-serif;">
+  <a href="index.html" class="nav-link" data-page="index.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Home</a>
+  <a href="cbt.html" class="nav-link" data-page="cbt.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">CBT</a>
+  <a href="cbt-practice.html" class="nav-link" data-page="cbt-practice.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Practice</a>
+  <a href="leaderboard.html" class="nav-link" data-page="leaderboard.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Leaderboard</a>
+  <a href="executives.html" class="nav-link" data-page="executives.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Executives</a>
+  <a href="events.html" class="nav-link" data-page="events.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Events</a>
+  <a href="downloads.html" class="nav-link" data-page="downloads.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Downloads</a>
+  <a href="lost-found.html" class="nav-link" data-page="lost-found.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Lost & Found</a>
+  <a href="feedback.html" class="nav-link" data-page="feedback.html" style="color: gold; text-decoration: none; padding: 6px 12px; background: rgba(255, 215, 0, 0.07); border-radius: 8px;">Feedback Box</a>
+</nav>
 
 <script>
-  // Disable current page link
-  const page = window.location.pathname.split("/").pop();
-  const links = document.querySelectorAll(".nav-link");
-  links.forEach(link => {
-    if (link.getAttribute("data-page") === page) {
-      link.classList.add("disabled");
+  const navLinks = document.querySelectorAll('.nav-link');
+  const current = window.location.pathname.split('/').pop();
+  navLinks.forEach(link => {
+    if (link.dataset.page === current) {
+      link.style.opacity = "0.4";
+      link.style.pointerEvents = "none";
+      link.style.backgroundColor = "rgba(255, 215, 0, 0.15)";
     }
   });
 </script>
