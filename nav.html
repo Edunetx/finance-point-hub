@@ -1,28 +1,47 @@
 <style>
   .nav-container {
     background: #111;
-    padding: 10px;
-    display: flex;
-    justify-content: space-around;
     border-bottom: 2px solid gold;
     box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+    padding: 10px;
   }
+
   .nav-container a {
+    display: block;
+    width: 100%;
+    text-align: center;
     color: gold;
     text-decoration: none;
     font-weight: bold;
-    padding: 8px 12px;
+    padding: 10px;
     border-radius: 5px;
+    margin-bottom: 5px;
     transition: 0.3s;
   }
+
   .nav-container a:hover {
     background: gold;
     color: black;
   }
+
   .nav-container a.active {
     background: gold;
     color: black;
     pointer-events: none;
+    opacity: 0.6;
+  }
+
+  @media(min-width: 768px) {
+    .nav-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .nav-container a {
+      display: inline-block;
+      width: auto;
+      margin-bottom: 0;
+    }
   }
 </style>
 
@@ -38,11 +57,15 @@
 
 <script>
   const links = document.querySelectorAll('#navLinks a');
-  const currentPage = location.pathname.split("/").pop();
+  const currentPage = location.pathname.split("/").pop() || "home.html";
 
   links.forEach(link => {
-    if (link.getAttribute("href") === currentPage) {
+    const linkPage = link.getAttribute("href");
+    if (linkPage === currentPage) {
       link.classList.add("active");
+      link.removeAttribute("href"); // Remove link functionality
+      link.style.pointerEvents = "none"; // Double safety
+      link.style.opacity = "0.6"; // Visually indicate it's inactive
     }
   });
 </script>
