@@ -1,99 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CBT Center</title>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script defer src="firebase-config.js"></script>
+  <meta charset="UTF-8">
+  <title>CBT - Start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
-      background: #0b0b0b;
-      color: #fff;
+      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
+      color: gold;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
+      text-align: center;
+      padding: 100px 20px;
     }
     header {
-      background: #111;
-      color: #ffcc00;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    nav {
-      background: #1c1c1c;
+      background-color: rgba(20, 20, 20, 0.95);
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 15px;
-      font-size: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    nav a {
-      color: #ffcc00;
-      text-decoration: none;
+    h1 {
+      font-size: 1.7rem;
     }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    main {
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .btn {
-      background-color: #ffcc00;
-      color: #000;
-      border: none;
-      padding: 15px 30px;
+    .container {
+      background: rgba(20, 20, 20, 0.8);
+      padding: 30px;
       border-radius: 10px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      text-decoration: none;
+      box-shadow: 0 0 12px gold;
+      max-width: 500px;
+      margin: auto;
     }
-    .btn:hover {
-      background-color: #ffaa00;
-    }
-    #admin-link {
+    button {
+      padding: 15px 25px;
+      font-size: 1rem;
+      background-color: gold;
+      color: black;
+      border: none;
+      border-radius: 8px;
       margin-top: 20px;
-      font-size: 0.9rem;
-      display: none;
+      cursor: pointer;
     }
-    #admin-link a {
-      color: #999;
+    .disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+    .countdown {
+      font-size: 1.2rem;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-  <header>Finance Point – CBT Practice</header>
+  <header>
+    <h1>FINANCE POINT</h1>
+    <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
+  </header>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="cbt.html">CBT</a>
-    <a href="events.html">Events</a>
-  </nav>
-
-  <main>
-    <h2>Welcome to the CBT Practice Center</h2>
-    <p>Click below to test your knowledge!</p>
-    <a class="btn" href="cbt-practice.html">Start Practice</a>
-    <div id="admin-link">
-      <p><a href="admin-cbt.html">Access CBT Admin Panel</a></p>
-    </div>
-  </main>
-
+  <!-- Auto nav -->
+  <div id="top-nav-placeholder"></div>
   <script>
-    // Delay script until Firebase loads
-    window.addEventListener("load", () => {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user && user.email === "ayubaboluwatife246@gmail.com") {
-          document.getElementById("admin-link").style.display = "block";
+    fetch("nav.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("top-nav-placeholder").innerHTML = html);
+  </script>
+
+  <div class="container">
+    <h2>Start Your CBT Session</h2>
+    <p class="countdown" id="countdownMsg">Checking eligibility...</p>
+    <button id="startBtn" class="disabled" disabled>Start CBT</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const startBtn = document.getElementById("startBtn");
+    const countdownMsg = document.getElementById("countdownMsg");
+
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const uid = user.uid;
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        const now = Date.now();
+
+        if (userSnap.exists()) {
+          const lastCBT = userSnap.data().lastCBT?.toMillis?.() || 0;
+          const diff = now - lastCBT;
+
+          if (diff >= 180000) {
+            countdownMsg.textContent = "You're eligible to start.";
+            startBtn.disabled = false;
+            startBtn.classList.remove("disabled");
+          } else {
+            let remaining = 180000 - diff;
+            updateCountdown(remaining);
+            const interval = setInterval(() => {
+              remaining -= 1000;
+              if (remaining <= 0) {
+                clearInterval(interval);
+                location.reload(); // Reload to enable start
+              } else {
+                updateCountdown(remaining);
+              }
+            }, 1000);
+          }
+        } else {
+          countdownMsg.textContent = "No CBT history. You can start now.";
+          startBtn.disabled = false;
+          startBtn.classList.remove("disabled");
         }
-      });
+      } else {
+        window.location.href = "login.html";
+      }
     });
+
+    function updateCountdown(ms) {
+      const sec = Math.floor(ms / 1000);
+      countdownMsg.textContent = `Please wait ${sec} second(s) to retry.`;
+    }
+
+    startBtn.onclick = () => {
+      window.location.href = "cbt-practice.html";
+    };
+
+    window.logoutUser = function () {
+      signOut(auth)
+        .then(() => window.location.href = "login.html")
+        .catch((error) => alert("Logout failed: " + error.message));
+    };
   </script>
 </body>
 </html>
