@@ -181,7 +181,7 @@
     onAuthStateChanged(auth, async (user) => {
       if (!user) return window.location.href = "login.html";
 
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userDoc = await getDoc(doc(db, "Users", user.uid)); // ✅ Corrected from "users" to "Users"
       if (userDoc.exists()) {
         const data = userDoc.data();
         fullNameEl.textContent = data.fullName || "User";
