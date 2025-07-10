@@ -1,22 +1,28 @@
 <style>
   .nav-container {
-    background: #111;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(17, 17, 17, 0.95);
+    padding: 10px 5px;
     border-bottom: 2px solid gold;
     box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
-    padding: 10px;
   }
 
   .nav-container a {
-    display: block;
-    width: 100%;
-    text-align: center;
+    flex: 1 0 120px;
+    max-width: 150px;
+    background-color: rgba(255, 215, 0, 0.08);
     color: gold;
     text-decoration: none;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    transition: 0.3s;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid gold;
   }
 
   .nav-container a:hover {
@@ -29,18 +35,17 @@
     color: black;
     pointer-events: none;
     opacity: 0.6;
+    border: 1px solid #999;
   }
 
   @media(min-width: 768px) {
     .nav-container {
-      display: flex;
+      flex-wrap: nowrap;
       justify-content: space-around;
-      align-items: center;
     }
     .nav-container a {
-      display: inline-block;
-      width: auto;
-      margin-bottom: 0;
+      flex: none;
+      max-width: none;
     }
   }
 </style>
@@ -63,9 +68,8 @@
     const linkPage = link.getAttribute("href");
     if (linkPage === currentPage) {
       link.classList.add("active");
-      link.removeAttribute("href"); // Remove link functionality
-      link.style.pointerEvents = "none"; // Double safety
-      link.style.opacity = "0.6"; // Visually indicate it's inactive
+      link.removeAttribute("href");
+      link.style.pointerEvents = "none";
     }
   });
 </script>
