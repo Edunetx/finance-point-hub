@@ -1,16 +1,15 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Profile - Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
       margin: 0;
-      padding: 0;
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
@@ -23,30 +22,8 @@
       top: 0;
       z-index: 1000;
     }
-    header h1 {
+    h1 {
       font-size: 1.8rem;
-    }
-    .nav-container {
-      background: #111;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      border-bottom: 2px solid gold;
-      flex-wrap: wrap;
-    }
-    .nav-container a {
-      color: gold;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background-color: #222;
-    }
-    .nav-container a.active {
-      background: gold;
-      color: black;
-      pointer-events: none;
     }
     .container {
       padding: 20px;
@@ -57,141 +34,103 @@
       background: rgba(20, 20, 20, 0.85);
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px gold;
       margin-bottom: 20px;
+      box-shadow: 0 0 10px gold;
     }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
+    .profile-box h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
     }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid gold;
-      background: #111;
-      color: gold;
+    .profile-info {
+      margin-bottom: 10px;
     }
-    input[readonly] {
-      opacity: 0.7;
-    }
-    .info-note {
-      font-size: 0.9rem;
-      color: #ccc;
-      margin-top: -10px;
-      margin-bottom: 15px;
-    }
-    .btn {
-      background: gold;
-      color: black;
-      border: none;
-      padding: 10px 16px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
+    .profile-info strong {
+      display: inline-block;
+      width: 150px;
     }
     .logout-btn {
+      background: gold;
+      color: black;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
       float: right;
-      margin-top: 20px;
     }
-    .leaderboard {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px gold;
+    .nav-container {
+      background: #111;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 2px solid gold;
+      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+    }
+    .nav-container a {
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .nav-container a.active {
+      background: gold;
+      color: black;
+      pointer-events: none;
     }
   </style>
 </head>
-<body>
-  <header>
-    <h1>FINANCE POINT</h1>
-    <a href="me.html"><img src="https://i.imgur.com/3yAfXZC.jpg" alt="profile" style="width: 35px; height: 35px; border-radius: 50%;"></a>
-  </header>  <div class="nav-container">
-    <a href="home.html">Home</a>
-    <a href="announcement-events.html">Announcements</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="cbt.html">CBT</a>
-    <a href="leaderboard.html">Leaderboard</a>
-    <a href="feedback.html">Feedback</a>
-    <a href="lostfound.html">Lost & Found</a>
-    <a href="me.html" class="active">Me</a>
-  </div>  <div class="container">
-    <div class="profile-box">
-      <h2>My Profile</h2>
-      <label>Full Name</label>
-      <input type="text" id="name" readonly>
-      <div class="info-note">These fields cannot be changed. Kindly contact the department PRO directly for assistance.</div><label>Matric Number</label>
-  <input type="text" id="matric" readonly>
+<body><header>
+  <h1>FINANCE POINT</h1>
+</header><!-- Top Nav Bar --><div class="nav-container">
+  <a href="home.html">Home</a>
+  <a href="announcement-events.html">Announcements</a>
+  <a href="downloads.html">Downloads</a>
+  <a href="cbt.html">CBT</a>
+  <a href="leaderboard.html">Leaderboard</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="lostfound.html">Lost & Found</a>
+  <a href="me.html" class="active">Me</a>
+</div><div class="container">
+  <div class="profile-box">
+    <h2>Your Profile</h2>
+    <div class="profile-info"><strong>Full Name:</strong> <span id="fullName">Loading...</span></div>
+    <div class="profile-info"><strong>Matric Number:</strong> <span id="matricNumber">Loading...</span></div>
+    <div class="profile-info"><strong>Email:</strong> <span id="email">Loading...</span></div>
+    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+  </div>
+</div><script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  <label>Email</label>
-  <input type="email" id="email">
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
 
-  <button class="btn" onclick="saveEmail()">Save Changes</button>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  <button class="btn logout-btn" onclick="logoutUser()">Logout</button>
-</div>
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return window.location.href = "login.html";
+    const docSnap = await getDoc(doc(db, "users", user.uid));
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      document.getElementById("fullName").textContent = data.fullName || "N/A";
+      document.getElementById("matricNumber").textContent = data.matricNumber || "N/A";
+      document.getElementById("email").textContent = user.email || "N/A";
+    }
+  });
 
-<div class="leaderboard">
-  <h3>Your CBT Performance</h3>
-  <p id="scoreDetails">Loading...</p>
-</div>
-
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    let userId;
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return window.location.href = "login.html";
-      userId = user.uid;
-
-      const userDoc = await getDoc(doc(db, "users", userId));
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        document.getElementById("name").value = data.fullName || "";
-        document.getElementById("matric").value = data.matricNumber || "";
-        document.getElementById("email").value = user.email;
-      }
-
-      const q = query(collection(db, "cbt_scores"), where("userId", "==", userId), orderBy("timestamp", "desc"));
-      const qSnap = await getDocs(q);
-      if (!qSnap.empty) {
-        const latest = qSnap.docs[0].data();
-        document.getElementById("scoreDetails").textContent = `Last Score: ${latest.score}/${latest.total}`;
-      } else {
-        document.getElementById("scoreDetails").textContent = "No quiz taken yet.";
-      }
-    });
-
-    window.saveEmail = async () => {
-      const newEmail = document.getElementById("email").value.trim();
-      try {
-        await updateDoc(doc(db, "users", userId), { email: newEmail });
-        alert("Email updated successfully!");
-      } catch (e) {
-        alert("Failed to update email: " + e.message);
-      }
-    };
-
-    window.logoutUser = () => {
-      signOut(auth).then(() => window.location.href = "login.html");
-    };
-  </script></body>
+  window.logoutUser = function () {
+    signOut(auth).then(() => window.location.href = "login.html?status=logout");
+  }
+</script></body>
 </html>
