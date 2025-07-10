@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Settings - Finance Point</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
       margin: 0;
@@ -13,61 +13,117 @@
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
-      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 15px 20px;
       box-shadow: 0 0 10px gold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     header h1 {
       font-size: 1.5rem;
     }
+    .nav-container {
+      background: #111;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 2px solid gold;
+    }
+    .nav-container a {
+      color: gold;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .nav-container a.active {
+      background: gold;
+      color: black;
+      pointer-events: none;
+    }
     .container {
       max-width: 500px;
-      margin: 40px auto;
-      background: rgba(30, 30, 30, 0.85);
+      margin: 30px auto;
+      background: rgba(20, 20, 20, 0.85);
       padding: 25px;
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
     }
     label {
       display: block;
-      margin: 15px 0 5px;
+      margin-bottom: 6px;
+      font-weight: bold;
     }
-    input[type="email"], input[type="file"] {
+    input[type="text"], input[type="email"] {
       width: 100%;
       padding: 10px;
-      border: none;
+      margin-bottom: 20px;
+      border: 1px solid gold;
       border-radius: 6px;
       background: #111;
       color: gold;
     }
+    input[readonly] {
+      opacity: 0.6;
+    }
+    #profilePicPreview {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 10px;
+      border: 2px solid gold;
+    }
     .save-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
+      width: 100%;
+      padding: 12px;
       background: gold;
-      color: black;
       border: none;
+      color: black;
+      font-weight: bold;
+      font-size: 1rem;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Settings</h1>
-  </header>  <div class="container">
-    <label for="email">Update Email</label>
-    <input type="email" id="email" placeholder="Enter new email" /><label for="photo">Update Profile Picture</label>
-<input type="file" id="photo" accept="image/*" />
+    <a href="me.html" style="color: gold"><i class="fas fa-user-circle"></i></a>
+  </header>  <div class="nav-container">
+    <a href="home.html">Home</a>
+    <a href="announcement-events.html">Announcements</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="cbt.html">CBT</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="lostfound.html">Lost & Found</a>
+    <a href="me.html">Me</a>
+    <a href="settings.html" class="active">Settings</a>
+  </div>  <div class="container">
+    <img id="profilePicPreview" src="" alt="Profile Picture">
+    <label for="profilePic">Change Profile Picture:</label>
+    <input type="file" id="profilePic" accept="image/*" /><label>Full Name:</label>
+<input type="text" id="fullName" readonly />
 
-<button class="save-btn" onclick="saveSettings()">Save Changes</button>
+<label>Matric Number:</label>
+<input type="text" id="matric" readonly />
+
+<label>Email:</label>
+<input type="email" id="email" />
+
+<button class="save-btn" onclick="saveChanges()">Save Changes</button>
 
   </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, updateEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, updateEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
     const firebaseConfig = {
@@ -80,36 +136,41 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const auth = getAuth();
     const db = getFirestore(app);
     const storage = getStorage(app);
 
     let currentUser;
-    onAuthStateChanged(auth, user => {
+    const emailField = document.getElementById("email");
+    const fullNameField = document.getElementById("fullName");
+    const matricField = document.getElementById("matric");
+    const profilePicPreview = document.getElementById("profilePicPreview");
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) return location.href = "login.html";
       currentUser = user;
-      document.getElementById("email").value = user.email;
+      emailField.value = user.email;
+
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        fullNameField.value = data.fullName || "";
+        matricField.value = data.matricNumber || "";
+        profilePicPreview.src = data.profilePic || "https://i.imgur.com/sUVlBKA.png";
+      }
     });
 
-    window.saveSettings = async function () {
-      const newEmail = document.getElementById("email").value.trim();
-      const file = document.getElementById("photo").files[0];
-
-      if (newEmail && newEmail !== currentUser.email) {
-        await updateEmail(currentUser, newEmail);
-        await updateDoc(doc(db, "users", currentUser.uid), { email: newEmail });
-        alert("Email updated!");
+    window.saveChanges = async () => {
+      if (!currentUser) return;
+      const newEmail = emailField.value;
+      try {
+        if (newEmail !== currentUser.email) await updateEmail(currentUser, newEmail);
+      } catch (e) {
+        alert("Email update failed: " + e.message);
       }
 
+      const file = document.getElementById("profilePic").files[0];
+      let profilePicURL = profilePicPreview.src;
       if (file) {
-        const storageRef = ref(storage, `profilePics/${currentUser.uid}`);
-        await uploadBytes(storageRef, file);
-        const photoURL = await getDownloadURL(storageRef);
-        await updateDoc(doc(db, "users", currentUser.uid), { photoURL });
-        alert("Profile picture updated!");
-      }
-
-      location.href = "me.html";
-    };
-  </script></body>
-</html>
+        const storage
