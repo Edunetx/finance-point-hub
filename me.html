@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>My Profile - Finance Point</title>
@@ -50,7 +49,6 @@
       color: black;
       pointer-events: none;
     }
-
     .container {
       max-width: 500px;
       margin: 30px auto;
@@ -60,30 +58,19 @@
       box-shadow: 0 0 10px gold;
       text-align: center;
     }
-
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid gold;
-      margin-bottom: 15px;
-    }
-
     .info-box {
       margin-bottom: 15px;
-      padding: 10px;
+      padding: 12px;
       border: 1px dashed gold;
       border-radius: 6px;
       background: rgba(0,0,0,0.4);
+      text-align: left;
     }
-
     .info-box strong {
       display: block;
       font-size: 1.1rem;
       margin-bottom: 5px;
     }
-
     .btn-settings {
       display: inline-block;
       margin: 10px;
@@ -94,7 +81,6 @@
       border-radius: 5px;
       text-decoration: none;
     }
-
     .logout-btn {
       position: fixed;
       bottom: 20px;
@@ -107,22 +93,20 @@
       cursor: pointer;
       font-weight: bold;
     }
-
     .leaderboard-box {
       margin-top: 20px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid gold;
       border-radius: 6px;
       padding: 10px;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>FINANCE POINT</h1>
-  </header>
-
-  <div class="nav-container">
+  </header>  <div class="nav-container">
     <a href="home.html">Home</a>
     <a href="announcement-events.html">Announcements</a>
     <a href="downloads.html">Downloads</a>
@@ -131,10 +115,7 @@
     <a href="feedback.html">Feedback</a>
     <a href="lostfound.html">Lost & Found</a>
     <a href="me.html" class="active">Me</a>
-  </div>
-
-  <div class="container">
-    <img id="profilePic" class="profile-img" src="https://i.imgur.com/nq3Z1Yz.png" alt="Profile" />
+  </div>  <div class="container">
     <div class="info-box">
       <strong id="fullName">Full Name</strong>
       <span id="matricNum">Matric Number</span>
@@ -143,21 +124,16 @@
       <strong>Email</strong>
       <span id="emailText">user@example.com</span>
     </div>
-    <a href="settings.html" class="btn-settings"><i class="fas fa-cog"></i> Edit Profile</a>
+    <a href="settings.html" class="btn-settings"><i class="fas fa-cog"></i> Edit Email</a><div class="leaderboard-box" id="leaderboardInfo">
+  🏆 Calculating your leaderboard position...
+</div>
 
-    <div class="leaderboard-box" id="leaderboardInfo">
-      🏆 You are currently in the Top 10! Keep it up!
-    </div>
-  </div>
-
-  <button class="logout-btn" onclick="logoutUser()">
+  </div>  <button class="logout-btn" onclick="logoutUser()">
     <i class="fas fa-sign-out-alt"></i> Logout
-  </button>
-
-  <script type="module">
+  </button>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -175,7 +151,6 @@
     const fullNameEl = document.getElementById("fullName");
     const matricNumEl = document.getElementById("matricNum");
     const emailEl = document.getElementById("emailText");
-    const profilePic = document.getElementById("profilePic");
     const leaderboardInfo = document.getElementById("leaderboardInfo");
 
     onAuthStateChanged(auth, async (user) => {
@@ -187,22 +162,24 @@
         fullNameEl.textContent = data.fullName || "User";
         matricNumEl.textContent = data.matricNumber || "Not Available";
         emailEl.textContent = user.email || "No Email";
-        profilePic.src = data.photoURL || "https://i.imgur.com/nq3Z1Yz.png";
       }
 
-      // Fetch leaderboard position (mock logic)
+      // Leaderboard logic
       const scoresRef = collection(db, "cbt_scores");
-      const q = query(scoresRef, orderBy("score", "desc"), limit(10));
-      const topScores = await getDocs(q);
-      const topUserIds = topScores.docs.map(doc => doc.data().userId);
-      if (!topUserIds.includes(user.uid)) {
-        leaderboardInfo.innerHTML = "📉 You are not in the Top 10 yet. Keep practicing!";
+      const q = query(scoresRef, orderBy("score", "desc"));
+      const snapshot = await getDocs(q);
+      const rankedUsers = snapshot.docs.map(doc => doc.data().userId);
+      const position = rankedUsers.indexOf(user.uid) + 1;
+
+      if (position > 0) {
+        leaderboardInfo.innerHTML = `🏅 You are currently ranked <strong>#${position}</strong> out of <strong>${rankedUsers.length}</strong> participants.`;
+      } else {
+        leaderboardInfo.innerHTML = "📉 You are not ranked yet. Try taking a quiz!";
       }
     });
 
     window.logoutUser = function () {
       signOut(auth).then(() => window.location.href = "login.html");
     };
-  </script>
-</body>
+  </script></body>
 </html>
