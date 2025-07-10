@@ -69,7 +69,14 @@
     .profile-icon {
       font-size: 5rem;
       color: gold;
+      margin-bottom: 10px;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 0.95rem;
       margin-bottom: 20px;
+      color: #f4e99b;
     }
 
     .info-box {
@@ -127,6 +134,7 @@
 
   <div class="container">
     <div class="profile-icon"><i class="fas fa-user-circle"></i></div>
+    <div class="quote">"Stay financially sharp. Your future self will thank you."</div>
 
     <div class="info-box">
       <strong id="fullName">Full Name</strong>
@@ -139,7 +147,7 @@
     </div>
 
     <div class="leaderboard-box" id="leaderboardInfo">
-      🏆 You are currently in the Top 10! Keep it up!
+      Loading your leaderboard rank...
     </div>
   </div>
 
@@ -150,7 +158,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -181,12 +189,15 @@
         emailEl.textContent = user.email || "No Email";
       }
 
-      const scoresRef = collection(db, "cbt_scores");
-      const q = query(scoresRef, orderBy("score", "desc"), limit(10));
-      const topScores = await getDocs(q);
-      const topUserIds = topScores.docs.map(doc => doc.data().userId);
-      if (!topUserIds.includes(user.uid)) {
-        leaderboardInfo.innerHTML = "📉 You are not in the Top 10 yet. Keep practicing!";
+      // Get all scores and calculate rank
+      const scoresSnapshot = await getDocs(query(collection(db, "cbt_scores"), orderBy("score", "desc")));
+      const allScores = scoresSnapshot.docs.map(doc => doc.data());
+      const rank = allScores.findIndex(score => score.userId === user.uid);
+
+      if (rank !== -1) {
+        leaderboardInfo.innerHTML = `🏅 You are ranked <strong>#${rank + 1}</strong> out of ${allScores.length} participants.`;
+      } else {
+        leaderboardInfo.innerHTML = "📉 You don't have a ranking yet. Attempt a CBT!";
       }
     });
 
