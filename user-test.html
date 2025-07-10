@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Firestore User Fetch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background: #000;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .box {
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid gold;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>User Info Test</h2>
+    <p><strong>Full Name:</strong> <span id="name">Loading...</span></p>
+    <p><strong>Matric Number:</strong> <span id="matric">Loading...</span></p>
+    <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const nameEl = document.getElementById("name");
+    const matricEl = document.getElementById("matric");
+    const emailEl = document.getElementById("email");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        nameEl.textContent = "Not logged in";
+        return;
+      }
+
+      emailEl.textContent = user.email;
+
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        nameEl.textContent = data.fullName || "No name";
+        matricEl.textContent = data.matricNumber || "No matric";
+      } else {
+        nameEl.textContent = "User doc not found";
+        matricEl.textContent = "—";
+      }
+    });
+  </script>
+</body>
+</html>
