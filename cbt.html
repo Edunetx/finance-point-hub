@@ -4,45 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CBT Center</title>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script defer src="firebase-config.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0c0c0c;
+      background: #0b0b0b;
       color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #111;
+      color: #ffcc00;
+      padding: 20px;
       text-align: center;
-      padding: 40px;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    nav {
+      background: #1c1c1c;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      font-size: 1rem;
     }
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
+    nav a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      text-align: center;
+      padding: 40px 20px;
     }
     .btn {
-      display: inline-block;
-      padding: 12px 24px;
       background-color: #ffcc00;
       color: #000;
       border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.2rem;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
     }
     .btn:hover {
       background-color: #ffaa00;
-      transform: scale(1.05);
+    }
+    #admin-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    #admin-link a {
+      color: #999;
     }
   </style>
 </head>
 <body>
-  <h1>CBT Practice Center</h1>
-  <p>Test your knowledge with timed, multiple-choice questions.</p>
-  <a href="cbt-practice.html" class="btn">Start Practice</a>
-  <br><br>
-  <a href="admin-cbt.html" style="color: #888; font-size: 0.9rem;">Admin Panel</a>
+  <header>Finance Point – CBT Practice</header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="cbt.html">CBT</a>
+    <a href="events.html">Events</a>
+  </nav>
+
+  <main>
+    <h2>Welcome to the CBT Practice Center</h2>
+    <p>Click below to test your knowledge!</p>
+    <a class="btn" href="cbt-practice.html">Start Practice</a>
+    <div id="admin-link">
+      <p><a href="admin-cbt.html">Access CBT Admin Panel</a></p>
+    </div>
+  </main>
+
+  <script>
+    // Delay script until Firebase loads
+    window.addEventListener("load", () => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user && user.email === "ayubaboluwatife246@gmail.com") {
+          document.getElementById("admin-link").style.display = "block";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
