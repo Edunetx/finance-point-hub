@@ -1,37 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CBT Admin Panel</title>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script defer src="firebase-config.js"></script>
   <style>
     body {
-      background: #101010;
+      background-color: #0b0b0b;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
+    header {
+      background: #111;
       color: #ffcc00;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .info {
-      background: #1a1a1a;
+    nav {
+      background: #1c1c1c;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+    }
+    nav a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #1e1e1e;
       padding: 20px;
       border-radius: 10px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #333;
+      color: #fff;
+    }
+    label {
+      margin-top: 15px;
+      display: block;
+    }
+    button {
       margin-top: 20px;
+      background-color: #ffcc00;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ffaa00;
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>CBT Admin Panel</h1>
-  <div class="info">
-    <p>This section is under development. Here, the admin will be able to:</p>
-    <ul>
-      <li>Add, edit, or delete CBT questions</li>
-      <li>View users' performance</li>
-      <li>Manage question categories</li>
-    </ul>
-    <p>Feature coming soon 🔧</p>
-  </div>
+
+  <header>CBT Admin Panel</header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="cbt.html">CBT</a>
+    <a href="cbt-practice.html">Practice</a>
+  </nav>
+
+  <main>
+    <h2>Add New CBT Question</h2>
+    <form id="cbtForm">
+      <label for="question">Question:</label>
+      <textarea id="question" required></textarea>
+
+      <label>Options (4):</label>
+      <input type="text" id="opt1" placeholder="Option 1" required />
+      <input type="text" id="opt2" placeholder="Option 2" required />
+      <input type="text" id="opt3" placeholder="Option 3" required />
+      <input type="text" id="opt4" placeholder="Option 4" required />
+
+      <label for="answer">Correct Answer:</label>
+      <input type="text" id="answer" placeholder="Must match one of the options above" required />
+
+      <button type="submit">Add Question</button>
+    </form>
+
+    <div id="status"></div>
+  </main>
+
+  <script>
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const allowedAdmin = "ayubaboluwatife246@gmail.com";
+
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== allowedAdmin) {
+        alert("Access denied. Only admin can view this page.");
+        window.location.href = "cbt.html";
+      }
+    });
+
+    document.getElementById("cbtForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const question = document.getElementById("question").value.trim();
+      const options = [
+        document.getElementById("opt1").value.trim(),
+        document.getElementById("opt2").value.trim(),
+        document.getElementById("opt3").value.trim(),
+        document.getElementById("opt4").value.trim()
+      ];
+      const answer = document.getElementById("answer").value.trim();
+
+      if (!options.includes(answer)) {
+        document.getElementById("status").innerHTML = "❌ Error: Answer must match one of the options.";
+        document.getElementById("status").style.color = "red";
+        return;
+      }
+
+      try {
+        await db.collection("cbt_questions").add({
+          question,
+          options,
+          answer
+        });
+        document.getElementById("status").innerHTML = "✅ Question added successfully!";
+        document.getElementById("status").style.color = "lightgreen";
+        document.getElementById("cbtForm").reset();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerHTML = "❌ Error adding question.";
+        document.getElementById("status").style.color = "red";
+      }
+    });
+  </script>
+
 </body>
 </html>
