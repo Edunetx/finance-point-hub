@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>CBT Practice</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
       background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
       color: gold;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
     }
     header {
       background-color: rgba(20, 20, 20, 0.95);
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 15px 20px;
       box-shadow: 0 0 10px gold;
@@ -24,210 +23,333 @@
       top: 0;
       z-index: 1000;
     }
-    h1 {
-      font-size: 1.8rem;
+    header h1 {
+      font-size: 1.5rem;
+      flex-grow: 1;
+      text-align: center;
     }
-    .nav-container {
-      background: #111;
-      padding: 10px;
-      display: flex;
-      justify-content: space-around;
-      border-bottom: 2px solid gold;
-      box-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
-    }
-    .nav-container a {
+    .back-icon {
+      font-size: 1.2rem;
       color: gold;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 8px 12px;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
-    .nav-container a.active {
-      background: gold;
-      color: black;
-      pointer-events: none;
+      cursor: pointer;
     }
     .container {
-      padding: 20px;
       max-width: 800px;
-      margin: auto;
+      margin: 30px auto;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px gold;
     }
     .question-box {
-      background: rgba(20, 20, 20, 0.85);
-      padding: 20px;
-      border-radius: 10px;
       margin-bottom: 20px;
-      box-shadow: 0 0 10px gold;
     }
     .question-box h2 {
-      font-size: 1.2rem;
       margin-bottom: 15px;
     }
-    .options button {
-      display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      background: #222;
-      border: 1px solid gold;
-      color: gold;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .options button:hover {
-      background: gold;
-      color: black;
-    }
-    .summary {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px gold;
-      margin-top: 20px;
-    }
-    .summary h3 {
-      margin-bottom: 10px;
-    }
-    .summary ul {
+    .options {
       list-style: none;
       padding: 0;
     }
-    .summary li {
-      margin: 5px 0;
-      border-bottom: 1px dashed gold;
-      padding-bottom: 5px;
-    }
-    .summary button {
-      margin: 10px 10px 0 0;
-      padding: 10px 16px;
-      font-size: 1rem;
-      background: gold;
-      color: black;
-      border: none;
+    .options li {
+      background: rgba(255, 215, 0, 0.08);
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid gold;
       border-radius: 6px;
       cursor: pointer;
     }
-  </style>
-</head>
-<body>
+    .options li.selected {
+      background: gold;
+      color: black;
+      font-weight: bold;
+    }
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .navigation button {
+      padding: 10px 20px;
+      background-color: gold;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .navigation button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+    .submit-btn {
+      margin-top: 30px;
+      background: crimson;
+    }
+    .timer {
+      text-align: right;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .result-container {
+      background-color: #111;
+      border: 2px solid gold;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      margin-top: 20px;
+    }
+    .result-container h2 {
+      color: gold;
+      margin-bottom: 15px;
+    }
+    const randomIndex = Math.floor(Math.random() * questions.length);
+      if (!usedIndexes.includes(randomIndex)) {
+        usedIndexes.push(randomIndex);
+        shuffled.push(questions[randomIndex]);
+      }
+    }
+    return shuffled;
+  }
 
-<header>
-  <h1>FINANCE POINT</h1>
-  <i class="fas fa-sign-out-alt logout-icon" onclick="logoutUser()" title="Logout"></i>
-</header>
-
-<!-- Top navigation bar -->
-<div class="nav-container">
-  <a href="home.html">Home</a>
-  <a href="announcement-events.html">Announcements</a>
-  <a href="downloads.html">Downloads</a>
-  <a href="cbt.html" class="active">CBT</a>
-  <a href="leaderboard.html">Leaderboard</a>
-  <a href="feedback.html">Feedback</a>
-  <a href="lostfound.html">Lost & Found</a>
-</div>
-
-<div class="container" id="cbtArea"></div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-    authDomain: "finsa-connect.firebaseapp.com",
-    projectId: "finsa-connect",
-    storageBucket: "finsa-connect.appspot.com",
-    messagingSenderId: "126845965255",
-    appId: "1:126845965255:web:c82539297a8464873d7fe2"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  const questions = [
-    { q: "What does CPU stand for?", a: "Central Processing Unit", b: "Computer Power Unit", c: "Core Program Utility", d: "Central Programming Unit", correct: "a" },
-    { q: "What is the full meaning of ATM?", a: "Automated Teller Machine", b: "Automatic Transfer Machine", c: "Auto Teller Mechanism", d: "Account Transfer Method", correct: "a" },
-    { q: "Which planet is closest to the sun?", a: "Venus", b: "Earth", c: "Mercury", d: "Mars", correct: "c" },
-    { q: "What is 15% of 200?", a: "25", b: "30", c: "35", d: "40", correct: "b" },
-    { q: "Which company owns Android?", a: "Apple", b: "Google", c: "Samsung", d: "Microsoft", correct: "b" },
-    { q: "Which document summarizes a company’s assets and liabilities?", a: "Balance Sheet", b: "Income Statement", c: "Bank Statement", d: "Invoice", correct: "a" },
-    { q: "Who wrote 'Things Fall Apart'?", a: "Wole Soyinka", b: "Chimamanda Adichie", c: "Chinua Achebe", d: "Ngũgĩ wa Thiong'o", correct: "c" },
-    { q: "Which is not a type of bank account?", a: "Savings", b: "Current", c: "Fixed", d: "Private", correct: "d" },
-    { q: "Which organ filters blood?", a: "Liver", b: "Heart", c: "Lungs", d: "Kidney", correct: "d" },
-    { q: "How many sides does a hexagon have?", a: "5", b: "6", c: "7", d: "8", correct: "b" },
-    { q: "Which of these is not an OS?", a: "Linux", b: "Windows", c: "Google", d: "macOS", correct: "c" },
-    // More questions (add up to 30)...
-  ];
-
-  let index = 0, score = 0;
-  let currentUser = null;
-  const container = document.getElementById("cbtArea");
-
-  function loadQuestion() {
-    if (index >= questions.length) return showSummary();
+  function loadQuestion(index) {
     const q = questions[index];
-    container.innerHTML = `
-      <div class="question-box">
-        <h2>Question ${index + 1} of ${questions.length}</h2>
-        <p>${q.q}</p>
-        <div class="options">
-          ${["a", "b", "c", "d"].map(opt =>
-            `<button onclick="checkAnswer('${opt}')">${q[opt]}</button>`
-          ).join("")}
-        </div>
-      </div>
-    `;
-  }
+    currentQuestionIndex = index;
 
-  window.checkAnswer = (choice) => {
-    if (choice === questions[index].correct) score++;
-    index++;
-    loadQuestion();
-  }
+    document.getElementById("question-number").textContent = `Question ${index + 1} of ${questions.length}`;
+    document.getElementById("question-text").textContent = q.question;
 
-  async function showSummary() {
-    container.innerHTML = `
-      <div class="summary">
-        <h3>Quiz Completed!</h3>
-        <p>Score: ${score}/${questions.length}</p>
-        <h4>Correct Answers:</h4>
-        <ul>
-          ${questions.map((q, i) => `<li>${i + 1}. ${q.q} <br> <strong>${q[q.correct]}</strong></li>`).join("")}
-        </ul>
-        <button onclick="window.location.href='home.html'">Return Home</button>
-        <button disabled>Retake Quiz (wait 3 mins)</button>
-      </div>
-    `;
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
 
-    const ref = doc(db, "cbt_scores", currentUser.uid + "_" + Date.now());
-    await setDoc(ref, {
-      userId: currentUser.uid,
-      fullName: currentUser.displayName || "User",
-      matricNumber: sessionStorage.getItem("userMatric") || "Unknown",
-      score,
-      total: questions.length,
-      timestamp: serverTimestamp()
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => selectOption(opt);
+      if (userAnswers[index] === opt) {
+        btn.classList.add("selected");
+      }
+      optionsDiv.appendChild(btn);
     });
 
-    const userRef = doc(db, "users", currentUser.uid);
-    await updateDoc(userRef, { lastCBT: serverTimestamp() });
+    document.getElementById("prevBtn").disabled = index === 0;
+    document.getElementById("nextBtn").disabled = index === questions.length - 1;
   }
 
-  onAuthStateChanged(auth, user => {
-    if (!user) return window.location.href = "login.html";
-    currentUser = user;
-    loadQuestion();
-  });
+  function selectOption(option) {
+    userAnswers[currentQuestionIndex] = option;
+    loadQuestion(currentQuestionIndex); // re-render to reflect selection
+  }
 
-  window.logoutUser = function () {
-    signOut(auth).then(() => window.location.href = "login.html");
+  document.getElementById("prevBtn").onclick = () => {
+    if (currentQuestionIndex > 0) {
+      loadQuestion(currentQuestionIndex - 1);
+    }
+  };
+
+  document.getElementById("nextBtn").onclick = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      loadQuestion(currentQuestionIndex + 1);
+    }
+  };
+
+  document.getElementById("submitBtn").onclick = () => {
+    const unanswered = questions.filter((_, i) => !userAnswers[i]);
+    if (unanswered.length > 0) {
+      if (!confirm("You have unanswered questions. Submit anyway?")) return;
+    }
+    finishQuiz();
+  };
+
+  function finishQuiz() {
+    clearInterval(timerInterval);
+
+    const resultContainer = document.getElementById("result");
+    const qnaContainer = document.getElementById("qna");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+
+    let correctCount = 0;
+    let outputHTML = "";
+
+    questions.forEach((q, i) => {
+      const userAns = userAnswers[i] || "No Answer";
+      const correct = q.answer;
+      const isCorrect = userAns === correct;
+      if (isCorrect) correctCount++;
+
+      outputHTML += `
+        <div class="q-item">
+          <p><strong>Q${i + 1}:</strong> ${q.question}</p>
+          <p><strong>Your Answer:</strong> ${userAns}</p>
+          <p><strong>Correct Answer:</strong> ${correct}</p>
+          <hr />
+        </div>
+      `;
+    });
+
+    const percentage = Math.round((correctCount / questions.length) * 100);
+    scoreDisplay.textContent = `You scored ${correctCount}/${questions.length} (${percentage}%)`;
+
+    qnaContainer.innerHTML = outputHTML;
+    resultContainer.style.display = "block";
+    document.querySelector(".quiz").style.display = "none";
+
+    // Store result in Firestore
+    const timestamp = new Date();
+    const userId = auth.currentUser?.uid;
+    if (userId) {
+      const resultRef = doc(db, "cbt_scores", userId);
+      setDoc(resultRef, {
+        userId,
+        fullName: auth.currentUser.displayName || "",
+        score: correctCount,
+        total: questions.length,
+        time: timestamp,
+      });
+
+      // Save CBT timestamp to restrict reattempts
+      const userRef = doc(db, "users", userId);
+      setDoc(userRef, { lastCBT: timestamp }, { merge: true });
+    }
   }
 </script>
+                        let questions = [];
+    let currentQuestion = 0;
+    let userAnswers = {};
+    let timerInterval;
+
+    const questionBox = document.getElementById("questionBox");
+    const qNumber = document.getElementById("qNumber");
+    const optionsBox = document.getElementById("optionsBox");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const timer = document.getElementById("timer");
+
+    const calculator = document.getElementById("calculator");
+    const calcToggle = document.getElementById("calcToggle");
+    calcToggle.onclick = () => calculator.style.display = calculator.style.display === "block" ? "none" : "block";
+
+    document.querySelectorAll(".calculator button").forEach(btn => {
+      btn.onclick = () => {
+        const display = document.getElementById("display");
+        if (btn.dataset.value === "=") {
+          try {
+            display.value = eval(display.value);
+          } catch {
+            display.value = "Error";
+          }
+        } else if (btn.dataset.value === "C") {
+          display.value = "";
+        } else {
+          display.value += btn.dataset.value;
+        }
+      };
+    });
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) return window.location.href = "login.html";
+      const qSnap = await getDocs(collection(db, "cbt_questions"));
+      let all = [];
+      qSnap.forEach(doc => all.push({ id: doc.id, ...doc.data() }));
+      all = all.sort(() => 0.5 - Math.random()).slice(0, 30);
+      questions = all;
+      showQuestion();
+      startTimer(30 * 60); // 30 minutes
+    });
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      qNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      questionBox.innerHTML = q.question;
+      optionsBox.innerHTML = "";
+      for (const opt in q.options) {
+        const id = `opt${opt}`;
+        const checked = userAnswers[currentQuestion] === opt ? "checked" : "";
+        optionsBox.innerHTML += `
+          <label><input type="radio" name="option" value="${opt}" id="${id}" ${checked}> ${opt}. ${q.options[opt]}</label><br/>
+        `;
+      }
+    }
+
+    nextBtn.onclick = () => {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (selected) userAnswers[currentQuestion] = selected.value;
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+      }
+    };
+
+    prevBtn.onclick = () => {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (selected) userAnswers[currentQuestion] = selected.value;
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+      }
+    };
+
+    submitBtn.onclick = () => {
+      if (!confirm("Are you sure you want to submit?")) return;
+      clearInterval(timerInterval);
+      calculateScore();
+    };
+
+    function calculateScore() {
+      let score = 0;
+      let missed = [];
+      const result = questions.map((q, i) => {
+        const correct = q.answer;
+        const chosen = userAnswers[i];
+        if (chosen === correct) score++;
+        else missed.push({ no: i + 1, question: q.question, correct, chosen });
+        return { no: i + 1, correct, chosen };
+      });
+
+      document.body.innerHTML = `
+        <h2>Result</h2>
+        <p><strong>Score:</strong> ${score} / ${questions.length}</p>
+        <h3>Missed Questions:</h3>
+        <ul>
+          ${missed.map(m => `<li>Q${m.no}: Correct - ${m.correct}, Your Answer - ${m.chosen || 'None'}</li>`).join("")}
+        </ul>
+      `;
+
+      // Save to Firestore
+      const user = auth.currentUser;
+      setDoc(doc(db, "cbt_scores", user.uid), {
+        userId: user.uid,
+        score,
+        total: questions.length,
+        timestamp: new Date()
+      });
+
+      // Update user's last CBT
+      setDoc(doc(db, "users", user.uid), {
+        lastCBT: new Date()
+      }, { merge: true });
+    }
+
+    function startTimer(seconds) {
+      let remaining = seconds;
+      updateTimer();
+      timerInterval = setInterval(() => {
+        remaining--;
+        updateTimer();
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          calculateScore();
+        }
+      }, 1000);
+
+      function updateTimer() {
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        timer.textContent = `Time Left: ${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+    }
+  </script>
 </body>
 </html>
