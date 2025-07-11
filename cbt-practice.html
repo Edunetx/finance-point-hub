@@ -603,3 +603,195 @@ function saveResultToFirestore(score, percent) {
     .catch(err => console.error("Failed to save result", err));
 }
 </script><!-- ✅ End of Chunk 6 -->
+<!-- ✅ Chunk 7 - Performance + Personalization + Polish --><!-- Loader Animation --><style>
+  #loader {
+    text-align: center;
+    color: gold;
+    margin-top: 30px;
+    font-size: 1.2rem;
+  }
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: gold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 0 10px gold;
+    display: none;
+    z-index: 9999;
+  }
+</style><div id="loader">Loading questions...</div>
+<div id="toast" class="toast">Submitted and saved successfully!</div><script>
+  const userName = localStorage.getItem("userFullName") || "Finance Student";
+  const matricNo = localStorage.getItem("userMatric") || "N/A";
+  const email = localStorage.getItem("userEmail") || "";
+
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.style.display = "block";
+    setTimeout(() => toast.style.display = "none", 4000);
+  }
+
+  async function loadQuestions() {
+    const loader = document.getElementById("loader");
+    try {
+      const querySnapshot = await getDocs(collection(db, "cbtQuestions"));
+      querySnapshot.forEach((doc) => questions.push(doc.data()));
+      if (questions.length === 0) throw new Error("No questions found");
+      questions = questions.sort(() => 0.5 - Math.random()).slice(0, 30);
+      loader.remove();
+      displayQuestion();
+    } catch (err) {
+      loader.innerHTML = `<p style='color:red;'>⚠️ Failed to load questions. <button onclick='loadQuestions()'>Retry</button></p>`;
+    }
+  }
+
+  function calculateResult() {
+    let score = 0;
+    let missed = [];
+
+    questions.forEach((q, i) => {
+      if (selectedAnswers[i] === q.answer) {
+        score++;
+      } else {
+        missed.push({
+          number: i + 1,
+          question: q.text,
+          picked: q.options[selectedAnswers[i]] || "No Answer",
+          correct: q.options[q.answer]
+        });
+      }
+    });
+
+    const percent = Math.round((score / questions.length) * 100);
+
+    const container = document.getElementById("question-container");
+    container.innerHTML = `
+      <div class='fade-in'>
+        <h2>🎉 CBT Result Summary</h2>
+        <p><strong>Name:</strong> ${userName}</p>
+        <p><strong>Matric No:</strong> ${matricNo}</p>
+        <p><strong>Score:</strong> ${score}/${questions.length} (${percent}%)</p>
+        <h4>Missed Questions:</h4>
+        <table style='width:100%;border-collapse:collapse;'>
+          <tr><th>#</th><th>Question</th><th>Your Answer</th><th>Correct Answer</th></tr>
+          ${missed.map(m => `<tr><td>${m.number}</td><td>${m.question}</td><td>${m.picked}</td><td>${m.correct}</td></tr>`).join('') || '<tr><td colspan="4">None</td></tr>'}
+        </table>
+        <div style='margin-top:20px;'>
+          <button onclick="window.print()" style="margin-right:10px;">🖨️ Print Result</button>
+          <button onclick="window.location.href='cbt-practice.html'">🔁 Try Again</button>
+        </div>
+      </div>
+    `;
+
+    document.querySelector(".nav-buttons").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.querySelector("#submitBtn").style.display = "none";
+
+    saveResultToFirestore(score, percent);
+    showToast("✅ Submitted and saved!");
+  }
+</script><!-- ✅ End of Chunk 7 -->
+<!-- ✅ Chunk 8 - Final CBT Enhancements -->
+<style>
+  .fixed-timer {
+    position: sticky;
+    top: 0;
+    background: black;
+    color: gold;
+    padding: 8px 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: 2px solid gold;
+    z-index: 1000;
+  }
+
+  .pulse {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: gold;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+    box-shadow: 0 0 10px gold;
+    z-index: 9999;
+  }
+</style>
+
+<div id="toast" class="toast">Submitted and saved successfully!</div>
+
+<script>
+  // 🕒 Timer Logic with Countdown Fix
+  let timeLeft = 30 * 60; // 30 minutes in seconds
+  const timerEl = document.getElementById("timer");
+
+  function startTimer() {
+    const timerInterval = setInterval(() => {
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      timerEl.innerHTML = `Time Left: ${mins}:${secs.toString().padStart(2, "0")}`;
+
+      // Timer animation
+      timerEl.classList.toggle("pulse");
+
+      if (timeLeft <= 10) {
+        timerEl.style.color = "red";
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("⏰ Time is up! Submitting your quiz.");
+          submitQuiz();
+        }
+      }
+
+      timeLeft--;
+    }, 1000);
+  }
+
+  startTimer();
+
+  // 📢 Toast Notification
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.innerText = msg;
+    toast.style.display = "block";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 4000);
+  }
+
+  // ✅ Fix Submit Button Handler
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn) {
+    submitBtn.onclick = () => submitQuiz();
+  }
+
+  // ✅ Add to window if needed
+  window.showToast = showToast;
+</script>
