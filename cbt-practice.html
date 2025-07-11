@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en">
+<!-- ✅ CBT PRACTICE - CHUNK 1: UI STRUCTURE --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,116 +62,16 @@
     }
     .timer {
       text-align: center;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-    .calculator {
-      text-align: center;
-      margin: 20px 0;
-    }
-    iframe {
-      border: none;
-      width: 100%;
-      height: 300px;
-      background: #fff;
-    }
-  </style>
-</head>
-<body>
-  <header>CBT Practice - Finance Point</header>
-  <div class="container">
-    <div class="timer" id="timer">Time: 30:00</div>
-    <div id="question-container" class="question-box">
-      Loading question...
-    </div>
-    <div class="nav-buttons">
-      <button onclick="prevQuestion()">Previous</button>
-      <button onclick="nextQuestion()">Next</button>
-    </div>
-    <div style="text-align: center; margin-top: 30px;">
-      <button onclick="submitQuiz()">Submit</button>
-    </div>
-    <div class="calculator">
-      <h3>Calculator</h3>
-      <iframe src="https://www.desmos.com/scientific" title="Calculator"></iframe>
-    </div>
-  </div>  <!-- Scripts will begin in Chunk 2 --></body>
-</html>
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CBT Practice</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: #000 url('https://cdn.jsdelivr.net/gh/Julian-Nash/assets@main/tech-background.gif') center/cover no-repeat;
-      color: gold;
-    }
-    header {
-      background-color: rgba(20, 20, 20, 0.95);
-      padding: 15px;
-      text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: bold;
-      box-shadow: 0 0 10px gold;
-    }
-    .container {
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 20px;
-      background: rgba(20, 20, 20, 0.9);
-      border-radius: 10px;
-      box-shadow: 0 0 10px gold;
-    }
-    .question-box {
       margin-bottom: 20px;
-    }
-    .option-btn {
-      display: block;
-      width: 100%;
-      background: #222;
-      border: 1px solid gold;
-      color: gold;
       padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .option-btn.selected {
-      background: gold;
-      color: black;
-    }
-    .nav-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .nav-buttons button {
-      padding: 10px 20px;
-      border: none;
-      background: gold;
-      color: black;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .timer {
-      text-align: center;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-    .calculator {
-      text-align: center;
-      margin: 20px 0;
-    }
-    iframe {
-      border: none;
-      width: 100%;
-      height: 300px;
-      background: #fff;
+      border: 2px solid gold;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      width: 160px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -187,127 +87,21 @@
       <button onclick="nextQuestion()">Next</button>
     </div>
     <div style="text-align: center; margin-top: 30px;">
-      <button onclick="submitQuiz()">Submit</button>
+      <button id="submitBtn" onclick="submitQuiz()" style="padding: 10px 25px; background: gold; color: black; border: none; border-radius: 6px; font-weight: bold;">Submit</button>
     </div>
-    <div class="calculator">
-      <h3>Calculator</h3>
-      <iframe src="https://www.desmos.com/scientific" title="Calculator"></iframe>
+    <div class="calculator" style="text-align:center; margin-top:30px;">
+      <button id="toggleCalc" style="padding: 10px 20px; background: transparent; color: gold; border: 1px solid gold; border-radius: 6px;">
+        🧮 Show Calculator
+      </button>
+      <div id="calculatorFrame" style="display:none; margin-top:20px;">
+        <iframe src="https://jambcalc.netlify.app/" title="CBT Calculator" style="border:none;width:100%;height:300px;background:#000;"></iframe>
+      </div>
     </div>
-  </div>  <!-- ✅ Chunk 2 Begins -->  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    let questions = [];
-    let currentIndex = 0;
-    let selectedAnswers = {};
-    let userUID = null;
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return window.location.href = "login.html";
-      userUID = user.uid;
-      const snapshot = await getDocs(collection(db, "cbt_questions"));
-      questions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      shuffleArray(questions);
-      renderQuestion();
-      startTimer();
-    });
-
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    function renderQuestion() {
-      const q = questions[currentIndex];
-      if (!q) return;
-      const container = document.getElementById("question-container");
-      let html = `<h3>Q${currentIndex + 1}. ${q.question}</h3>`;
-      for (const opt of q.options) {
-        const selected = selectedAnswers[q.id] === opt ? 'selected' : '';
-        html += `<button class="option-btn ${selected}" onclick="selectOption('${q.id}', '${opt}')">${opt}</button>`;
-      }
-      container.innerHTML = html;
-    }
-
-    window.selectOption = function (qid, selectedOpt) {
-      selectedAnswers[qid] = selectedOpt;
-      renderQuestion();
-    };
-
-    window.nextQuestion = function () {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        renderQuestion();
-      }
-    };
-
-    window.prevQuestion = function () {
-      if (currentIndex > 0) {
-        currentIndex--;
-        renderQuestion();
-      }
-    };
-
-    window.submitQuiz = async function () {
-      let correct = 0;
-      let missed = [];
-      questions.forEach(q => {
-        if (selectedAnswers[q.id] === q.answer) correct++;
-        else missed.push(q);
-      });
-
-      const score = Math.round((correct / questions.length) * 100);
-      await setDoc(doc(db, "cbt_scores", userUID), {
-        score,
-        timestamp: new Date(),
-        userId: userUID,
-        total: questions.length,
-        correct,
-        missed: missed.map(m => m.id),
-      });
-
-      alert(`You scored ${score}%. Click OK to return.`);
-      window.location.href = "home.html";
-    };
-
-    // Timer Setup
-    function startTimer() {
-      let totalSeconds = 30 * 60; // 30 minutes
-      const timerEl = document.getElementById("timer");
-
-      const interval = setInterval(() => {
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        timerEl.textContent = `Time: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-        if (--totalSeconds < 0) {
-          clearInterval(interval);
-          submitQuiz();
-        }
-      }, 1000);
-    }
-  </script></body>
+  </div>  <!-- Scripts and logic will begin in Chunk 2 --></body>
 </html>
-<!-- ✅ Chunk 3: Firebase Setup & Quiz Fetching -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
@@ -320,177 +114,271 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const auth = getAuth(app);
 
+  const totalQuestions = 30;
+  const quizDuration = 30 * 60; // 30 minutes in seconds
   let questions = [];
-  let currentQuestion = 0;
-  let userAnswers = [];
-  let quizStarted = false;
+  let currentIndex = 0;
+  let answers = {};
+  let timeLeft = quizDuration;
 
+  const timerEl = document.getElementById("timer");
   const questionContainer = document.getElementById("question-container");
+  const submitBtn = document.getElementById("submitBtn");
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) return window.location.href = "login.html";
+  // Sample questions for now (until you add from admin.html)
+  const sampleQuestions = [
+    {
+      question: "What is the full meaning of ATM?",
+      options: ["Automated Teller Machine", "All Time Money", "Auto Transfer Machine", "Advanced Tech Mechanism"],
+      correct: 0
+    },
+    {
+      question: "Which body regulates banks in Nigeria?",
+      options: ["NSE", "NDIC", "CBN", "EFCC"],
+      correct: 2
+    },
+    {
+      question: "Which of the following is not a type of account?",
+      options: ["Savings", "Current", "Ledger", "Fixed Deposit"],
+      correct: 2
+    }
+  ];
 
-    // Fetch quiz questions from Firestore
-    const querySnapshot = await getDocs(collection(db, "cbt_questions"));
-    querySnapshot.forEach((doc) => {
-      questions.push({ id: doc.id, ...doc.data() });
+  questions = shuffleArray(sampleQuestions).slice(0, totalQuestions);
+  renderQuestion();
+
+  function shuffleArray(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+  }
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    if (!q) return;
+    questionContainer.innerHTML = `
+      <h3>Question ${currentIndex + 1} of ${questions.length}</h3>
+      <p>${q.question}</p>
+      ${q.options.map((opt, i) => `
+        <button class="option-btn ${answers[currentIndex] === i ? 'selected' : ''}" onclick="selectOption(${i})">${opt}</button>
+      `).join('')}
+    `;
+  }
+
+  window.selectOption = function(index) {
+    answers[currentIndex] = index;
+    renderQuestion();
+  };
+
+  window.nextQuestion = function() {
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+    }
+  };
+
+  window.prevQuestion = function() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderQuestion();
+    }
+  };
+
+  // Calculator toggle
+  document.getElementById("toggleCalc").onclick = () => {
+    const frame = document.getElementById("calculatorFrame");
+    const btn = document.getElementById("toggleCalc");
+    if (frame.style.display === "none") {
+      frame.style.display = "block";
+      btn.textContent = "🧮 Hide Calculator";
+    } else {
+      frame.style.display = "none";
+      btn.textContent = "🧮 Show Calculator";
+    }
+  };
+
+  // Timer
+  const countdown = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      submitQuiz();
+    } else {
+      const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const sec = String(timeLeft % 60).padStart(2, '0');
+      timerEl.textContent = `Time: ${min}:${sec}`;
+      timeLeft--;
+    }
+  }, 1000);
+</script>
+<!-- ✅ End of Chunk 2 -->
+<script type="module">
+// Submit Quiz
+window.submitQuiz = function () {
+  clearInterval(countdown);
+  let score = 0;
+  let total = questions.length;
+  let wrong = [];
+
+  questions.forEach((q, i) => {
+    if (answers[i] === q.correct) score++;
+    else wrong.push({
+      number: i + 1,
+      question: q.question,
+      correct: q.options[q.correct],
+      selected: q.options[answers[i]] || "No Answer"
     });
-
-    // Randomize and trim to 30 questions
-    questions = shuffleArray(questions).slice(0, 30);
-    userAnswers = Array(questions.length).fill(null);
-
-    displayQuestion();
-    startTimer();
   });
 
-  function shuffleArray(arr) {
-    return arr
-      .map(value => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-  }
+  const resultHTML = `
+    <h2>Quiz Completed!</h2>
+    <p>Total Score: ${score} / ${total}</p>
+    <p>Correct Answers: ${score}</p>
+    <p>Wrong Answers: ${total - score}</p>
+    <div>
+      ${wrong.map(item => `
+        <div style="background:#111;padding:10px;margin:10px 0;border-left:4px solid red;">
+          <strong>Q${item.number}:</strong> ${item.question}<br>
+          <span style="color:lightgreen">Correct: ${item.correct}</span><br>
+          <span style="color:orange">You Chose: ${item.selected}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
 
-  function displayQuestion() {
-    const q = questions[currentQuestion];
-    if (!q) return;
+  questionContainer.innerHTML = resultHTML;
+  document.querySelector('.nav-buttons').style.display = "none";
+  document.querySelector('button[onclick="submitQuiz()"]').style.display = "none";
 
-    questionContainer.innerHTML = `
-      <h3>Q${currentQuestion + 1}: ${q.question}</h3>
-      ${q.options.map((opt, index) => `
-        <button class="option-btn ${userAnswers[currentQuestion] === index ? 'selected' : ''}"
-          onclick="selectOption(${index})">${opt}</button>`).join("")}
-    `;
-  }
-
-  window.selectOption = (index) => {
-    userAnswers[currentQuestion] = index;
-    displayQuestion();
-  };
-
-  window.nextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
-      currentQuestion++;
-      displayQuestion();
+  // Save to Firestore (optional)
+  try {
+    const user = JSON.parse(localStorage.getItem("currentUser")); // fallback for now
+    if (user && user.uid) {
+      const userRef = doc(db, "Users", user.uid);
+      setDoc(userRef, {
+        lastCBT: new Date(),
+        score: score,
+        total: total
+      }, { merge: true });
     }
-  };
-
-  window.prevQuestion = () => {
-    if (currentQuestion > 0) {
-      currentQuestion--;
-      displayQuestion();
-    }
-  };
+  } catch (e) {
+    console.warn("Couldn't save result to Firestore.", e);
+  }
+};
 </script>
 <!-- ✅ End of Chunk 3 -->
-<!-- ✅ Chunk 4: Timer, Submission, Result Display & Firestore Save -->
-<script type="module">
-  let timeLeft = 1800; // 30 minutes = 1800 seconds
-  const timerDisplay = document.getElementById("timer");
-  let timerInterval;
+<script>
+// Ensure Calculator toggler works
+document.addEventListener("DOMContentLoaded", () => {
+  const calcSection = document.querySelector(".calculator");
+  if (calcSection) {
+    const iframe = calcSection.querySelector("iframe");
+    iframe.id = "calculatorFrame";
+    iframe.style.display = "none";
 
-  function startTimer() {
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      const min = Math.floor(timeLeft / 60);
-      const sec = timeLeft % 60;
-      timerDisplay.textContent = `Time: ${min}:${sec < 10 ? "0" + sec : sec}`;
+    const toggleBtn = document.createElement("button");
+    toggleBtn.id = "toggleCalc";
+    toggleBtn.textContent = "🧮 Show Calculator";
+    toggleBtn.style.cssText = "margin-bottom: 10px; padding: 10px; background:gold;color:black;border:none;border-radius:5px;cursor:pointer;";
+    calcSection.insertBefore(toggleBtn, iframe);
+  }
+});
+</script>
 
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        submitQuiz(); // Auto submit
-      }
-    }, 1000);
+<style>
+  .calculator {
+    background: #111;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #444;
   }
 
-  window.submitQuiz = async () => {
-    clearInterval(timerInterval);
-    const user = auth.currentUser;
-    if (!user) return alert("Not logged in");
+  iframe {
+    border-radius: 8px;
+    border: 2px solid gold;
+  }
+</style>
+<!-- ✅ End of Chunk 4 -->
+<script>
+// Warn user before reloading or leaving the page
+window.addEventListener("beforeunload", (e) => {
+  if (answers.some(a => a !== undefined)) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
 
-    let score = 0;
-    let wrong = 0;
-    const summaryHTML = [];
+// Fallback message if no questions loaded
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (!questions || questions.length === 0) {
+      document.getElementById("question-container").innerHTML = `
+        <p style="text-align:center;color:orange;font-size:1.1rem;">⚠️ No questions available at the moment.</p>
+      `;
+      document.querySelector(".nav-buttons").style.display = "none";
+      document.querySelector('button[onclick="submitQuiz()"]').style.display = "none";
+    }
+  }, 3000); // wait 3s before showing fallback
+});
+</script>
 
-    questions.forEach((q, index) => {
-      const correctIndex = q.correct;
-      const selected = userAnswers[index];
-
-      if (selected === correctIndex) {
-        score++;
-      } else {
-        wrong++;
-      }
-
-      summaryHTML.push(`
-        <div style="border-bottom:1px solid gray; padding:10px;">
-          <strong>Q${index + 1}: ${q.question}</strong><br>
-          Your answer: ${selected !== null ? q.options[selected] : '<i>Not answered</i>'}<br>
-          Correct answer: ${q.options[correctIndex]}
-        </div>
-      `);
-    });
-
-    // Save score to Firestore
-    try {
-      await setDoc(doc(db, "cbt_results", user.uid), {
-        name: user.displayName || user.email,
-        score,
-        total: questions.length,
-        submittedAt: serverTimestamp(),
-        answers: userAnswers
-      });
-    } catch (err) {
-      alert("Error saving result: " + err.message);
+<style>
+  @media (max-width: 600px) {
+    header {
+      font-size: 1.2rem;
+      padding: 10px;
     }
 
-    // Show result
-    document.querySelector(".container").innerHTML = `
-      <h2>Quiz Complete</h2>
-      <p>✅ Score: ${score}/${questions.length}</p>
-      <p>❌ Wrong: ${wrong}</p>
-      <h3>Answer Review</h3>
-      <div style="text-align:left;">${summaryHTML.join("")}</div>
-    `;
-  };
-</script>
-<!-- ✅ End of Chunk 4 -->
-// ✅ Chunk 5 – Final Touches, Fallbacks, and Export Utility
+    .container {
+      padding: 10px;
+    }
 
-<script>
-// -------------------------
-// Helper: Display fallback message if no question loaded
-// -------------------------
-function showIfEmpty(containerId, message = "Nothing to display.") {
-  const box = document.getElementById(containerId);
-  if (box && box.innerHTML.trim() === '') {
-    box.innerHTML = `<p style="text-align:center; opacity:0.6;">${message}</p>`;
+    .option-btn {
+      font-size: 0.95rem;
+    }
+
+    .nav-buttons button, button[onclick="submitQuiz()"] {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+
+    #timer {
+      font-size: 1rem;
+    }
   }
-}
+</style>
+<!-- ✅ End of Chunk 5 -->
+<!-- ✅ CBT Final Logic and Result Display -->
+<script>
+function showResult() {
+  const total = questions.length;
+  let correct = 0;
 
-// -------------------------
-// Download Result Locally (Optional Admin Utility)
-// -------------------------
-function downloadResult(answers, score) {
-  const result = {
-    timestamp: new Date().toISOString(),
-    answers,
-    score
-  };
-  const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'cbt_result.json';
-  link.click();
-  URL.revokeObjectURL(link.href);
-}
+  questions.forEach((q, i) => {
+    if (answers[i] === q.correct) correct++;
+  });
 
-// -------------------------
-// Timer Visibility Safeguard (optional)
-// -------------------------
-window.addEventListener('load', () => {
-  showIfEmpty("question-container", "Unable to load quiz. Check your network.");
-});
-</script><!-- ✅ End of CBT Practice Setup --><!-- 🔐 Integrated with Firestore | Randomized Questions | Admin-ready -->
+  const missed = total - correct;
+
+  document.querySelector(".container").innerHTML = `
+    <h2 style="text-align:center;color:lightgreen;">✅ Quiz Completed</h2>
+    <p style="text-align:center;font-size:1.2rem;">🎯 Total Questions: ${total}<br>
+    ✅ Correct: ${correct}<br>
+    ❌ Missed: ${missed}</p>
+    <div style="margin-top:20px;text-align:center;">
+      <h3 style="color:gold;">Questions & Answers:</h3>
+      ${questions.map((q, i) => `
+        <div style="background:#111;padding:10px;border-radius:6px;margin-bottom:10px;">
+          <strong>Q${i + 1}:</strong> ${q.question}<br/>
+          <strong>Your Answer:</strong> ${answers[i] || '<em style="color:gray;">Not answered</em>'}<br/>
+          <strong>Correct Answer:</strong> ${q.correct}
+        </div>
+      `).join('')}
+    </div>
+    <button onclick="window.location.href='cbt.html'" style="margin-top:20px;padding:10px 20px;border:none;background:gold;color:black;border-radius:6px;">Back to CBT Start</button>
+  `;
+
+  // Optional audio feedback
+  const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_58fa3e5b62.mp3?filename=success-fanfare-trumpets-6185.mp3");
+  audio.play();
+}
+</script>
+<!-- ✅ End of Chunk 6 -->
