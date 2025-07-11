@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- ✅ Chunk 1: Layout & Style --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,19 +20,11 @@
       box-shadow: 0 0 10px gold;
       position: relative;
     }
-    .back-icon {
+    .back-btn {
       position: absolute;
       left: 15px;
       top: 15px;
-      font-size: 1.4rem;
-      color: gold;
-      cursor: pointer;
-    }
-    .calculator-icon {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       color: gold;
       cursor: pointer;
     }
@@ -44,6 +35,39 @@
       background: rgba(20, 20, 20, 0.9);
       border-radius: 10px;
       box-shadow: 0 0 10px gold;
+    }
+    .question-box {
+      margin-bottom: 20px;
+    }
+    .option-btn {
+      display: block;
+      width: 100%;
+      background: #222;
+      border: 1px solid gold;
+      color: gold;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .option-btn.selected {
+      background: gold;
+      color: black;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .nav-buttons button {
+      padding: 10px 20px;
+      border: none;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
     }
     .timer {
       text-align: center;
@@ -57,343 +81,429 @@
       margin-left: auto;
       margin-right: auto;
     }
-
-    /* Calculator Modal */
-    #calculatorModal {
+    #calculatorBox {
       display: none;
-      position: fixed;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: black;
+      margin-top: 20px;
       border: 2px solid gold;
-      padding: 20px;
-      z-index: 9999;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 300px;
-      box-shadow: 0 0 15px gold;
+      border-radius: 8px;
+      overflow: hidden;
     }
-    #calculatorModal input {
+    #calculatorBox iframe {
       width: 100%;
-      padding: 10px;
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      text-align: right;
-      border-radius: 6px;
-      border: none;
-      background: #111;
-      color: gold;
+      height: 300px;
+      background: black;
     }
-    .calc-btn {
-      width: 22%;
-      margin: 1%;
-      padding: 12px;
-      font-size: 1.2rem;
-      background: #222;
-      color: gold;
-      border: 1px solid gold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .calc-btn:hover {
+    #submitBtn {
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: bold;
       background: gold;
       color: black;
-    }
-    #closeCalc {
-      background: red;
       border: none;
-      color: white;
-      padding: 5px 10px;
-      float: right;
-      margin-top: -10px;
-      margin-right: -10px;
-      border-radius: 50%;
-      font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="dashboard.html"><i class="fas fa-arrow-left back-icon" title="Go Back"></i></a>
+    <i class="fas fa-arrow-left back-btn" onclick="window.location.href='home.html'"></i>
     CBT Practice - Finance Point
-    <i class="fas fa-calculator calculator-icon" onclick="toggleCalculator()" title="Calculator"></i>
   </header>
-
-  <!-- Calculator Modal -->
-  <div id="calculatorModal">
-    <button id="closeCalc" onclick="toggleCalculator()">×</button>
-    <input type="text" id="calcDisplay" disabled />
-    <div>
-      <button class="calc-btn" onclick="press('7')">7</button>
-      <button class="calc-btn" onclick="press('8')">8</button>
-      <button class="calc-btn" onclick="press('9')">9</button>
-      <button class="calc-btn" onclick="press('/')">÷</button>
-      <button class="calc-btn" onclick="press('4')">4</button>
-      <button class="calc-btn" onclick="press('5')">5</button>
-      <button class="calc-btn" onclick="press('6')">6</button>
-      <button class="calc-btn" onclick="press('*')">×</button>
-      <button class="calc-btn" onclick="press('1')">1</button>
-      <button class="calc-btn" onclick="press('2')">2</button>
-      <button class="calc-btn" onclick="press('3')">3</button>
-      <button class="calc-btn" onclick="press('-')">−</button>
-      <button class="calc-btn" onclick="press('0')">0</button>
-      <button class="calc-btn" onclick="press('.')">.</button>
-      <button class="calc-btn" onclick="calculate()">=</button>
-      <button class="calc-btn" onclick="press('+')">+</button>
-      <button class="calc-btn" onclick="clearCalc()" style="width: 95%">C</button>
+  <div class="container">
+    <div class="timer" id="timer">Time: 30:00</div>
+    <div id="question-container" class="question-box">
+      Loading question...
+    </div>
+    <div class="nav-buttons">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="nextQuestion()">Next</button>
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+      <button id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+    <div id="calculatorBox">
+      <iframe srcdoc="
+        <html>
+          <body style='margin:0;background:black;color:gold;font-family:sans-serif;'>
+            <div style='text-align:center;margin:10px;'>Basic Calculator</div>
+            <input type='text' id='screen' style='width:90%;padding:10px;border-radius:5px;margin-bottom:10px;'>
+            <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px;'>
+              ${[7,8,9,'/'].map(x => `<button onclick='press("${x}")'>${x}</button>`).join('')}
+              ${[4,5,6,'*'].map(x => `<button onclick='press("${x}")'>${x}</button>`).join('')}
+              ${[1,2,3,'-'].map(x => `<button onclick='press("${x}")'>${x}</button>`).join('')}
+              ${[0,'.','=','+'].map(x => `<button onclick='press("${x}")'>${x}</button>`).join('')}
+              <button onclick='document.getElementById("screen").value=""' style='grid-column:span 4;'>C</button>
+            </div>
+            <script>
+              function press(val){
+                const s=document.getElementById('screen');
+                if(val==='='){s.value=eval(s.value)}else{s.value+=val}
+              }
+            </script>
+          </body>
+        </html>" title="Calculator"></iframe>
     </div>
   </div>
-
   <script>
     function toggleCalculator() {
-      const modal = document.getElementById("calculatorModal");
-      modal.style.display = modal.style.display === "block" ? "none" : "block";
-    }
-
-    function press(value) {
-      document.getElementById("calcDisplay").value += value;
-    }
-
-    function clearCalc() {
-      document.getElementById("calcDisplay").value = "";
-    }
-
-    function calculate() {
-      try {
-        const result = eval(document.getElementById("calcDisplay").value);
-        document.getElementById("calcDisplay").value = result;
-      } catch {
-        alert("Invalid expression");
-      }
+      const calcBox = document.getElementById("calculatorBox");
+      calcBox.style.display = (calcBox.style.display === "block") ? "none" : "block";
     }
   </script>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <!-- Chunk 2 will continue here -->
+</body>
+</html>
+// ✅ CBT Practice: Chunk 2 - Quiz Logic & Dummy Questions
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  let questions = [];
-  let currentIndex = 0;
-  let answers = {};
-
-  async function loadQuestions() {
-    try {
-      const snapshot = await getDocs(collection(db, "cbtQuestions"));
-      snapshot.forEach(doc => questions.push(doc.data()));
-    } catch (err) {
-      console.warn("Firestore failed. Using fallback questions.");
-    }
-
-    if (questions.length === 0) {
-      questions = [
-        {
-          question: "What is the full meaning of ATM?",
-          A: "Automated Teller Machine",
-          B: "Automatic Tele Machine",
-          C: "Account Transfer Mechanism",
-          D: "Auto Transfer Mode",
-          correct: "A"
-        },
-        {
-          question: "Which is a liability?",
-          A: "Cash",
-          B: "Land",
-          C: "Bank Loan",
-          D: "Salary",
-          correct: "C"
-        },
-        {
-          question: "Central Bank controls?",
-          A: "Commercial Banks",
-          B: "Church Banks",
-          C: "World Bank",
-          D: "Loan Sharks",
-          correct: "A"
-        },
-        {
-          question: "Who prepares the balance sheet?",
-          A: "Engineer",
-          B: "Banker",
-          C: "Accountant",
-          D: "Politician",
-          correct: "C"
-        },
-        {
-          question: "What does BVN stand for?",
-          A: "Bank Value Number",
-          B: "Bank Verification Number",
-          C: "BV Number",
-          D: "Basic Verification Node",
-          correct: "B"
-        }
-      ];
-    }
-
-    questions = questions.sort(() => 0.5 - Math.random());
-    displayQuestion();
+<script>
+const questions = [
+  {
+    question: "What is the full meaning of CBT?",
+    options: ["Computer-Based Test", "Central Bank Test", "Coded Banking Technology", "Current Bank Terms"],
+    answer: 0
+  },
+  {
+    question: "Which of the following is a financial institution?",
+    options: ["WAEC", "NECO", "CBN", "NCDC"],
+    answer: 2
+  },
+  {
+    question: "The acronym ATM stands for?",
+    options: ["All Time Money", "Automatic Teller Machine", "Access Transfer Method", "Automated Transaction Mechanism"],
+    answer: 1
+  },
+  {
+    question: "In finance, ROI means?",
+    options: ["Return on Investment", "Rate of Interest", "Revenue on Input", "Record of Income"],
+    answer: 0
+  },
+  {
+    question: "Which one is NOT a Nigerian commercial bank?",
+    options: ["First Bank", "GTBank", "UBA", "Tesla Bank"],
+    answer: 3
   }
+];
 
-  function displayQuestion() {
-    const q = questions[currentIndex];
-    const container = document.getElementById("question-container");
-    container.innerHTML = `
-      <h3>Question ${currentIndex + 1} of ${questions.length}</h3>
-      <p>${q.question}</p>
-      ${["A", "B", "C", "D"].map(opt => `
-        <button class="option-btn ${answers[currentIndex] === opt ? 'selected' : ''}" onclick="selectAnswer('${opt}')">${opt}. ${q[opt]}</button>
-      `).join("")}
-    `;
-  }
+let currentIndex = 0;
+let selectedAnswers = {};
+let timeLeft = 30 * 60;
+let timerInterval;
 
-  window.selectAnswer = (opt) => {
-    answers[currentIndex] = opt;
-    displayQuestion();
-    setTimeout(() => {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        displayQuestion();
-      }
-    }, 200);
-  };
+function renderQuestion() {
+  const question = questions[currentIndex];
+  const container = document.getElementById("question-container");
+  container.innerHTML = `
+    <h3>Question ${currentIndex + 1} of ${questions.length}</h3>
+    <p>${question.question}</p>
+    ${question.options.map((opt, i) => `
+      <button class="option-btn ${selectedAnswers[currentIndex] === i ? 'selected' : ''}" onclick="selectAnswer(${i})">${opt}</button>
+    `).join('')}
+  `;
+}
 
-  window.nextQuestion = () => {
+function selectAnswer(index) {
+  selectedAnswers[currentIndex] = index;
+  renderQuestion();
+  setTimeout(() => {
     if (currentIndex < questions.length - 1) {
       currentIndex++;
-      displayQuestion();
+      renderQuestion();
     }
-  };
+  }, 200);
+}
 
-  window.prevQuestion = () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      displayQuestion();
+function nextQuestion() {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+}
+
+function submitQuiz() {
+  const container = document.getElementById("question-container");
+  let score = 0;
+  let missed = [];
+
+  questions.forEach((q, i) => {
+    if (selectedAnswers[i] === q.answer) {
+      score++;
+    } else {
+      missed.push(`Question ${i + 1}: Correct Answer - ${q.options[q.answer]}`);
     }
-  };
+  });
 
-  // Timer Setup
-  let timeLeft = 30 * 60;
+  const percent = Math.round((score / questions.length) * 100);
+  container.innerHTML = `
+    <h2>🎉 CBT Completed</h2>
+    <p><strong>Total Score:</strong> ${score} / ${questions.length} (${percent}%)</p>
+    <ul style="text-align:left;">${missed.map(m => `<li>${m}</li>`).join('')}</ul>
+  `;
+
+  document.querySelector(".nav-buttons").style.display = "none";
+  document.getElementById("timer").style.display = "none";
+  document.getElementById("submitBtn").style.display = "none";
+}
+
+function startTimer() {
   const timerEl = document.getElementById("timer");
-  const interval = setInterval(() => {
-    const min = Math.floor(timeLeft / 60);
-    const sec = timeLeft % 60;
-    timerEl.textContent = `Time: ${min}:${sec.toString().padStart(2, '0')}`;
+  timerInterval = setInterval(() => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerEl.textContent = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
     if (timeLeft <= 0) {
-      clearInterval(interval);
+      clearInterval(timerInterval);
+      alert("⏰ Time is up! Submitting...");
       submitQuiz();
     }
     timeLeft--;
   }, 1000);
+}
 
-  loadQuestions();
+window.onload = () => {
+  renderQuestion();
+  startTimer();
+};
 </script>
+<!-- ✅ Chunk 3 - Final Touches + Result Enhancements --><script>
+function submitQuiz() {
+  if (Object.keys(selectedAnswers).length === 0) {
+    alert("You haven't answered any questions.");
+    return;
+  }
+
+  const confirmSubmit = confirm("Are you sure you want to submit?");
+  if (!confirmSubmit) return;
+
+  clearInterval(timerInterval);
+  calculateResult();
+}
+
+function calculateResult() {
+  let score = 0;
+  let missed = [];
+
+  questions.forEach((q, i) => {
+    if (selectedAnswers[i] === q.answer) {
+      score++;
+    } else {
+      missed.push({ number: i + 1, correct: q.options[q.answer] });
+    }
+  });
+
+  const percent = Math.round((score / questions.length) * 100);
+
+  const container = document.getElementById("question-container");
+  container.innerHTML = `
+    <h2>🎉 CBT Completed</h2>
+    <p><strong>Total Score:</strong> ${score} / ${questions.length} (${percent}%)</p>
+    <p><strong>Missed Questions:</strong></p>
+    <ul style="text-align: left;">
+      ${missed.map(m => `<li>Question ${m.number}: Correct Answer - ${m.correct}</li>`).join('') || '<li>None</li>'}
+    </ul>
+  `;
+
+  document.querySelector(".nav-buttons").style.display = "none";
+  document.getElementById("timer").style.display = "none";
+  document.querySelector("#submitBtn").style.display = "none";
+
+  // Optional: Save to Firestore if user is authenticated
+  // saveResultToFirestore(score, percent);
+}
+</script><!-- ✅ End of Chunk 3 -->
+<!-- ✅ Chunk 4 - Sample Questions for CBT -->
+<script>
+const questions = [
+  {
+    text: "What is the full meaning of CBN?",
+    options: ["Central Bank of Nigeria", "Commercial Bank Network", "Currency Bureau of Nigeria", "Central Banking of Nations"],
+    answer: 0
+  },
+  {
+    text: "Who is the current Minister of Finance in Nigeria (as of 2025)?",
+    options: ["Zainab Ahmed", "Wale Edun", "Ngozi Okonjo-Iweala", "Akinwumi Adesina"],
+    answer: 1
+  },
+  {
+    text: "What does ATM stand for?",
+    options: ["Automated Teller Machine", "All-Time Money", "Automatic Transfer Method", "Access To Money"],
+    answer: 0
+  },
+  {
+    text: "Which of the following is **NOT** a function of commercial banks?",
+    options: ["Granting Loans", "Currency Printing", "Accepting Deposits", "Issuing Cheque Books"],
+    answer: 1
+  },
+  {
+    text: "What is liquidity in finance?",
+    options: ["The ability to make profit", "The rate of inflation", "Ease of converting assets to cash", "Government revenue"],
+    answer: 2
+  }
+];
+
+let currentIndex = 0;
+let selectedAnswers = {};
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+  const container = document.getElementById("question-container");
+  container.innerHTML = `
+    <div><strong>Question ${currentIndex + 1} of ${questions.length}</strong></div>
+    <div style="margin: 10px 0;">${q.text}</div>
+    ${q.options.map((opt, i) => `
+      <button class="option-btn${selectedAnswers[currentIndex] === i ? ' selected' : ''}" onclick="selectAnswer(${i})">${opt}</button>
+    `).join('')}
+  `;
+}
+
+function selectAnswer(index) {
+  selectedAnswers[currentIndex] = index;
+  renderQuestion();
+  setTimeout(() => {
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+    }
+  }, 250);
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+}
+
+// Call this on page load
+window.addEventListener('load', renderQuestion);
+</script>
+<!-- ✅ End of Chunk 4 -->
+<!-- ✅ Chunk 5 - Timer, Submit Button Styling & Calculator Toggle -->
+<script>
+let timeLeft = 30 * 60; // 30 minutes
+const timerEl = document.getElementById("timer");
+
+const timerInterval = setInterval(() => {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  timerEl.textContent = `Time: ${minutes}:${seconds.toString().padStart(2, "0")}`;
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    alert("Time is up! Submitting quiz...");
+    submitQuiz();
+  }
+  timeLeft--;
+}, 1000);
+</script>
+
+<!-- Optional Styling Improvements -->
+<script>
+  // Add styling class to timer
+  timerEl.classList.add("timer-box");
+
+  // Enhance submit button appearance
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn) {
+    submitBtn.classList.add("submit-btn");
+  }
+</script>
+
+<!-- Calculator Toggle Button Fix -->
+<script>
+  function toggleCalculator() {
+    const calcBox = document.getElementById("calculatorBox");
+    if (!calcBox) return;
+    calcBox.style.display = (calcBox.style.display === "block") ? "none" : "block";
+  }
+</script>
+<!-- ✅ Chunk 6 - Firestore Result Saving, UX Fallbacks -->
 <script type="module">
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const db = getFirestore();
   const auth = getAuth();
 
-  window.submitQuiz = async () => {
-    if (Object.keys(answers).length === 0) {
-      alert("You haven't answered any questions.");
-      return;
-    }
+  // 👇 Add this only if not already declared earlier
+  // const app = initializeApp(firebaseConfig); (already done in chunk 1)
 
-    if (!confirm("Are you sure you want to submit your answers?")) return;
+  function saveResultToFirestore(score, percent) {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return console.warn("Not logged in, result won't be saved.");
 
+      const result = {
+        userId: user.uid,
+        email: user.email,
+        score,
+        percent,
+        total: questions.length,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "cbt_results"), result);
+        console.log("Result saved successfully.");
+      } catch (err) {
+        console.error("Failed to save result:", err);
+      }
+    });
+  }
+
+  // Modify your calculateResult function to call this
+  window.calculateResult = function () {
     let score = 0;
-    const missed = [];
+    let missed = [];
 
     questions.forEach((q, i) => {
-      if (answers[i] === q.correct) {
+      if (selectedAnswers[i] === q.answer) {
         score++;
       } else {
-        missed.push({ number: i + 1, correct: q[q.correct] });
+        missed.push({ number: i + 1, correct: q.options[q.answer] });
       }
     });
 
     const percent = Math.round((score / questions.length) * 100);
 
-    document.querySelector(".container").innerHTML = `
+    const container = document.getElementById("question-container");
+    container.innerHTML = `
       <h2>🎉 CBT Completed</h2>
-      <p><strong>Score:</strong> ${score} / ${questions.length} (${percent}%)</p>
+      <p><strong>Total Score:</strong> ${score} / ${questions.length} (${percent}%)</p>
       <p><strong>Missed Questions:</strong></p>
       <ul style="text-align: left;">
-        ${missed.map(m => `<li>Question ${m.number}: Correct Answer - ${m.correct}</li>`).join("") || "<li>None</li>"}
+        ${missed.map(m => `<li>Question ${m.number}: Correct Answer - ${m.correct}</li>`).join('') || '<li>None</li>'}
       </ul>
-      <button onclick="location.reload()">Try Again</button>
     `;
 
-    // Optional: Save result to Firestore
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        await addDoc(collection(db, "cbt_results"), {
-          uid: user.uid,
-          email: user.email,
-          score,
-          percent,
-          total: questions.length,
-          submittedAt: new Date().toISOString()
-        });
-        console.log("✅ Result saved to Firestore");
-      }
-    } catch (err) {
-      console.warn("❌ Failed to save result", err);
-    }
+    document.querySelector(".nav-buttons").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.querySelector("#submitBtn").style.display = "none";
 
-    clearInterval(interval); // Stop timer
+    saveResultToFirestore(score, percent);
   };
 </script>
-<!-- ✅ Back to Dashboard Icon -->
-<a href="dashboard.html" title="Back to Dashboard" id="backIcon">
-  <i class="fas fa-arrow-left"></i>
-</a>
 
-<style>
-  #backIcon {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    background: gold;
-    color: black;
-    padding: 10px 12px;
-    border-radius: 50%;
-    font-size: 1.1rem;
-    box-shadow: 0 0 8px black;
-    z-index: 9999;
-    text-decoration: none;
-    transition: background 0.3s;
-  }
-
-  #backIcon:hover {
-    background: #fff;
-  }
-
-  footer {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 0.85rem;
-    color: gray;
-    padding: 10px;
-    opacity: 0.6;
-  }
-</style>
-
-<!-- ✅ Optional Footer -->
-<footer>
-  &copy; 2025 Finance Point CBT — Powered by OBA
-</footer>
+<!-- Optional Fallback for No Questions -->
+<script>
+  window.addEventListener("load", () => {
+    const qBox = document.getElementById("question-container");
+    setTimeout(() => {
+      if (qBox && qBox.innerText.includes("Loading")) {
+        qBox.innerHTML = `<p style="color:red;text-align:center;">⚠️ No questions loaded. Please check your database or refresh the page.</p>`;
+      }
+    }, 5000);
+  });
+</script>
