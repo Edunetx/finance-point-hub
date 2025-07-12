@@ -14,13 +14,13 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f9fbfd;
+      background-color: #f9fafb;
       margin: 0;
       padding: 0;
       color: #1e293b;
     }
     header {
-      background-color: #0f172a;
+      background-color: #008080;
       color: white;
       padding: 1rem 2rem;
       display: flex;
@@ -30,21 +30,25 @@
     .tabs {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
-      background-color: #e2e8f0;
+      background-color: #f3f4f6;
       padding: 0.75rem 1rem;
+      flex-wrap: wrap;
     }
     .tabs button {
       background: none;
-      border: none;
+      border: 2px solid transparent;
       font-weight: 600;
       cursor: pointer;
       padding: 8px 14px;
       border-radius: 8px;
-      color: #1e293b;
+      color: #008080;
+      transition: all 0.2s ease;
+    }
+    .tabs button:hover {
+      border-color: #f59e0b;
     }
     .tabs button.active {
-      background-color: #0f172a;
+      background-color: #008080;
       color: white;
     }
     section {
@@ -59,47 +63,34 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
     .logout-btn {
-      background-color: crimson;
+      background-color: #dc2626;
       color: white;
       border: none;
       padding: 8px 12px;
       border-radius: 6px;
       cursor: pointer;
     }
-    button, input, textarea, select {
-      font-family: inherit;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      padding: 8px;
-      margin-top: 6px;
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 1rem;
     }
-    button {
-      background-color: #0f172a;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1e293b;
-    }
-    input[type="file"] {
-      border: none;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 8px;
+    .loader.active {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <!-- ✅ CHUNK 2: BODY START + HEADER + TABS + AUTH LOCK -->
-
+  <!-- ✅ CHUNK 2: HEADER, NAVIGATION & FIREBASE AUTH ADMIN CHECK -->
   <header>
     <h2>Finance Point Admin Panel</h2>
     <button class="logout-btn" onclick="logoutUser()">Logout</button>
   </header>
 
-  <!-- ✅ Tabs Navigation -->
+  <!-- 🔄 Global Loader -->
+  <div id="globalLoader" class="loader">⏳ Loading, please wait...</div>
+
+  <!-- ✅ Tab Navigation -->
   <div class="tabs">
     <button class="tab-link active" data-tab="home">🏠 Home</button>
     <button class="tab-link" data-tab="announcements">📢 Announcements</button>
@@ -107,19 +98,18 @@
     <button class="tab-link" data-tab="cbt">🧠 CBT</button>
     <button class="tab-link" data-tab="lostfound">🎒 Lost & Found</button>
     <button class="tab-link" data-tab="leaderboard">🏆 Leaderboard</button>
-    <button class="tab-link" data-tab="feedback">💌 Feedback</button>
+    <button class="tab-link" data-tab="feedback">📨 Feedback</button>
     <button class="tab-link" data-tab="downloads">📂 Downloads</button>
     <button class="tab-link" data-tab="settings">⚙️ Settings</button>
   </div>
 
-  <!-- ✅ Firebase Init -->
   <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
       projectId: "YOUR_PROJECT_ID",
       storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MSG_SENDER_ID",
+      messagingSenderId: "YOUR_SENDER_ID",
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
@@ -127,177 +117,163 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    auth.onAuthStateChanged(user => {
-      if (!user || user.email !== 'ayubaboluwatife246@gmail.com') {
-        alert('Access denied. Admin only.');
-        window.location.href = '/login.html';
+    auth.onAuthStateChanged(async user => {
+      if (!user) return window.location.href = "/login.html";
+      const userDoc = await db.collection("Users").doc(user.uid).get();
+      if (!userDoc.exists || userDoc.data().role !== "admin") {
+        alert("Access denied. Admin only.");
+        window.location.href = "/login.html";
       }
     });
 
     function logoutUser() {
-      auth.signOut().then(() => {
-        window.location.href = '/login.html';
-      });
+      auth.signOut().then(() => window.location.href = "/login.html");
+    }
+
+    // Global loading wrapper
+    async function withLoader(callback) {
+      const loader = document.getElementById("globalLoader");
+      loader.classList.add("active");
+      try {
+        await callback();
+      } finally {
+        loader.classList.remove("active");
+      }
     }
   </script>
-
-  <!-- ✅ Tab Switching Logic -->
+  <!-- ✅ CHUNK 3: TAB SWITCH HANDLER + SECTION SHELLS -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const tabs = document.querySelectorAll('.tab-link');
-      const sections = document.querySelectorAll('section');
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".tab-link");
+      const sections = document.querySelectorAll("section");
 
       tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          tabs.forEach(t => t.classList.remove('active'));
-          sections.forEach(s => s.classList.remove('active'));
-
-          tab.classList.add('active');
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          sections.forEach(s => s.classList.remove("active"));
+          tab.classList.add("active");
           const target = document.getElementById(tab.dataset.tab);
-          if (target) target.classList.add('active');
+          if (target) target.classList.add("active");
         });
       });
     });
   </script>
-  <!-- ✅ CHUNK 3: SECTION – HOME MANAGER -->
+
+  <!-- Section Shells -->
+  <section id="home" class="active"><h3>🏠 Home Manager</h3></section>
+  <section id="announcements"><h3>📢 Announcements</h3></section>
+  <section id="events"><h3>📅 Events</h3></section>
+  <section id="cbt"><h3>🧠 CBT Manager</h3></section>
+  <section id="lostfound"><h3>🎒 Lost and Found</h3></section>
+  <section id="leaderboard"><h3>🏆 Leaderboard</h3></section>
+  <section id="feedback"><h3>📨 Feedback</h3></section>
+  <section id="downloads"><h3>📂 File Downloads</h3></section>
+  <section id="settings"><h3>⚙️ Admin Settings</h3></section>
+  <!-- ✅ CHUNK 4: Inside <section id="home"> -->
 <section id="home" class="active">
   <h3>🏠 Home Manager</h3>
   <div style="display: flex; flex-direction: column; gap: 2rem;">
 
     <!-- 💡 Finance Tips -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
+    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 12px;">
       <h4>💡 Add Finance Tip</h4>
-      <textarea id="tipInput" rows="2" placeholder="Write tip (optional)..." style="width: 100%;"></textarea>
+      <textarea id="tipInput" rows="3" placeholder="Enter a new tip..." style="width: 100%; padding: 10px; border-radius: 8px;"></textarea>
+      <br><br>
       <button onclick="addFinanceTip()">➕ Add Tip</button>
+      <ul id="tipList"></ul>
     </div>
 
-    <!-- 🎂 Birthdays -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
+    <!-- 🎂 Birthday Wall -->
+    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 12px;">
       <h4>🎂 Add Birthday</h4>
-      <input type="text" id="bdayName" placeholder="Student's name (optional)" style="width: 49%;" />
-      <input type="date" id="bdayDate" style="width: 49%;" />
+      <input type="text" id="bdayName" placeholder="Student's Name" style="padding: 8px; width: 48%;" />
+      <input type="date" id="bdayDate" style="padding: 8px; width: 48%;" />
       <br><br>
-      <input type="file" id="bdayImage" accept="image/*" />
-      <br><br>
-      <img id="bdayPreview" style="max-height: 120px; display: none;" />
-      <br>
-      <button onclick="addBirthday()">➕ Save Birthday</button>
+      <button onclick="addBirthday()">➕ Add Birthday</button>
+      <ul id="birthdayList"></ul>
     </div>
 
     <!-- 📸 Ad Upload -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📸 Upload Advert Image</h4>
+    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 12px;">
+      <h4>📸 Upload Ad Banner</h4>
       <input type="file" id="adImage" accept="image/*" />
       <br><br>
-      <img id="adPreview" style="max-height: 120px; display: none;" />
+      <img id="adPreview" src="" alt="Preview" style="max-height: 150px; display: none;" />
       <br><br>
-      <input type="text" id="adLink" placeholder="Ad link (optional)" style="width: 60%;" />
+      <input type="text" id="adLink" placeholder="Ad redirect link (optional)" style="width: 60%; padding: 8px;" />
       <br><br>
       <button onclick="uploadAd()">📤 Upload Ad</button>
     </div>
-
   </div>
 
   <script>
-    // Finance Tips
     async function addFinanceTip() {
-      const tip = document.getElementById('tipInput').value.trim();
-      if (!tip) return; // Skip empty
-      await db.collection('financeTips').add({ text: tip, createdAt: new Date() });
+      const text = document.getElementById('tipInput').value.trim();
+      if (!text) return alert('Tip cannot be empty');
+      await db.collection('financeTips').add({ text });
       alert('Tip added!');
       document.getElementById('tipInput').value = '';
     }
 
-    // Birthday Preview
-    const bdayInput = document.getElementById('bdayImage');
-    const bdayPreview = document.getElementById('bdayPreview');
-
-    bdayInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          bdayPreview.src = e.target.result;
-          bdayPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
     async function addBirthday() {
       const name = document.getElementById('bdayName').value.trim();
       const date = document.getElementById('bdayDate').value;
-      const file = bdayInput.files[0];
-
-      let imageUrl = '';
-      if (file) {
-        const filename = `birthdays/${Date.now()}-${file.name}`;
-        const ref = storage.ref().child(filename);
-        await ref.put(file);
-        imageUrl = await ref.getDownloadURL();
-      }
-
-      await db.collection('birthdays').add({ name, date, imageUrl, createdAt: new Date() });
+      if (!name || !date) return alert('Name and date are required');
+      await db.collection('birthdays').add({ name, date });
       alert('Birthday saved!');
       document.getElementById('bdayName').value = '';
       document.getElementById('bdayDate').value = '';
-      bdayInput.value = '';
-      bdayPreview.style.display = 'none';
     }
 
-    // Ad Preview
-    const adInput = document.getElementById('adImage');
-    const adPreview = document.getElementById('adPreview');
+    const fileInput = document.getElementById('adImage');
+    const preview = document.getElementById('adPreview');
 
-    adInput.addEventListener('change', e => {
+    fileInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = e => {
-          adPreview.src = e.target.result;
-          adPreview.style.display = 'block';
+          preview.src = e.target.result;
+          preview.style.display = 'block';
         };
         reader.readAsDataURL(file);
       }
     });
 
     async function uploadAd() {
-      const file = adInput.files[0];
+      const file = fileInput.files[0];
       const link = document.getElementById('adLink').value.trim();
-      if (!file) return alert('Please select an image to upload.');
-
+      if (!file) return alert('Select an image');
       const filename = `ads/${Date.now()}-${file.name}`;
       const ref = storage.ref().child(filename);
       await ref.put(file);
       const url = await ref.getDownloadURL();
-      await db.collection('ads').add({ imageUrl: url, link, createdAt: new Date() });
-
+      await db.collection('ads').add({ imageUrl: url, link });
       alert('Ad uploaded!');
-      adInput.value = '';
+      fileInput.value = '';
       document.getElementById('adLink').value = '';
-      adPreview.style.display = 'none';
+      preview.style.display = 'none';
     }
   </script>
 </section>
-<!-- ✅ CHUNK 4: SECTION – ANNOUNCEMENTS -->
+<!-- ✅ CHUNK 5: Inside <section id="announcements"> -->
 <section id="announcements">
   <h3>📢 Announcements</h3>
   <div style="display: flex; flex-direction: column; gap: 2rem;">
 
-    <!-- ✍️ Add New -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📝 Post Announcement</h4>
-      <textarea id="announceInput" rows="3" placeholder="Write announcement (optional)..." style="width: 100%;"></textarea>
-      <br>
-      <button onclick="postAnnouncement()">📢 Post</button>
+    <!-- ✍️ Add Announcement -->
+    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 12px;">
+      <h4>📝 New Announcement</h4>
+      <textarea id="announceInput" rows="3" placeholder="Type announcement..." style="width: 100%; padding: 10px;"></textarea>
+      <br><br>
+      <button onclick="postAnnouncement()">📢 Post Announcement</button>
     </div>
 
-    <!-- 📋 List -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📃 Posted Announcements</h4>
+    <!-- 📄 Announcement List -->
+    <div>
+      <h4>📋 Posted Announcements</h4>
       <ul id="announcementList" style="list-style: none; padding-left: 0;"></ul>
     </div>
-
   </div>
 
   <script>
@@ -305,9 +281,9 @@
 
     async function postAnnouncement() {
       const text = document.getElementById('announceInput').value.trim();
-      if (!text) return; // Skip empty
+      if (!text) return alert('Please enter some text');
       await announceRef.add({ text, timestamp: new Date() });
-      alert('Posted!');
+      alert('Announcement posted!');
       document.getElementById('announceInput').value = '';
       loadAnnouncements();
     }
@@ -320,8 +296,8 @@
         const data = doc.data();
         const li = document.createElement('li');
         li.innerHTML = `
-          <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-            <p>${data.text || '—'}</p>
+          <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+            <p>${data.text}</p>
             <button onclick="deleteAnnouncement('${doc.id}')">🗑️ Delete</button>
           </div>
         `;
@@ -330,530 +306,257 @@
     }
 
     async function deleteAnnouncement(id) {
-      const confirmDelete = confirm('Delete this announcement?');
+      const confirmDelete = confirm('Are you sure you want to delete this announcement?');
       if (confirmDelete) {
         await announceRef.doc(id).delete();
         loadAnnouncements();
       }
     }
 
-    document.querySelector('[data-tab="announcements"]').addEventListener('click', loadAnnouncements);
+    document.querySelector('[data-tab="announcements"]').addEventListener('click', () => withLoader(loadAnnouncements));
   </script>
 </section>
-<!-- ✅ CHUNK 5: SECTION – EVENTS -->
-<section id="events">
-  <h3>📅 Events Manager</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- ➕ New Event -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📌 Add New Event</h4>
-      <input type="text" id="eventTitle" placeholder="Event title (optional)" style="width: 100%;" />
-      <br><br>
-      <input type="date" id="eventDate" style="width: 100%;" />
-      <br><br>
-      <textarea id="eventDescription" rows="3" placeholder="Event details (optional)..." style="width: 100%;"></textarea>
-      <br>
-      <button onclick="addEvent()">➕ Add Event</button>
-    </div>
-
-    <!-- 📃 Events List -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📆 Upcoming Events</h4>
-      <ul id="eventList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
-
+<!-- ✅ CHUNK 6: EVENTS SECTION --><section id="events">
+  <h3>📅 Events</h3>
+  <div class="card">
+    <h4>🗓️ Create New Event</h4>
+    <input type="text" id="eventTitle" placeholder="Event Title" />
+    <textarea id="eventDescription" rows="3" placeholder="Event Description..."></textarea>
+    <input type="date" id="eventDate" />
+    <button onclick="addEvent()">➕ Add Event</button>
   </div>
+  <div class="card">
+    <h4>📋 Upcoming Events</h4>
+    <ul id="eventList"></ul>
+  </div>
+</section><script>
+  const eventRef = db.collection('events');
 
-  <script>
-    const eventRef = db.collection('events');
+  async function addEvent() {
+    const title = document.getElementById('eventTitle').value.trim();
+    const description = document.getElementById('eventDescription').value.trim();
+    const date = document.getElementById('eventDate').value;
+    if (!title || !date) return alert('Event must have title and date');
+    await eventRef.add({ title, description, date });
+    alert('Event created!');
+    ['eventTitle','eventDescription','eventDate'].forEach(id => document.getElementById(id).value = '');
+    loadEvents();
+  }
 
-    async function addEvent() {
-      const title = document.getElementById('eventTitle').value.trim();
-      const date = document.getElementById('eventDate').value;
-      const desc = document.getElementById('eventDescription').value.trim();
+  async function loadEvents() {
+    const list = document.getElementById('eventList');
+    list.innerHTML = '';
+    const snapshot = await eventRef.orderBy('date', 'asc').get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `<div class='card'><strong>${data.title}</strong><br>${data.description || ''}<br><em>${data.date}</em><br><button onclick="deleteEvent('${doc.id}')">🗑️ Delete</button></div>`;
+      list.appendChild(li);
+    });
+  }
 
-      if (!title && !date && !desc) return; // Skip if all empty
-
-      await eventRef.add({ title, date, description: desc, createdAt: new Date() });
-      alert('Event saved!');
-      document.getElementById('eventTitle').value = '';
-      document.getElementById('eventDate').value = '';
-      document.getElementById('eventDescription').value = '';
+  async function deleteEvent(id) {
+    if (confirm('Delete this event?')) {
+      await eventRef.doc(id).delete();
       loadEvents();
     }
+  }
 
-    async function loadEvents() {
-      const list = document.getElementById('eventList');
-      list.innerHTML = '';
-      const snapshot = await eventRef.orderBy('date', 'asc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-            <strong>${data.title || 'Untitled'}</strong><br>
-            <em>${data.date || 'No Date'}</em><br>
-            <p>${data.description || 'No Description'}</p>
-            <button onclick="deleteEvent('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function deleteEvent(id) {
-      const confirmDelete = confirm('Delete this event?');
-      if (confirmDelete) {
-        await eventRef.doc(id).delete();
-        loadEvents();
-      }
-    }
-
-    document.querySelector('[data-tab="events"]').addEventListener('click', loadEvents);
-  </script>
-</section>
-<!-- ✅ CHUNK 6: SECTION – CBT MANAGER -->
-<section id="cbt">
-  <h3>🧠 CBT Question Manager</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- ➕ Add Question -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>➕ Add Question</h4>
-      <input type="text" id="cbtSubject" placeholder="Subject (e.g. Finance)" style="width: 100%;" />
-      <br><br>
-      <textarea id="cbtQuestion" rows="2" placeholder="Question text..." style="width: 100%;"></textarea>
-      <br><br>
-      <input type="text" id="optionA" placeholder="Option A" style="width: 49%;" />
-      <input type="text" id="optionB" placeholder="Option B" style="width: 49%;" />
-      <br><br>
-      <input type="text" id="optionC" placeholder="Option C" style="width: 49%;" />
-      <input type="text" id="optionD" placeholder="Option D" style="width: 49%;" />
-      <br><br>
-      <input type="text" id="correctAnswer" placeholder="Correct Option (A/B/C/D)" style="width: 100%;" />
-      <br><br>
-      <button onclick="addCBTQuestion()">➕ Save Question</button>
-    </div>
-
-    <!-- 📃 Questions List -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📋 All Questions</h4>
-      <div>
-        <input type="text" id="cbtFilter" placeholder="Filter by subject..." oninput="loadCBTQuestions()" style="width: 50%;" />
-      </div>
-      <br>
-      <ul id="cbtQuestionList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
+  document.querySelector('[data-tab="events"]').addEventListener('click', loadEvents);
+</script><!-- ✅ CHUNK 7: CBT SECTION --><section id="cbt">
+  <h3>🧠 CBT Questions</h3>
+  <div class="card">
+    <h4>📥 Upload Question</h4>
+    <input type="text" id="cbtSubject" placeholder="Subject (e.g. Economics)" />
+    <textarea id="cbtQuestion" rows="3" placeholder="Enter question..."></textarea>
+    <input type="text" id="optionA" placeholder="Option A" />
+    <input type="text" id="optionB" placeholder="Option B" />
+    <input type="text" id="optionC" placeholder="Option C" />
+    <input type="text" id="optionD" placeholder="Option D" />
+    <input type="text" id="correctAnswer" placeholder="Correct Option (A, B, C, or D)" />
+    <button onclick="addCBTQuestion()">➕ Upload Question</button>
   </div>
+</section><script>
+  const cbtRef = db.collection('cbt');
 
-  <script>
-    const cbtRef = db.collection('cbtQuestions');
+  async function addCBTQuestion() {
+    const subject = document.getElementById('cbtSubject').value.trim();
+    const question = document.getElementById('cbtQuestion').value.trim();
+    const optionA = document.getElementById('optionA').value.trim();
+    const optionB = document.getElementById('optionB').value.trim();
+    const optionC = document.getElementById('optionC').value.trim();
+    const optionD = document.getElementById('optionD').value.trim();
+    const correct = document.getElementById('correctAnswer').value.trim().toUpperCase();
 
-    async function addCBTQuestion() {
-      const subject = document.getElementById('cbtSubject').value.trim();
-      const question = document.getElementById('cbtQuestion').value.trim();
-      const A = document.getElementById('optionA').value.trim();
-      const B = document.getElementById('optionB').value.trim();
-      const C = document.getElementById('optionC').value.trim();
-      const D = document.getElementById('optionD').value.trim();
-      const correct = document.getElementById('correctAnswer').value.trim().toUpperCase();
+    if (!subject || !question || !correct) return alert('At least Subject, Question, and Correct Option are required');
 
-      if (!subject && !question) return; // Must provide something
-
-      await cbtRef.add({
-        subject,
-        question,
-        options: { A, B, C, D },
-        correct,
-        createdAt: new Date()
-      });
-
-      alert('Question added!');
-      ['cbtSubject', 'cbtQuestion', 'optionA', 'optionB', 'optionC', 'optionD', 'correctAnswer'].forEach(id => document.getElementById(id).value = '');
-      loadCBTQuestions();
-    }
-
-    async function loadCBTQuestions() {
-      const filter = document.getElementById('cbtFilter').value.trim().toLowerCase();
-      const list = document.getElementById('cbtQuestionList');
-      list.innerHTML = '';
-      let query = cbtRef;
-      if (filter) query = query.where('subject', '>=', filter).where('subject', '<=', filter + '\uf8ff');
-
-      const snapshot = await query.orderBy('createdAt', 'desc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-            <strong>${data.subject || 'No Subject'}</strong><br>
-            <p>${data.question || '[No Question]'}</p>
-            <ul>
-              <li>A: ${data.options?.A || '-'}</li>
-              <li>B: ${data.options?.B || '-'}</li>
-              <li>C: ${data.options?.C || '-'}</li>
-              <li>D: ${data.options?.D || '-'}</li>
-            </ul>
-            <p><strong>Correct:</strong> ${data.correct || 'N/A'}</p>
-            <button onclick="deleteCBTQuestion('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function deleteCBTQuestion(id) {
-      const confirmDelete = confirm('Delete this question?');
-      if (confirmDelete) {
-        await cbtRef.doc(id).delete();
-        loadCBTQuestions();
-      }
-    }
-
-    document.querySelector('[data-tab="cbt"]').addEventListener('click', loadCBTQuestions);
-  </script>
-</section>
-<!-- ✅ CHUNK 7: SECTION – LOST & FOUND -->
-<section id="lostfound">
-  <h3>🎒 Lost & Found Manager</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- 📋 Submitted Items -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📄 All Reports</h4>
-      <ul id="lostFoundList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
+    const options = { A: optionA, B: optionB, C: optionC, D: optionD };
+    await cbtRef.add({ subject, question, options, correct });
+    alert('Question added!');
+    ['cbtSubject','cbtQuestion','optionA','optionB','optionC','optionD','correctAnswer'].forEach(id => document.getElementById(id).value = '');
+  }
+</script><!-- ✅ CHUNK 8: LOST & FOUND SECTION --><section id="lostfound">
+  <h3>🎒 Lost and Found</h3>
+  <div class="card">
+    <h4>🆕 Review Submissions</h4>
+    <ul id="lostFoundList"></ul>
   </div>
+</section><script>
+  const lostRef = db.collection('lostFound');
 
-  <script>
-    const lostRef = db.collection('lostItems');
-
-    async function loadLostFoundItems() {
-      const list = document.getElementById('lostFoundList');
-      list.innerHTML = '';
-      const snapshot = await lostRef.orderBy('timestamp', 'desc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
-            <p><strong>Name:</strong> ${data.name || 'Anonymous'}</p>
-            <p><strong>Item:</strong> ${data.item || '-'}</p>
-            <p><strong>Description:</strong> ${data.description || '-'}</p>
-            ${data.imageUrl ? `<img src="${data.imageUrl}" alt="item" style="max-width: 100%; max-height: 150px;" />` : ''}
-            <br>
-            <button onclick="deleteLostItem('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function deleteLostItem(id) {
-      const confirmDelete = confirm('Delete this lost/found report?');
-      if (confirmDelete) {
-        await lostRef.doc(id).delete();
-        loadLostFoundItems();
-      }
-    }
-
-    document.querySelector('[data-tab="lostfound"]').addEventListener('click', loadLostFoundItems);
-  </script>
-</section>
-<!-- ✅ CHUNK 8: SECTION – LEADERBOARD -->
-<section id="leaderboard">
-  <h3>🏆 Leaderboard Manager</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- 🔍 Search or Filter -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>🔍 View Leaderboard</h4>
-      <input type="text" id="searchUser" placeholder="Search by name..." oninput="loadLeaderboard()" style="width: 60%;" />
-      <ul id="leaderboardList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
-  </div>
-
-  <script>
-    const leaderboardRef = db.collection('leaderboard');
-
-    async function loadLeaderboard() {
-      const filter = document.getElementById('searchUser').value.trim().toLowerCase();
-      const list = document.getElementById('leaderboardList');
-      list.innerHTML = '';
-      const snapshot = await leaderboardRef.orderBy('score', 'desc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (filter && !(data.name || '').toLowerCase().includes(filter)) return;
-
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-            <strong>${data.name || 'Unnamed User'}</strong> — <span>Score: ${data.score || 0}</span><br><br>
-            <input type="number" placeholder="New Score" id="score-${doc.id}" style="width: 100px;"/>
-            <button onclick="updateScore('${doc.id}')">💾 Update</button>
-            <button onclick="deleteUserScore('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function updateScore(id) {
-      const newScore = parseInt(document.getElementById(`score-${id}`).value);
-      if (isNaN(newScore)) return alert('Enter a valid number');
-      await leaderboardRef.doc(id).update({ score: newScore });
-      alert('Score updated!');
-      loadLeaderboard();
-    }
-
-    async function deleteUserScore(id) {
-      const confirmDelete = confirm('Delete this user from leaderboard?');
-      if (confirmDelete) {
-        await leaderboardRef.doc(id).delete();
-        loadLeaderboard();
-      }
-    }
-
-    document.querySelector('[data-tab="leaderboard"]').addEventListener('click', loadLeaderboard);
-  </script>
-</section>
-<!-- ✅ CHUNK 9: SECTION – FEEDBACK -->
-<section id="feedback">
-  <h3>📨 User Feedback</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- 📋 Feedback List -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📬 Received Feedback</h4>
-      <ul id="feedbackList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
-  </div>
-
-  <script>
-    const feedbackRef = db.collection('feedback');
-
-    async function loadFeedback() {
-      const list = document.getElementById('feedbackList');
-      list.innerHTML = '';
-      const snapshot = await feedbackRef.orderBy('timestamp', 'desc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
-            <p><strong>Name:</strong> ${data.name || 'Anonymous'}</p>
-            <p><strong>Email:</strong> ${data.email || '-'}</p>
-            <p><strong>Message:</strong><br> ${data.message || '[Empty]'}</p>
-            <button onclick="deleteFeedback('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function deleteFeedback(id) {
-      const confirmDelete = confirm('Delete this feedback?');
-      if (confirmDelete) {
-        await feedbackRef.doc(id).delete();
-        loadFeedback();
-      }
-    }
-
-    document.querySelector('[data-tab="feedback"]').addEventListener('click', loadFeedback);
-  </script>
-</section>
-<!-- ✅ CHUNK 10: SECTION – DOWNLOADS -->
-<section id="downloads">
-  <h3>📂 Downloads Manager</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- 📤 Upload New File -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📤 Upload New File</h4>
-      <input type="text" id="fileTitle" placeholder="File title (optional)" style="width: 100%;" />
-      <br><br>
-      <input type="file" id="uploadFile" />
-      <br><br>
-      <button onclick="uploadDownloadFile()">📥 Upload File</button>
-    </div>
-
-    <!-- 📃 File List -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📋 Uploaded Files</h4>
-      <ul id="downloadList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
-  </div>
-
-  <script>
-    const downloadsRef = db.collection('downloads');
-    const uploadRef = storage.ref('downloads');
-
-    async function uploadDownloadFile() {
-      const file = document.getElementById('uploadFile').files[0];
-      const title = document.getElementById('fileTitle').value.trim();
-      if (!file) return alert('No file selected');
-
-      const filePath = `downloads/${Date.now()}_${file.name}`;
-      const fileRef = uploadRef.child(filePath);
-      await fileRef.put(file);
-      const downloadURL = await fileRef.getDownloadURL();
-
-      await downloadsRef.add({ title, url: downloadURL, filename: file.name, timestamp: new Date() });
-
-      alert('File uploaded!');
-      document.getElementById('uploadFile').value = '';
-      document.getElementById('fileTitle').value = '';
-      loadDownloads();
-    }
-
-    async function loadDownloads() {
-      const list = document.getElementById('downloadList');
-      list.innerHTML = '';
-      const snapshot = await downloadsRef.orderBy('timestamp', 'desc').get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
-            <p><strong>${data.title || data.filename || 'Unnamed File'}</strong></p>
-            <a href="${data.url}" target="_blank">⬇️ Download</a>
-            <br><br>
-            <button onclick="deleteDownload('${doc.id}')">🗑️ Delete</button>
-          </div>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function deleteDownload(id) {
-      const confirmDelete = confirm('Delete this file?');
-      if (confirmDelete) {
-        await downloadsRef.doc(id).delete();
-        loadDownloads();
-      }
-    }
-
-    document.querySelector('[data-tab="downloads"]').addEventListener('click', loadDownloads);
-  </script>
-</section>
-<!-- ✅ CHUNK 11: SECTION – ADMIN SETTINGS -->
-<section id="settings">
-  <h3>⚙️ Admin Settings</h3>
-  <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-    <!-- 🧾 Site Title and Motto -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>🧾 Update Site Title & Motto</h4>
-      <input type="text" id="siteTitle" placeholder="Site Title (optional)" style="width: 100%;" />
-      <br><br>
-      <textarea id="siteMotto" rows="2" placeholder="Site Motto / Description..." style="width: 100%;"></textarea>
-      <br><br>
-      <button onclick="saveSettings()">💾 Save Settings</button>
-    </div>
-
-    <!-- 🖼️ Upload Logo -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>🖼️ Upload Logo</h4>
-      <input type="file" id="logoUpload" accept="image/*" />
-      <br><br>
-      <img id="logoPreview" style="max-height: 120px; display: none;" />
-      <br><br>
-      <button onclick="uploadLogo()">📤 Upload Logo</button>
-    </div>
-
-    <!-- 📄 Current Settings View -->
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
-      <h4>📄 Current Settings</h4>
-      <div id="currentSettings"></div>
-    </div>
-
-  </div>
-
-  <script>
-    const settingsRef = db.collection('siteSettings').doc('main');
-    const logoStorageRef = storage.ref('siteAssets/logo.png');
-
-    // Load current settings
-    async function loadSettings() {
-      const doc = await settingsRef.get();
-      if (doc.exists) {
-        const data = doc.data();
-        document.getElementById('currentSettings').innerHTML = `
-          <p><strong>Site Title:</strong> ${data.title || '-'}</p>
-          <p><strong>Motto:</strong> ${data.motto || '-'}</p>
-          ${data.logoUrl ? `<img src="${data.logoUrl}" style="max-height: 80px;" />` : ''}
-        `;
-      }
-    }
-
-    async function saveSettings() {
-      const title = document.getElementById('siteTitle').value.trim();
-      const motto = document.getElementById('siteMotto').value.trim();
-      await settingsRef.set({ title, motto }, { merge: true });
-      alert('Settings saved!');
-      loadSettings();
-    }
-
-    const logoInput = document.getElementById('logoUpload');
-    const logoPreview = document.getElementById('logoPreview');
-
-    logoInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          logoPreview.src = e.target.result;
-          logoPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
+  async function loadLostItems() {
+    const list = document.getElementById('lostFoundList');
+    list.innerHTML = '';
+    const snapshot = await lostRef.get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class='card'>
+          <p><strong>${data.type || 'Item'}</strong>: ${data.description || ''}</p>
+          <p><strong>Contact:</strong> ${data.contact || 'N/A'}</p>
+          <button onclick="deleteLostItem('${doc.id}')">🗑️ Delete</button>
+        </div>
+      `;
+      list.appendChild(li);
     });
-
-    async function uploadLogo() {
-      const file = logoInput.files[0];
-      if (!file) return alert('Choose a logo file');
-      await logoStorageRef.put(file);
-      const url = await logoStorageRef.getDownloadURL();
-      await settingsRef.set({ logoUrl: url }, { merge: true });
-      alert('Logo uploaded!');
-      logoPreview.style.display = 'none';
-      logoInput.value = '';
-      loadSettings();
-    }
-
-    document.querySelector('[data-tab="settings"]').addEventListener('click', loadSettings);
-  </script>
-</section>
-<!-- ✅ CHUNK 12: UNIVERSAL LOADING INDICATOR -->
-<style>
-  .loader {
-    display: none;
-    text-align: center;
-    padding: 1rem;
   }
-  .loader.active {
-    display: block;
-  }
-</style>
 
-<div id="globalLoader" class="loader">⏳ Loading, please wait...</div>
-
-<script>
-  // Wrapper to handle loader while fetching
-  async function withLoader(callback) {
-    const loader = document.getElementById('globalLoader');
-    loader.classList.add('active');
-    try {
-      await callback();
-    } finally {
-      loader.classList.remove('active');
+  async function deleteLostItem(id) {
+    if (confirm('Delete this item?')) {
+      await lostRef.doc(id).delete();
+      loadLostItems();
     }
   }
 
-  // Example usage inside any fetch function:
-  // Instead of:
-  // await loadAnnouncements();
-  // Do:
-  // await withLoader(loadAnnouncements);
+  document.querySelector('[data-tab="lostfound"]').addEventListener('click', loadLostItems);
 </script>
+<!-- ✅ CHUNK 9: LEADERBOARD SECTION --><section id="leaderboard">
+  <h3>🏆 Leaderboard</h3>
+  <div class="card">
+    <h4>👤 Update Scores</h4>
+    <input type="text" id="leaderName" placeholder="Student Name" />
+    <input type="number" id="leaderScore" placeholder="Score" />
+    <button onclick="addScore()">💾 Save Score</button>
+    <ul id="leaderList"></ul>
+  </div>
+</section><script>
+  const leaderboardRef = db.collection('leaderboard');
+
+  async function addScore() {
+    const name = document.getElementById('leaderName').value.trim();
+    const score = parseInt(document.getElementById('leaderScore').value.trim());
+    if (!name || isNaN(score)) return alert('Please fill name and score');
+    await leaderboardRef.add({ name, score });
+    alert('Score saved');
+    document.getElementById('leaderName').value = '';
+    document.getElementById('leaderScore').value = '';
+    loadScores();
+  }
+
+  async function loadScores() {
+    const list = document.getElementById('leaderList');
+    list.innerHTML = '';
+    const snapshot = await leaderboardRef.orderBy('score', 'desc').get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `<div class='card'><strong>${data.name}</strong>: ${data.score}</div>`;
+      list.appendChild(li);
+    });
+  }
+
+  document.querySelector('[data-tab="leaderboard"]').addEventListener('click', loadScores);
+</script><!-- ✅ CHUNK 10: FEEDBACK SECTION --><section id="feedback">
+  <h3>📨 User Feedback</h3>
+  <div class="card">
+    <h4>📬 Received Feedback</h4>
+    <ul id="feedbackList"></ul>
+  </div>
+</section><script>
+  const feedbackRef = db.collection('feedback');
+
+  async function loadFeedback() {
+    const list = document.getElementById('feedbackList');
+    list.innerHTML = '';
+    const snapshot = await feedbackRef.orderBy('timestamp', 'desc').get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `<div class='card'><p>${data.message}</p><p><em>${data.email || 'Anonymous'}</em></p></div>`;
+      list.appendChild(li);
+    });
+  }
+
+  document.querySelector('[data-tab="feedback"]').addEventListener('click', loadFeedback);
+</script><!-- ✅ CHUNK 11: DOWNLOADS SECTION --><section id="downloads">
+  <h3>📂 File Downloads</h3>
+  <div class="card">
+    <h4>📤 Upload New File</h4>
+    <input type="file" id="downloadFile" />
+    <input type="text" id="fileTitle" placeholder="File Title (e.g., Timetable)" />
+    <button onclick="uploadFile()">📥 Upload File</button>
+  </div>
+  <div class="card">
+    <h4>📁 Available Downloads</h4>
+    <ul id="downloadList"></ul>
+  </div>
+</section><script>
+  const downloadRef = db.collection('downloads');
+  const downloadInput = document.getElementById('downloadFile');
+
+  async function uploadFile() {
+    const file = downloadInput.files[0];
+    const title = document.getElementById('fileTitle').value.trim();
+    if (!file || !title) return alert('Choose a file and enter title');
+    const filePath = `downloads/${Date.now()}-${file.name}`;
+    const fileRef = storage.ref().child(filePath);
+    await fileRef.put(file);
+    const fileURL = await fileRef.getDownloadURL();
+    await downloadRef.add({ title, url: fileURL });
+    alert('File uploaded');
+    downloadInput.value = '';
+    document.getElementById('fileTitle').value = '';
+    loadDownloads();
+  }
+
+  async function loadDownloads() {
+    const list = document.getElementById('downloadList');
+    list.innerHTML = '';
+    const snapshot = await downloadRef.get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `<div class='card'><strong>${data.title}</strong> - <a href="${data.url}" target="_blank">Download</a></div>`;
+      list.appendChild(li);
+    });
+  }
+
+  document.querySelector('[data-tab="downloads"]').addEventListener('click', loadDownloads);
+</script>
+<!-- ✅ CHUNK 12: SETTINGS SECTION --><section id="settings">
+  <h3>⚙️ Admin Settings</h3>
+  <div class="card">
+    <h4>🎨 Theme Color (Future Use)</h4>
+    <p>This feature is reserved for future customizations. If you'd like to change the theme, do it in the CSS section of the code manually or contact your dev assistant 😄</p>
+  </div>
+  <div class="card">
+    <h4>🔐 Admin Email</h4>
+    <p><strong>Current Admin:</strong> ayubaboluwatife246@gmail.com</p>
+    <p>You can manage admin access through the Firestore Users collection.</p>
+  </div>
+  <div class="card">
+    <h4>📊 Database Status</h4>
+    <button onclick="checkDatabaseStatus()">🔍 Check Status</button>
+    <p id="statusOutput"></p>
+  </div>
+</section><script>
+  async function checkDatabaseStatus() {
+    try {
+      const snapshot = await db.collection('financeTips').limit(1).get();
+      document.getElementById('statusOutput').innerText = '✅ Firestore Connected';
+    } catch (err) {
+      document.getElementById('statusOutput').innerText = '❌ Error connecting to Firestore';
+    }
+  }
+</script><!-- ✅ END OF CHUNKS -->
