@@ -81,21 +81,19 @@
   </style>
 </head>
 <body>
-  <!-- ✅ CHUNK 2: HEADER, NAVIGATION & FIREBASE AUTH ADMIN CHECK -->
+  <!-- ✅ CHUNK 2: BODY START + HEADER + TABS + AUTH CHECK -->
+<body>
   <header>
     <h2>Finance Point Admin Panel</h2>
     <button class="logout-btn" onclick="logoutUser()">Logout</button>
   </header>
 
-  <!-- 🔄 Global Loader -->
-  <div id="globalLoader" class="loader">⏳ Loading, please wait...</div>
-
-  <!-- ✅ Tab Navigation -->
+  <!-- ✅ Tabs Navigation -->
   <div class="tabs">
-    <button class="tab-link active" data-tab="home">🏠 Home</button>
+    <button class="tab-link active" data-tab="home">🏠 Home Manager</button>
     <button class="tab-link" data-tab="announcements">📢 Announcements</button>
     <button class="tab-link" data-tab="events">📅 Events</button>
-    <button class="tab-link" data-tab="cbt">🧠 CBT</button>
+    <button class="tab-link" data-tab="cbt">🧠 CBT Manager</button>
     <button class="tab-link" data-tab="lostfound">🎒 Lost & Found</button>
     <button class="tab-link" data-tab="leaderboard">🏆 Leaderboard</button>
     <button class="tab-link" data-tab="feedback">📨 Feedback</button>
@@ -103,43 +101,67 @@
     <button class="tab-link" data-tab="settings">⚙️ Settings</button>
   </div>
 
+  <!-- ✅ Firebase Auth Admin Lock -->
   <script>
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_AUTH_DOMAIN",
       projectId: "YOUR_PROJECT_ID",
       storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
+      messagingSenderId: "YOUR_MSG_SENDER_ID",
       appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
-    auth.onAuthStateChanged(async user => {
-      if (!user) return window.location.href = "/login.html";
-      const userDoc = await db.collection("Users").doc(user.uid).get();
-      if (!userDoc.exists || userDoc.data().role !== "admin") {
-        alert("Access denied. Admin only.");
-        window.location.href = "/login.html";
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        alert('Please login first.');
+        return window.location.href = '/login.html';
+      }
+
+      try {
+        const userDoc = await db.collection('Users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') {
+          alert('Access denied. Admin only.');
+          return window.location.href = '/login.html';
+        }
+
+        // ✅ Admin access granted
+        console.log('Welcome Admin:', user.email);
+
+      } catch (error) {
+        console.error('Error checking admin role:', error);
+        alert('Access error. Try again later.');
+        return window.location.href = '/login.html';
       }
     });
 
     function logoutUser() {
-      auth.signOut().then(() => window.location.href = "/login.html");
+      auth.signOut().then(() => {
+        window.location.href = '/login.html';
+      });
     }
+  </script>
 
-    // Global loading wrapper
-    async function withLoader(callback) {
-      const loader = document.getElementById("globalLoader");
-      loader.classList.add("active");
-      try {
-        await callback();
-      } finally {
-        loader.classList.remove("active");
-      }
-    }
+  <!-- ✅ Tab Switch Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.tab-link');
+      const sections = document.querySelectorAll('section');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          sections.forEach(s => s.classList.remove('active'));
+
+          tab.classList.add('active');
+          const target = document.getElementById(tab.dataset.tab);
+          if (target) target.classList.add('active');
+        });
+      });
+    });
   </script>
   <!-- ✅ CHUNK 3: TAB SWITCH HANDLER + SECTION SHELLS -->
   <script>
