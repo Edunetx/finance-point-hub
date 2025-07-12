@@ -81,7 +81,7 @@
   </style>
 </head>
 <body>
-  <!-- ✅ CHUNK 2: BODY START + HEADER + TABS + AUTH CHECK -->
+  <!-- ✅ FIXED CHUNK 2: BODY START + HEADER + TABS + AUTH CHECK -->
 <body>
   <header>
     <h2>Finance Point Admin Panel</h2>
@@ -101,19 +101,21 @@
     <button class="tab-link" data-tab="settings">⚙️ Settings</button>
   </div>
 
-  <!-- ✅ Firebase Auth Admin Lock -->
+  <!-- ✅ Firebase Config and Admin Auth -->
   <script>
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MSG_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com", // ✅ FIXED HERE
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const storage = firebase.storage(); // ✅ ADD THIS LINE
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
@@ -128,12 +130,10 @@
           return window.location.href = '/login.html';
         }
 
-        // ✅ Admin access granted
-        console.log('Welcome Admin:', user.email);
-
+        console.log('✅ Admin access granted:', user.email);
       } catch (error) {
         console.error('Error checking admin role:', error);
-        alert('Access error. Try again later.');
+        alert('Error verifying access. Try again later.');
         return window.location.href = '/login.html';
       }
     });
@@ -143,25 +143,6 @@
         window.location.href = '/login.html';
       });
     }
-  </script>
-
-  <!-- ✅ Tab Switch Logic -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const tabs = document.querySelectorAll('.tab-link');
-      const sections = document.querySelectorAll('section');
-
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          tabs.forEach(t => t.classList.remove('active'));
-          sections.forEach(s => s.classList.remove('active'));
-
-          tab.classList.add('active');
-          const target = document.getElementById(tab.dataset.tab);
-          if (target) target.classList.add('active');
-        });
-      });
-    });
   </script>
   <!-- ✅ CHUNK 3: TAB SWITCH HANDLER + SECTION SHELLS -->
   <script>
