@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en">
+<!-- CHUNK 1–4: Admin Base, Header, Tabs, Downloads Section -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,15 +11,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #a78bfa, #f9a8d4);
+      background: linear-gradient(to bottom right, #c7d2fe, #a5f3fc); /* Good gradient */
       color: #1e293b;
     }
     header {
-      background: linear-gradient(to right, #4c1d95, #ec4899);
+      background: linear-gradient(to right, #3b82f6, #06b6d4); /* Match site colors */
       color: white;
       padding: 1.5rem;
       display: flex;
@@ -42,7 +46,7 @@
     }
     .tabs button {
       padding: 0.7rem 1.2rem;
-      background: #8b5cf6;
+      background: #0ea5e9;
       border: none;
       border-radius: 12px;
       font-weight: 600;
@@ -51,28 +55,27 @@
       transition: background 0.3s ease;
     }
     .tabs button.active {
-      background: #ec4899;
+      background: #0284c7;
     }
     section {
       display: none;
       margin: 1rem auto;
       padding: 1.5rem;
       width: 95%;
-      max-width: 950px;
+      max-width: 900px;
       border-radius: 16px;
-      background: linear-gradient(to right bottom, #fce7f3, #ddd6fe);
+      background: linear-gradient(to right bottom, #e0f2fe, #f1f5f9);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     section.active {
       display: block;
     }
     .card {
-      background: linear-gradient(to bottom, #f9a8d4, #d8b4fe);
+      background: linear-gradient(to right, #e0f7fa, #e0f2fe);
       border-radius: 12px;
-      padding: 1rem;
+      padding: 1.2rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      color: #111827;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
     input, textarea {
       width: 100%;
@@ -81,6 +84,30 @@
       border: none;
       margin-top: 8px;
       font-size: 1rem;
+      outline: none;
+      background: #f0f9ff;
+    }
+    .material-item {
+      background: white;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .material-item span {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .material-item button {
+      background: #ef4444;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -89,23 +116,56 @@
     <h2>FINSA Admin Panel</h2>
     <button class="logout-btn" onclick="logoutUser()">Logout</button>
   </header>
+
   <div class="tabs">
-    <button class="tab-link active" data-tab="home">Home</button>
+    <button class="tab-link active" data-tab="downloads">Downloads</button>
+    <button class="tab-link" data-tab="settings">Settings</button>
+    <button class="tab-link" data-tab="home">Home</button>
     <button class="tab-link" data-tab="announcements">Announcements</button>
     <button class="tab-link" data-tab="events">Events</button>
     <button class="tab-link" data-tab="cbt">CBT</button>
     <button class="tab-link" data-tab="lostfound">Lost & Found</button>
     <button class="tab-link" data-tab="leaderboard">Leaderboard</button>
     <button class="tab-link" data-tab="feedback">Feedback</button>
-    <button class="tab-link" data-tab="downloads">Downloads</button>
-    <button class="tab-link" data-tab="settings">Settings</button>
   </div>
-  <!-- CHUNK 5–9: Home Manager, Announcements, Events, CBT, Lost & Found Sections -->
+
+  <section id="downloads" class="active">
+    <h3>Materials Upload</h3>
+    <div class="card">
+      <input type="text" id="materialTitle" placeholder="Material Title">
+      <textarea id="materialDesc" placeholder="Short description (optional)"></textarea>
+      <input type="text" id="materialLink" placeholder="Download Link (e.g., Google Drive)">
+      <br><br>
+      <button onclick="uploadMaterial()">Upload Material</button>
+    </div>
+    <div class="card">
+      <h4>Uploaded Materials</h4>
+      <div id="materialsList"></div>
+    </div>
+  </section>
+  <!-- CHUNK 5–9: Settings, Home Manager, Announcements, Events, CBT, Lost & Found -->
+  <section id="settings">
+    <h3>Admin Settings</h3>
+    <div class="card">
+      <h4>Toggle Maintenance Mode</h4>
+      <label>
+        <input type="checkbox" id="maintenanceToggle" onchange="toggleMaintenance()" />
+        Enable maintenance mode (hide site for users)
+      </label>
+    </div>
+    <div class="card">
+      <h4>Site Title (Optional)</h4>
+      <input type="text" id="siteTitle" placeholder="e.g., FINSA Connect" />
+      <button onclick="saveSiteSettings()">Save Settings</button>
+    </div>
+  </section>
+
   <section id="home">
     <h3>Home Manager</h3>
     <div class="card">
       <h4>Add Finance Tip</h4>
-      <textarea id="tipInput" rows="3" placeholder="Enter a new tip..."></textarea>
+      <textarea id="tipInput" placeholder="Enter a finance tip..."></textarea>
+      <br><br>
       <button onclick="addFinanceTip()">Add Tip</button>
       <ul id="tipList"></ul>
     </div>
@@ -115,6 +175,7 @@
       <input type="text" id="bdayName" placeholder="Student's Name" />
       <input type="date" id="bdayDate" />
       <input type="file" id="bdayImage" accept="image/*" />
+      <br><br>
       <button onclick="addBirthday()">Add Birthday</button>
       <ul id="birthdayList"></ul>
     </div>
@@ -122,8 +183,10 @@
     <div class="card">
       <h4>Upload Ad Banner</h4>
       <input type="file" id="adImage" accept="image/*" />
-      <img id="adPreview" src="" alt="Preview" style="max-height: 150px; display: none;" />
       <input type="text" id="adLink" placeholder="Ad redirect link (optional)" />
+      <br><br>
+      <img id="adPreview" src="" alt="Preview" style="max-height: 120px; display: none;" />
+      <br>
       <button onclick="uploadAd()">Upload Ad</button>
     </div>
   </section>
@@ -132,7 +195,8 @@
     <h3>Announcements</h3>
     <div class="card">
       <h4>New Announcement</h4>
-      <textarea id="announceInput" rows="3" placeholder="Type announcement..."></textarea>
+      <textarea id="announceInput" placeholder="Type announcement..."></textarea>
+      <br><br>
       <button onclick="postAnnouncement()">Post Announcement</button>
     </div>
     <div class="card">
@@ -146,7 +210,7 @@
     <div class="card">
       <h4>Create New Event</h4>
       <input type="text" id="eventTitle" placeholder="Event Title" />
-      <textarea id="eventDescription" rows="3" placeholder="Event Description..."></textarea>
+      <textarea id="eventDescription" placeholder="Event Description..."></textarea>
       <input type="date" id="eventDate" />
       <button onclick="addEvent()">Add Event</button>
     </div>
@@ -160,8 +224,8 @@
     <h3>CBT Manager</h3>
     <div class="card">
       <h4>Upload Question</h4>
-      <input type="text" id="cbtSubject" placeholder="Subject (e.g. Economics)" />
-      <textarea id="cbtQuestion" rows="3" placeholder="Enter question..."></textarea>
+      <input type="text" id="cbtSubject" placeholder="Subject (e.g., Economics)" />
+      <textarea id="cbtQuestion" placeholder="Enter question..."></textarea>
       <input type="text" id="optionA" placeholder="Option A" />
       <input type="text" id="optionB" placeholder="Option B" />
       <input type="text" id="optionC" placeholder="Option C" />
@@ -178,66 +242,172 @@
       <ul id="lostFoundList"></ul>
     </div>
   </section>
-  <!-- CHUNK 10–14: Leaderboard, Feedback, and Settings Sections -->
-
+  <!-- CHUNK 10–15: Leaderboard, Feedback, JS Logic, Firebase, Tab Switching -->
   <section id="leaderboard">
     <h3>Leaderboard</h3>
     <div class="card">
-      <h4>Student Scores</h4>
+      <h4>Top Scorers</h4>
       <ul id="leaderboardList"></ul>
     </div>
   </section>
 
   <section id="feedback">
-    <h3>Feedback</h3>
+    <h3>User Feedback</h3>
     <div class="card">
-      <h4>Submitted Feedback</h4>
-      <ul id="feedbackList" style="list-style: none; padding-left: 0;"></ul>
-    </div>
-  </section>
-
-  <section id="settings">
-    <h3>Admin Settings</h3>
-    <div class="card">
-      <h4>Maintenance Mode</h4>
-      <label>
-        <input type="checkbox" id="maintenanceToggle" />
-        Enable Maintenance Mode
-      </label>
-    </div>
-
-    <div class="card">
-      <h4>Dashboard Welcome Text</h4>
-      <input type="text" id="welcomeText" placeholder="Welcome message for dashboard" />
-    </div>
-
-    <div class="card">
-      <h4>Custom Alert Message</h4>
-      <textarea id="adminAlert" rows="3" placeholder="Write a site-wide alert message (optional)"></textarea>
-    </div>
-
-    <div class="card">
-      <button onclick="saveAdminSettings()">Save Settings</button>
-      <p id="settingsSavedMsg" style="color: green; display: none;">Settings saved successfully!</p>
+      <ul id="feedbackList"></ul>
     </div>
   </section>
 
   <script>
-    document.querySelectorAll(".tab-link").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-link").forEach((b) => b.classList.remove("active"));
-        document.querySelectorAll("section").forEach((s) => s.classList.remove("active"));
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+      authDomain: "finsa-connect.firebaseapp.com",
+      projectId: "finsa-connect",
+      storageBucket: "finsa-connect.appspot.com",
+      messagingSenderId: "126845965255",
+      appId: "1:126845965255:web:c82539297a8464873d7fe2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
+    // Tabs
+    const tabLinks = document.querySelectorAll(".tab-link");
+    const sections = document.querySelectorAll("section");
+
+    tabLinks.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabLinks.forEach(b => b.classList.remove("active"));
+        sections.forEach(s => s.classList.remove("active"));
         btn.classList.add("active");
         document.getElementById(btn.dataset.tab).classList.add("active");
       });
     });
 
+    // Logout
     function logoutUser() {
       firebase.auth().signOut().then(() => {
         window.location.href = "email-login.html";
       });
     }
+
+    // Finance Tip
+    function addFinanceTip() {
+      const tip = document.getElementById("tipInput").value.trim();
+      if (!tip) return;
+      db.collection("financeTips").add({ tip, timestamp: Date.now() }).then(() => {
+        document.getElementById("tipInput").value = "";
+        fetchTips();
+      });
+    }
+
+    function fetchTips() {
+      const ul = document.getElementById("tipList");
+      ul.innerHTML = "";
+      db.collection("financeTips").orderBy("timestamp", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          li.textContent = doc.data().tip;
+          ul.appendChild(li);
+        });
+      });
+    }
+
+    // Announcement
+    function postAnnouncement() {
+      const content = document.getElementById("announceInput").value.trim();
+      if (!content) return;
+      db.collection("announcements").add({ content, timestamp: Date.now() }).then(() => {
+        document.getElementById("announceInput").value = "";
+        fetchAnnouncements();
+      });
+    }
+
+    function fetchAnnouncements() {
+      const list = document.getElementById("announcementList");
+      list.innerHTML = "";
+      db.collection("announcements").orderBy("timestamp", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          li.textContent = doc.data().content;
+          list.appendChild(li);
+        });
+      });
+    }
+
+    // Events
+    function addEvent() {
+      const title = document.getElementById("eventTitle").value.trim();
+      const desc = document.getElementById("eventDescription").value.trim();
+      const date = document.getElementById("eventDate").value;
+      if (!title || !date) return;
+      db.collection("events").add({ title, desc, date }).then(() => {
+        document.getElementById("eventTitle").value = "";
+        document.getElementById("eventDescription").value = "";
+        document.getElementById("eventDate").value = "";
+        fetchEvents();
+      });
+    }
+
+    function fetchEvents() {
+      const list = document.getElementById("eventList");
+      list.innerHTML = "";
+      db.collection("events").orderBy("date").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          const data = doc.data();
+          li.textContent = `${data.title} - ${data.date}`;
+          list.appendChild(li);
+        });
+      });
+    }
+
+    // Leaderboard
+    function fetchLeaderboard() {
+      const ul = document.getElementById("leaderboardList");
+      ul.innerHTML = "";
+      db.collection("cbt_scores").orderBy("score", "desc").limit(10).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          const data = doc.data();
+          li.textContent = `${data.name || 'User'}: ${data.score}`;
+          ul.appendChild(li);
+        });
+      });
+    }
+
+    // Feedback
+    function fetchFeedback() {
+      const list = document.getElementById("feedbackList");
+      list.innerHTML = "";
+      db.collection("feedbacks").orderBy("timestamp", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const li = document.createElement("li");
+          li.classList.add("material-item");
+          li.innerHTML = `<span>${data.message}</span>
+            <button onclick="deleteFeedback('${doc.id}')">Delete</button>`;
+          list.appendChild(li);
+        });
+      });
+    }
+
+    function deleteFeedback(id) {
+      db.collection("feedbacks").doc(id).delete().then(fetchFeedback);
+    }
+
+    // Load all
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        fetchTips();
+        fetchAnnouncements();
+        fetchEvents();
+        fetchLeaderboard();
+        fetchFeedback();
+      } else {
+        window.location.href = "email-login.html";
+      }
+    });
   </script>
 </body>
 </html>
