@@ -1,4 +1,4 @@
-<!-- CHUNK 1-4: Admin Panel Base, Header, Tabs, and Downloads Section --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,11 +13,11 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #c7d2fe, #fbcfe8);
-      color: #1e293b;
+      background: linear-gradient(to bottom right, #1e3a8a, #9333ea);
+      color: #f8fafc;
     }
     header {
-      background: linear-gradient(to right, #ec4899, #6366f1);
+      background: linear-gradient(to right, #0ea5e9, #6366f1);
       color: white;
       padding: 1.5rem;
       display: flex;
@@ -42,7 +42,7 @@
     }
     .tabs button {
       padding: 0.7rem 1.2rem;
-      background: #f472b6;
+      background: #3b82f6;
       border: none;
       border-radius: 12px;
       font-weight: 600;
@@ -51,7 +51,7 @@
       transition: background 0.3s ease;
     }
     .tabs button.active {
-      background: #7c3aed;
+      background: #9333ea;
     }
     section {
       display: none;
@@ -60,19 +60,19 @@
       width: 95%;
       max-width: 900px;
       border-radius: 16px;
-      background: linear-gradient(to right bottom, #fce7f3, #e0e7ff);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(to right bottom, #1e293b, #4c1d95);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
     section.active {
       display: block;
     }
     .card {
-      background: linear-gradient(to bottom, #f9a8d4, #d8b4fe);
+      background: linear-gradient(to bottom, #3b0764, #312e81);
       border-radius: 12px;
       padding: 1rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      color: #111827;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      color: #e0f2fe;
     }
     input, textarea {
       width: 100%;
@@ -81,15 +81,31 @@
       border: none;
       margin-top: 8px;
       font-size: 1rem;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #94a3b8;
+    }
+    button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
     }
     .material-item {
-      background: white;
+      background: #0f172a;
       padding: 0.75rem;
       margin-bottom: 0.5rem;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #f1f5f9;
     }
     .material-item span { flex: 1; }
     .material-item button {
@@ -106,7 +122,8 @@
   <header>
     <h2>FINSA Admin Panel</h2>
     <button class="logout-btn" onclick="logoutUser()">Logout</button>
-  </header>  <div class="tabs">
+  </header>
+  <div class="tabs">
     <button class="tab-link active" data-tab="downloads">Downloads</button>
     <button class="tab-link" data-tab="settings">Settings</button>
     <!-- Add other tabs here -->
@@ -116,7 +133,6 @@
       <input type="text" id="materialTitle" placeholder="Material Title">
       <textarea id="materialDesc" placeholder="Short description (optional)"></textarea>
       <input type="text" id="materialLink" placeholder="Download Link (e.g., Google Drive)">
-      <br><br>
       <button onclick="uploadMaterial()">Upload Material</button>
     </div>
     <div class="card">
@@ -124,307 +140,214 @@
       <div id="materialsList"></div>
     </div>
   </section>
-  <section id="home">
-    <h3>Home Manager</h3>
-
+  <!-- SETTINGS SECTION -->
+  <section id="settings">
+    <h3>Site Settings</h3>
     <div class="card">
-      <h4>Add Finance Tip</h4>
-      <textarea id="tipInput" rows="2" placeholder="Enter a new tip..."></textarea>
-      <button onclick="addFinanceTip()">Add Tip</button>
-      <ul id="tipList"></ul>
+      <h4>Maintenance Mode</h4>
+      <label style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" id="maintenanceToggle" onchange="toggleMaintenance()" />
+        <span>Enable Maintenance Mode</span>
+      </label>
     </div>
-
     <div class="card">
-      <h4>Add Birthday</h4>
-      <input type="text" id="bdayName" placeholder="Name">
-      <input type="date" id="bdayDate">
-      <input type="file" id="bdayImage" accept="image/*" />
-      <button onclick="addBirthday()">Add Birthday</button>
-      <ul id="birthdayList"></ul>
-    </div>
-
-    <div class="card">
-      <h4>Upload Ad Banner</h4>
-      <input type="file" id="adImage" accept="image/*" />
-      <input type="text" id="adLink" placeholder="Ad redirect link (optional)">
-      <img id="adPreview" src="" style="max-height: 150px; display: none;" />
-      <button onclick="uploadAd()">Upload Ad</button>
+      <h4>Theme Mode</h4>
+      <label style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" />
+        <span>Dark Mode</span>
+      </label>
     </div>
   </section>
 
-  <section id="announcements">
-    <h3>Announcements</h3>
+  <!-- FEEDBACK SECTION -->
+  <section id="feedback">
+    <h3>Feedback</h3>
     <div class="card">
-      <textarea id="announceInput" rows="2" placeholder="Type announcement..."></textarea>
-      <button onclick="postAnnouncement()">Post Announcement</button>
-    </div>
-    <div class="card">
-      <ul id="announcementList"></ul>
+      <ul id="feedbackList" style="list-style: none; padding: 0;"></ul>
     </div>
   </section>
 
-  <section id="events">
-    <h3>Events</h3>
+  <!-- LEADERBOARD SECTION -->
+  <section id="leaderboard">
+    <h3>Leaderboard (Coming Soon)</h3>
     <div class="card">
-      <input type="text" id="eventTitle" placeholder="Event Title">
-      <textarea id="eventDescription" placeholder="Event Description"></textarea>
-      <input type="date" id="eventDate">
-      <button onclick="addEvent()">Add Event</button>
-    </div>
-    <div class="card">
-      <ul id="eventList"></ul>
+      <p>Here you’ll manage top performers once CBT system is active.</p>
     </div>
   </section>
 
+  <!-- LOST & FOUND SECTION -->
+  <section id="lostfound">
+    <h3>Lost & Found Submissions</h3>
+    <div class="card">
+      <ul id="lostFoundList" style="list-style-type: none;"></ul>
+    </div>
+  </section>
+
+  <!-- CBT SECTION -->
   <section id="cbt">
-    <h3>CBT Manager</h3>
+    <h3>CBT Question Manager</h3>
     <div class="card">
-      <input type="text" id="cbtSubject" placeholder="Subject">
-      <textarea id="cbtQuestion" placeholder="Question"></textarea>
+      <input type="text" id="cbtSubject" placeholder="Subject (e.g. Economics)">
+      <textarea id="cbtQuestion" placeholder="Enter question..."></textarea>
       <input type="text" id="optionA" placeholder="Option A">
       <input type="text" id="optionB" placeholder="Option B">
       <input type="text" id="optionC" placeholder="Option C">
       <input type="text" id="optionD" placeholder="Option D">
-      <input type="text" id="correctAnswer" placeholder="Correct Option (A-D)">
+      <input type="text" id="correctAnswer" placeholder="Correct Option (A, B, C, or D)">
+      <br><br>
       <button onclick="addCBTQuestion()">Upload Question</button>
     </div>
-    <div class="card">
-      <ul id="cbtList"></ul>
-    </div>
   </section>
+  <!-- CHUNK 10-14: Scripts and Functional Logic --><script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
+    authDomain: "finsa-connect.firebaseapp.com",
+    projectId: "finsa-connect",
+    storageBucket: "finsa-connect.appspot.com",
+    messagingSenderId: "126845965255",
+    appId: "1:126845965255:web:c82539297a8464873d7fe2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
 
-  <section id="lostfound">
-    <h3>Lost & Found</h3>
-    <div class="card">
-      <ul id="lostFoundList"></ul>
-    </div>
-  </section>
-  <section id="feedback">
-    <h3>Feedback</h3>
-    <div class="card">
-      <ul id="feedbackList"></ul>
-    </div>
-  </section>
-
-  <section id="settings">
-    <h3>Settings</h3>
-    <div class="card">
-      <p>You can manage upcoming features here.</p>
-      <label>
-        <input type="checkbox" id="maintenanceToggle" /> Enable Maintenance Mode
-      </label>
-      <br><br>
-      <button onclick="saveSettings()">Save Settings</button>
-    </div>
-  </section>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCH5H1FWEcHmQiCQhoc6GE8GhizqhTZoQc",
-      authDomain: "finsa-connect.firebaseapp.com",
-      projectId: "finsa-connect",
-      storageBucket: "finsa-connect.appspot.com",
-      messagingSenderId: "126845965255",
-      appId: "1:126845965255:web:c82539297a8464873d7fe2"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const announcementsRef = db.collection("announcements");
-    const eventsRef = db.collection("events");
-    const cbtRef = db.collection("cbt");
-    const lostFoundRef = db.collection("lostfound");
-    const financeTipsRef = db.collection("financeTips");
-    const feedbackRef = db.collection("feedbacks");
-
-    // Tab switch logic
-    document.querySelectorAll('.tab-link').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const tab = btn.getAttribute('data-tab');
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(tab).classList.add('active');
-      });
+  // Tab navigation
+  const tabLinks = document.querySelectorAll(".tab-link");
+  const sections = document.querySelectorAll("section");
+  tabLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      tabLinks.forEach(btn => btn.classList.remove("active"));
+      link.classList.add("active");
+      const tab = link.getAttribute("data-tab");
+      sections.forEach(sec => sec.classList.remove("active"));
+      document.getElementById(tab).classList.add("active");
     });
+  });
 
-    function logoutUser() {
-      firebase.auth().signOut().then(() => {
-        window.location.href = "login.html";
-      });
-    }
+  // Logout
+  function logoutUser() {
+    auth.signOut().then(() => {
+      window.location.href = "email-login.html";
+    });
+  }
 
-    // ------------------ Home Section --------------------
-    async function addFinanceTip() {
-      const tip = document.getElementById("tipInput").value.trim();
-      if (!tip) return alert("Enter a tip");
-      await financeTipsRef.add({ tip, timestamp: Date.now() });
-      alert("Tip added");
-      document.getElementById("tipInput").value = "";
-    }
-
-    async function addBirthday() {
-      const name = document.getElementById("bdayName").value.trim();
-      const date = document.getElementById("bdayDate").value;
-      const image = document.getElementById("bdayImage").files[0];
-
-      const response = await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554");
-      const data = await response.json();
-      data.push({ name, date, image: image ? URL.createObjectURL(image) : "" });
-
-      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/f8f949fe-792a-45c4-b45a-97592828f554", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      alert("Birthday added");
-    }
-
-    async function uploadAd() {
-      const file = document.getElementById("adImage").files[0];
-      const link = document.getElementById("adLink").value;
-
-      const response = await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc");
-      const data = await response.json();
-      data.push({ image: URL.createObjectURL(file), link });
-
-      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/332cf24c-c9ba-4df8-b062-f3edf244c1fc", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      alert("Ad uploaded");
-    }
-
-    // ---------------- Announcements ----------------
-    async function postAnnouncement() {
-      const text = document.getElementById("announceInput").value.trim();
-      if (!text) return alert("Enter something");
-      await announcementsRef.add({ text, timestamp: Date.now() });
-      document.getElementById("announceInput").value = "";
-      loadAnnouncements();
-    }
-
-    async function loadAnnouncements() {
-      const list = document.getElementById("announcementList");
-      list.innerHTML = "";
-      const snapshot = await announcementsRef.orderBy("timestamp", "desc").get();
+  // Announcements
+  function postAnnouncement() {
+    const content = document.getElementById("announceInput").value;
+    if (!content.trim()) return;
+    db.collection("announcements").add({ content, timestamp: Date.now() });
+    document.getElementById("announceInput").value = "";
+    loadAnnouncements();
+  }
+  function loadAnnouncements() {
+    const list = document.getElementById("announcementList");
+    list.innerHTML = "";
+    db.collection("announcements").orderBy("timestamp", "desc").get().then(snapshot => {
       snapshot.forEach(doc => {
         const li = document.createElement("li");
-        li.textContent = doc.data().text;
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "Delete";
-        delBtn.onclick = async () => {
-          await announcementsRef.doc(doc.id).delete();
-          loadAnnouncements();
-        };
-        li.appendChild(delBtn);
+        li.textContent = doc.data().content;
         list.appendChild(li);
       });
-    }
+    });
+  }
 
-    // ---------------- Events ----------------
-    async function addEvent() {
-      const title = document.getElementById("eventTitle").value;
-      const desc = document.getElementById("eventDescription").value;
-      const date = document.getElementById("eventDate").value;
-      if (!title || !desc || !date) return alert("Fill all fields");
-      await eventsRef.add({ title, desc, date });
-      alert("Event Added");
+  // Events
+  function addEvent() {
+    const title = document.getElementById("eventTitle").value;
+    const desc = document.getElementById("eventDescription").value;
+    const date = document.getElementById("eventDate").value;
+    if (!title || !date) return;
+    db.collection("events").add({ title, desc, date });
+    document.getElementById("eventTitle").value = "";
+    document.getElementById("eventDescription").value = "";
+    document.getElementById("eventDate").value = "";
+    loadEvents();
+  }
+  function loadEvents() {
+    const eventList = document.getElementById("eventList");
+    eventList.innerHTML = "";
+    db.collection("events").orderBy("date").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const item = document.createElement("li");
+        item.textContent = `${doc.data().title} - ${doc.data().date}`;
+        eventList.appendChild(item);
+      });
+    });
+  }
+
+  // Finance Tips
+  function addFinanceTip() {
+    const input = document.getElementById("tipInput").value;
+    if (!input.trim()) return;
+    db.collection("financeTips").add({ tip: input });
+    document.getElementById("tipInput").value = "";
+    loadTips();
+  }
+  function loadTips() {
+    const tipList = document.getElementById("tipList");
+    tipList.innerHTML = "";
+    db.collection("financeTips").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const li = document.createElement("li");
+        li.textContent = doc.data().tip;
+        tipList.appendChild(li);
+      });
+    });
+  }
+
+  // CBT
+  function addCBTQuestion() {
+    const subject = document.getElementById("cbtSubject").value;
+    const question = document.getElementById("cbtQuestion").value;
+    const a = document.getElementById("optionA").value;
+    const b = document.getElementById("optionB").value;
+    const c = document.getElementById("optionC").value;
+    const d = document.getElementById("optionD").value;
+    const correct = document.getElementById("correctAnswer").value;
+    if (!subject || !question || !a || !b || !c || !d || !correct) return;
+    db.collection("cbt").add({ subject, question, options: { a, b, c, d }, correct });
+  }
+
+  // Materials
+  async function uploadMaterial() {
+    const title = document.getElementById("materialTitle").value;
+    const desc = document.getElementById("materialDesc").value;
+    const link = document.getElementById("materialLink").value;
+    if (!title || !link) return;
+    const res = await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/325bec14-accd-4dc4-89d5-87a84da74c36");
+    const data = await res.json();
+    data.push({ title, desc, link });
+    await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/325bec14-accd-4dc4-89d5-87a84da74c36", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    loadMaterials();
+  }
+  async function loadMaterials() {
+    const list = document.getElementById("materialsList");
+    list.innerHTML = "";
+    const res = await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/325bec14-accd-4dc4-89d5-87a84da74c36");
+    const materials = await res.json();
+    materials.forEach((mat, i) => {
+      const div = document.createElement("div");
+      div.className = "material-item";
+      div.innerHTML = `<span><strong>${mat.title}</strong><br>${mat.desc || ""}</span><a href="${mat.link}" target="_blank">Download</a>`;
+      list.appendChild(div);
+    });
+  }
+
+  // Load all on auth ready
+  auth.onAuthStateChanged(user => {
+    if (user && user.email === "ayubaboluwatife246@gmail.com") {
+      loadTips();
       loadEvents();
+      loadAnnouncements();
+      loadMaterials();
+    } else {
+      window.location.href = "email-login.html";
     }
-
-    async function loadEvents() {
-      const list = document.getElementById("eventList");
-      list.innerHTML = "";
-      const snapshot = await eventsRef.get();
-      snapshot.forEach(doc => {
-        const li = document.createElement("li");
-        li.textContent = `${doc.data().title} - ${doc.data().date}`;
-        const del = document.createElement("button");
-        del.textContent = "Delete";
-        del.onclick = async () => {
-          await eventsRef.doc(doc.id).delete();
-          loadEvents();
-        };
-        li.appendChild(del);
-        list.appendChild(li);
-      });
-    }
-
-    // ---------------- CBT ----------------
-    async function addCBTQuestion() {
-      const data = {
-        subject: document.getElementById("cbtSubject").value,
-        question: document.getElementById("cbtQuestion").value,
-        options: {
-          A: document.getElementById("optionA").value,
-          B: document.getElementById("optionB").value,
-          C: document.getElementById("optionC").value,
-          D: document.getElementById("optionD").value
-        },
-        correct: document.getElementById("correctAnswer").value.toUpperCase()
-      };
-      await cbtRef.add(data);
-      alert("CBT Question Added");
-    }
-
-    // ---------------- Feedback ----------------
-    async function loadFeedback() {
-      const list = document.getElementById("feedbackList");
-      list.innerHTML = "";
-      const snapshot = await feedbackRef.get();
-      snapshot.forEach(doc => {
-        const li = document.createElement("li");
-        li.textContent = doc.data().message || "No message";
-        const del = document.createElement("button");
-        del.textContent = "Delete";
-        del.onclick = async () => {
-          await feedbackRef.doc(doc.id).delete();
-          loadFeedback();
-        };
-        li.appendChild(del);
-        list.appendChild(li);
-      });
-    }
-
-    // ---------------- Materials (Downloads via JSON) ----------------
-    async function uploadMaterial() {
-      const title = document.getElementById("materialTitle").value;
-      const desc = document.getElementById("materialDesc").value;
-      const link = document.getElementById("materialLink").value;
-
-      const response = await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/325bec14-accd-4dc4-89d5-87a84da74c36");
-      const data = await response.json();
-      data.push({ title, desc, link });
-
-      await fetch("https://api.jsonstorage.net/v1/json/d33236c3-a3da-4c87-8d18-eeeb899d034a/325bec14-accd-4dc4-89d5-87a84da74c36", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      alert("Material uploaded");
-    }
-
-    // ---------------- Settings ----------------
-    function saveSettings() {
-      const maintenance = document.getElementById("maintenanceToggle").checked;
-      alert("Saved (future use): Maintenance mode = " + maintenance);
-    }
-
-    // ---------------- Loaders ----------------
-    firebase.auth().onAuthStateChanged(user => {
-      if (!user) location.href = "login.html";
-      else {
-        loadAnnouncements();
-        loadEvents();
-        loadFeedback();
-      }
-    });
-  </script>
-</body>
+  });
+</script></body>
 </html>
